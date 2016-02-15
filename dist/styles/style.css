@@ -1,0 +1,127 @@
+*, *:before, *:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+html {
+	height: 100%;
+}
+
+body{
+	margin: 0rem auto;;
+	font-family: sans-serif;
+}
+
+.nav-container{
+	width: 100%;
+	background-color: darkgray;
+	height: 5rem;
+	margin: 0rem;
+	padding: 1rem;
+}
+
+.nav-container h1{
+	margin: 0rem;
+	
+}
+
+.main-container{
+	width: 90%;
+	margin: 0rem auto;
+}
+
+/***
+Timer
+***/
+
+.timer-container{
+	width: 100%;
+	background-color: lightgray;
+	height: 2.5rem;
+	margin: 0rem auto;
+}
+
+.timer{
+	width: 10%;
+	margin: 1rem auto;
+	
+}
+
+p.timer{
+	font-size: 2.5rem;
+}
+
+/***
+Score 
+***/
+
+.score-container{
+	
+}
+
+.current-score{
+	
+}
+
+.best-score{
+	
+}
+
+/***
+Flex definitions
+***/
+
+.flex-parent{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.flex-child{
+	flex: auto;
+	height: 70%;
+	margin: 2.5%;
+}
+
+/***
+Numbers
+***/
+
+.numbers-container{
+	height: 10rem;
+}
+
+.number-tile{
+	background-color: lightgrey;
+}
+
+p.number{
+	display: block;
+	height: 100%;
+	margin: 0rem auto;
+	width: 50%;
+	font-size: 5rem;
+	text-align: center;
+}
+
+/***
+Operations
+***/
+.operations-container{
+	height: 5rem;
+}
+
+.operation-tile{
+	background-color: lightgrey;
+}
+
+p.operation{
+	display: block;
+	height: 100%;
+	margin: 0rem auto;
+	width: 50%;
+	font-size: 2.5rem;
+	text-align: center;
+}
