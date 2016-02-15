@@ -23,33 +23,89 @@ body{
 
 .nav-container h1{
 	margin: 0rem;
-	
 }
 
 .main-container{
-	width: 90%;
+	width: 75%;
 	margin: 0rem auto;
+}
+
+/***
+Flex definitions
+***/
+
+.flex-parent{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.flex-child{
+	flex: auto;
+}
+
+/***
+Tiles & Content
+***/
+
+.timer,
+.tile{
+	position: relative;
+	overflow: hidden;
+}
+
+.timer:before,
+.tile:before{
+	content: "";
+	display: block;
+	padding-top: 100%;
+}
+
+.timer-content,
+.content{
+	position:  absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	color: black;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	user-select: none; 
+}
+
+.timer-content div,
+.content div{
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+
+.timer-content span,
+.content span{
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
 }
 
 /***
 Timer
 ***/
 
-.timer-container{
-	width: 100%;
-	background-color: lightgray;
-	height: 2.5rem;
-	margin: 0rem auto;
-}
-
 .timer{
-	width: 10%;
-	margin: 1rem auto;
-	
+	height: 3rem;
+	margin: 0.5rem auto;
 }
 
-p.timer{
-	font-size: 2.5rem;
+.timer-content{
+	background-color: lightblue;
+	padding: 0.5rem;
+}
+
+.timer-content span{
+	font-size: 1rem;
 }
 
 /***
@@ -69,75 +125,22 @@ Score
 }
 
 /***
-Flex definitions
-***/
-
-.flex-parent{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-wrap: wrap;
-}
-
-.flex-child{
-	flex: auto;
-	height: 70%;
-	margin: 2.5%;
-}
-
-/***
-Tiles & Content
-***/
-
-.tile{
-		position: relative;
-    overflow: hidden;
-}
-
-.tile:before{
-	 content: "";
-    display: block;
-    padding-top: 100%;
-}
-
-.content{
-		position:  absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    color: white;
-}
-
-.content div{
-	display: table;
-   	width: 100%;
-   	height: 100%;
-}
-
-.content span{
-	display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    color: black;
-}
-
-/***
 Numbers
 ***/
 
 .numbers-container{
-	height: 10rem;
+	min-height: 10rem;
 }
 
 .number-tile{
 	background-color: lightgrey;
-	height: 8rem;
-	width: 8rem;
+	height: 6rem;
+	min-width: 40%;
+	margin: 0.5rem;
 }
 
 .number-content span{
-	font-size: 5rem;
+	font-size: 4rem;
 }
 
 /***
@@ -150,7 +153,8 @@ Operations
 .operation-tile{
 	background-color: lightgrey;
 	height: 4rem;
-	width: 8rem;
+	min-width: 40%;
+	margin: 0.25rem;
 }
 
 .operation-content span{
@@ -162,4 +166,26 @@ Visual
 ***/
 .selected{
 	border: 2px black solid;
+}
+
+@media (max-width:40em){
+	.number-tile,
+	.operation-tile{
+		min-width: 20%;
+		margin: 0.25rem;
+	}
+	
+	.numbers-container,
+	.operations-container{
+		min-height: 0rem;
+	}
+	
+	.number-content span,
+	.operation-content span{
+		font-size: 2rem;
+	}
+}
+
+@media (max-width:64em){
+	
 }
