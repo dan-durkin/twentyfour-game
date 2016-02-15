@@ -129,13 +129,13 @@ Numbers
 ***/
 
 .numbers-container{
-	min-height: 10rem;
+	min-height: 6rem;
 }
 
 .number-tile{
 	background-color: lightgrey;
 	height: 6rem;
-	min-width: 40%;
+	max-width: 25%;
 	margin: 0.5rem;
 }
 
@@ -147,13 +147,14 @@ Numbers
 Operations
 ***/
 .operations-container{
+	margin: 0.5rem auto;
 	height: 5rem;
 }
 
 .operation-tile{
 	background-color: lightgrey;
 	height: 4rem;
-	min-width: 40%;
+	max-width: 25%;
 	margin: 0.25rem;
 }
 
@@ -171,7 +172,7 @@ Visual
 @media (max-width:40em){
 	.number-tile,
 	.operation-tile{
-		min-width: 20%;
+		min-width: 15%;
 		margin: 0.25rem;
 	}
 	
@@ -184,8 +185,14 @@ Visual
 	.operation-content span{
 		font-size: 2rem;
 	}
+	
+	.main-container{
+		width: 95%;
+	}
 }
 
 @media (max-width:64em){
-	
+	body{
+		font-size: 110%;
+	}
 }

@@ -1,5 +1,3 @@
-var ops = ['+','-','x','/'];
-
 function createNumberTile (data){
 	var template = "<div class='flex-child number-tile tile'><div class='number-content content'><div><span class='number'>" + data + "</span></div></div></div>";
 	
@@ -34,7 +32,7 @@ var setNumberTiles = function (num, ops) {
 	$numContainer.empty();
 	$operationContainer.empty
 
-	for (var i = 0; i < num; i++) {
+	for(var i=0; i < num; i++) {
 		var $newNumberTile = createNumberTile(6);
 		$numContainer.append($newNumberTile);
 	}
@@ -43,6 +41,8 @@ var setNumberTiles = function (num, ops) {
 		$operationContainer.append($newOpTile);
 	}
 };
+
+var ops = ['+','-','x','/'];
 
 $(window).load(function(){
 	setNumberTiles(4, ops);
