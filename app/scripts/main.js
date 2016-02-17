@@ -38,19 +38,44 @@ function preMove (value){
 
 function performMove () {
 	result = OperationTiles[moveOperation](moveNumberTiles[0], moveNumberTiles[1]);
-	var selectedTiles = $('.selected.number-tile');
-	var selectedOperation = $('.selected.operation-tile');
-	selectedTiles.remove();
-	selectedOperation.removeClass("selected");
 
 	var $numContainer = $('.numbers-container');
 	var numberTileObj = new NumberTile(result);
 	var $newNumberTile = createNumberTile(numberTileObj.value);
 	$numContainer.prepend($newNumberTile);
 
-	var moveStr = moveNumberTiles[0].toString() + ' ' + moveOperation + ' '+ moveNumberTiles[1].toString();
-	currentPuzzleMoves.push(moveStr);
+	var moveStore = [moveNumberTiles[0], moveOperation, moveNumberTiles[1], $newNumberTile]
+	currentPuzzleMoves.push(moveStore);
 
+	var selectedTiles = $('.selected.number-tile');
+	selectedTiles.remove();
+	reset();
+}
+
+function undoMove () {
+	reset();
+	
+	if(currentPuzzleMoves.length > 0){
+		var lastMove = currentPuzzleMoves.pop();
+		console.log(lastMove, currentPuzzleMoves);
+		var $numContainer = $('.numbers-container');
+		
+		for(var i =0, len = lastMove.length; i<len;i++){
+			if(!isNaN(lastMove[i]) && !(lastMove[i] instanceof jQuery)){
+				var numberTileObj = new NumberTile(lastMove[i]);
+				var $newNumberTile = createNumberTile(numberTileObj.value);
+				$numContainer.prepend($newNumberTile);
+			}
+			else if(lastMove[i] instanceof jQuery){
+				lastMove[i].remove();
+			}
+		}
+	}
+}
+
+function reset () {
+	var selected =$('.selected');
+	selected.removeClass('selected');
 	moveOperation = null;
 	moveNumberTiles = [];
 }
