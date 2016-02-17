@@ -15,7 +15,7 @@ function createTile (template, value) {
 	
 	var clickHandler = function () {
 		$(this).toggleClass("selected");
-		performMove(value);
+		preMove(value);
 	}
 	
 	$tile.click(clickHandler);
@@ -23,7 +23,7 @@ function createTile (template, value) {
 	return $tile;
 }
 
-function performMove (value) {
+function preMove (value){
 	if(isNaN(value)){
 		moveOperation = value;
 	}
@@ -32,23 +32,27 @@ function performMove (value) {
 	}
 	
 	if(moveOperation && moveNumberTiles.length === 2){
-		result = OperationTiles[moveOperation](moveNumberTiles[0], moveNumberTiles[1]);
-		var selectedTiles = $('.selected.number-tile');
-		var selectedOperation = $('.selected.operation-tile');
-		selectedTiles.remove();
-		selectedOperation.removeClass("selected");
-		
-		var $numContainer = $('.numbers-container');
-		var numberTileObj = new NumberTile(result);
-		var $newNumberTile = createNumberTile(numberTileObj.value);
-		$numContainer.prepend($newNumberTile);
-		
-		var moveStr = moveNumberTiles[0].toString() + ' ' + moveOperation + ' '+ moveNumberTiles[1].toString();
-		currentPuzzleMoves.push(moveStr);
-		
-		moveOperation = null;
-		moveNumberTiles = [];
+		performMove();
 	}
+}
+
+function performMove () {
+	result = OperationTiles[moveOperation](moveNumberTiles[0], moveNumberTiles[1]);
+	var selectedTiles = $('.selected.number-tile');
+	var selectedOperation = $('.selected.operation-tile');
+	selectedTiles.remove();
+	selectedOperation.removeClass("selected");
+
+	var $numContainer = $('.numbers-container');
+	var numberTileObj = new NumberTile(result);
+	var $newNumberTile = createNumberTile(numberTileObj.value);
+	$numContainer.prepend($newNumberTile);
+
+	var moveStr = moveNumberTiles[0].toString() + ' ' + moveOperation + ' '+ moveNumberTiles[1].toString();
+	currentPuzzleMoves.push(moveStr);
+
+	moveOperation = null;
+	moveNumberTiles = [];
 }
 
 var setTiles = function (num) {
@@ -67,6 +71,22 @@ var setTiles = function (num) {
 		$operationContainer.append($newOpTile);
 	}
 };
+
+var moveOperation = null;
+var moveNumberTiles = [];
+var currentPuzzleMoves = [];
+var currentRoundSolves = [];
+
+var OperationTiles = {
+	'+':function(a,b){return a+b},
+	'-':function(a,b){return Math.abs(a-b)},
+	'x':function(a,b){return a*b},
+	'/':function(a,b){return a/b}
+};
+
+function NumberTile (value){
+	this.value = value;
+}
 
 $(window).load(function(){
 	setTiles(4);
