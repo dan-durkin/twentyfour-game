@@ -1,34 +1,29 @@
 function createNumberTile (data){
-	var template =  "<div class='flex-child number-tile tile'><div class='number-content content'><div><span class='number'>" + data + "</span></div></div></div>";
-	
-	return createTile(template, data);
+	return $("<div class='flex-child number-tile tile' data-value='" + data + "'><div class='number-content content'><div><span class='number'>" + data + "</span></div></div></div>");
 }
 	
 function createOperationTile (op) {
-	var template = "<div class='flex-child operation-tile tile'><div class='operation-content content'><div><span class='number'>" + op + "</span></div></div></div>";
-	
-	return createTile(template, op);
+	return $("<div class='flex-child operation-tile tile' data-value='" + op + "'><div class='operation-content content'><div><span class='number'>" + op + "</span></div></div></div>");
 }
 
-function createTile (template, value) {
-	var $tile = $(template);
-	
-	var clickHandler = function () {
-		$(this).toggleClass("selected");
-		preMove(value);
-	}
-	
-	$tile.click(clickHandler);
-	
-	return $tile;
+function clickHandler() {
+	var element = $(this);
+	element.toggleClass("selected");
+	preMove(element.data("value"), element);
 }
 
-function preMove (value){
+$(".numbers-container").on("click", ".number-tile", clickHandler);
+$(".operations-container").on("click", ".operation-tile", clickHandler);
+
+function preMove (value, $element){
 	if(isNaN(value)){
 		moveOperation = value;
 	}
 	else{
-		moveNumberTiles.push(value);
+		moveNumberTiles.push({
+			value: value,
+			element: $element
+		});
 	}
 	
 	if(moveOperation && moveNumberTiles.length === 2){
@@ -37,14 +32,22 @@ function preMove (value){
 }
 
 function performMove () {
-	result = OperationTiles[moveOperation](moveNumberTiles[0], moveNumberTiles[1]);
+	result = OperationTiles[moveOperation](moveNumberTiles[0].value, moveNumberTiles[1].value);
 
 	var $numContainer = $('.numbers-container');
 	var numberTileObj = new NumberTile(result);
 	var $newNumberTile = createNumberTile(numberTileObj.value);
 	$numContainer.prepend($newNumberTile);
 
-	var moveStore = [moveNumberTiles[0], moveOperation, moveNumberTiles[1], $newNumberTile]
+	var moveStore = {
+		firstNumber: moveNumberTiles[0].value,
+		secondNumber: moveNumberTiles[1].value,
+		moveOperation: moveOperation,
+		firstNumberElement: moveNumberTiles[0].element,
+		secondNumberElement: moveNumberTiles[1].element,
+		newElement: $newNumberTile,
+	};
+	
 	currentPuzzleMoves.push(moveStore);
 
 	var selectedTiles = $('.selected.number-tile');
@@ -52,25 +55,16 @@ function performMove () {
 	reset();
 }
 
-function undoMove () {
-	reset();
-	
+function undoMove () {	
 	if(currentPuzzleMoves.length > 0){
 		var lastMove = currentPuzzleMoves.pop();
-		console.log(lastMove, currentPuzzleMoves);
+		lastMove.newElement.remove();
 		var $numContainer = $('.numbers-container');
-		
-		for(var i =0, len = lastMove.length; i<len;i++){
-			if(!isNaN(lastMove[i]) && !(lastMove[i] instanceof jQuery)){
-				var numberTileObj = new NumberTile(lastMove[i]);
-				var $newNumberTile = createNumberTile(numberTileObj.value);
-				$numContainer.prepend($newNumberTile);
-			}
-			else if(lastMove[i] instanceof jQuery){
-				lastMove[i].remove();
-			}
-		}
+		$numContainer.prepend(lastMove.secondNumberElement);
+		$numContainer.prepend(lastMove.firstNumberElement);
 	}
+	
+	reset();
 }
 
 function reset () {
