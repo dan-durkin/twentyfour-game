@@ -35,8 +35,7 @@ function performMove () {
 	result = OperationTiles[moveOperation](moveNumberTiles[0].value, moveNumberTiles[1].value);
 
 	var $numContainer = $('.numbers-container');
-	var numberTileObj = new NumberTile(result);
-	var $newNumberTile = createNumberTile(numberTileObj.value);
+	var $newNumberTile = createNumberTile(result);
 	$numContainer.prepend($newNumberTile);
 
 	var moveStore = {
@@ -78,11 +77,10 @@ var setTiles = function (num) {
 	var $numContainer = $('.numbers-container');
 	var $operationContainer = $('.operations-container');
 	$numContainer.empty();
-	$operationContainer.empty
+	$operationContainer.empty();
 
 	for(var i=0; i < num; i++) {
-		var numberTileObj = new NumberTile(6);
-		var $newNumberTile = createNumberTile(numberTileObj.value);
+		var $newNumberTile = createNumberTile(6);
 		$numContainer.append($newNumberTile);
 	}
 	for(var op in OperationTiles){
@@ -102,10 +100,6 @@ var OperationTiles = {
 	'x':function(a,b){return a*b},
 	'/':function(a,b){return a/b}
 };
-
-function NumberTile (value){
-	this.value = value;
-}
 
 $(window).load(function(){
 	setTiles(4);
