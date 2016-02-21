@@ -6,9 +6,18 @@ function createOperationTile (op) {
 	return $("<div class='flex-child operation-tile tile' data-value='" + op + "'><div class='operation-content content'><div><span class='number'>" + op + "</span></div></div></div>");
 }
 
-function clickHandler() {
+function clickHandler() {	
 	var element = $(this);
+	
+	if(moveOperation && element.hasClass('operation-tile')){
+		reset();	
+	}
+	if(moveNumberTiles.length === 2 && element.hasClass('number-tile')){
+		reset();
+	}
+	
 	element.toggleClass("selected");
+	
 	preMove(element.data("value"), element);
 }
 
@@ -30,6 +39,8 @@ function preMove (value, $element){
 		performMove();
 	}
 }
+
+
 
 function performMove () {
 	result = OperationTiles[moveOperation](moveNumberTiles[0].value, moveNumberTiles[1].value);
@@ -78,9 +89,10 @@ var setTiles = function (num) {
 	var $operationContainer = $('.operations-container');
 	$numContainer.empty();
 	$operationContainer.empty();
-
+	
+	var temp = [2,7,3,2];
 	for(var i=0; i < num; i++) {
-		var $newNumberTile = createNumberTile(6);
+		var $newNumberTile = createNumberTile(temp[i]);
 		$numContainer.append($newNumberTile);
 	}
 	for(var op in OperationTiles){
@@ -93,6 +105,9 @@ var moveOperation = null;
 var moveNumberTiles = [];
 var currentPuzzleMoves = [];
 var currentRoundSolves = [];
+
+var ref = new Firebase("https://twentyfour-game.firebaseio.com/");
+//var SolutionDatabase = $firebaseArray(ref);
 
 var OperationTiles = {
 	'+':function(a,b){return a+b},
