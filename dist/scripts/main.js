@@ -128,8 +128,8 @@ function solved ($element){
 	setTimeout(function(){
 		updateScore()
 		publishHistory();
-		reset();
-		setTiles();
+		solveCounter();
+		init();
 	}, 300);
 }
 
@@ -137,9 +137,9 @@ function incorrect($element){
 	$element.addClass('incorrect');
 }
 
-function skipPuzzle (){
-	reset();
-	setTiles();
+function skipPuzzle(){
+	skipCounter();
+	init();
 }
 
 function getScore(){
@@ -163,21 +163,17 @@ var setTiles = function () {
 	
 	currentPuzzleMoves = [];
 	
-	/*
-	var puzzle = ref.child("solutions")[0].solutions;
-	var index = Math.ceil((Math.random()*solutions.length));
-	var puzzle = solutions[index];
-	*/
-	
 	for(var i=0; i < 4; i++) {
-		var $newNumberTile = createNumberTile(parseInt(puzzle[i]));
+		var $newNumberTile = createNumberTile(parseInt(currentPuzzle[i]));
 		$numContainer.append($newNumberTile);
 	}
-
+	
+	viewCounter();
 };
 
 var moveOperation = null;
 var moveNumberTiles = [];
+
 var currentPuzzleMoves = [];
 var currentRoundSolves = [];
 var currentScore = 0;
@@ -200,5 +196,9 @@ $(window).load(function(){
 		$operationContainer.append($newOpTile);
 	}
 	
-	setTiles();
+	ref.child('solutions').on("value", function(snapshot){
+		allSolutions = snapshot.val();
+	});
+	
+	init();
 });
