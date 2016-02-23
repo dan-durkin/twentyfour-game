@@ -7,7 +7,7 @@ function createOperationTile (op) {
 }
 
 function createHistoryElement (history) {
-	return $("<div class='history-item'><p>" + history + "</p></div>");
+	return $("<div class='history-item'><p>Last Move: " + history + "</p></div>");
 }
 
 function createCurrentScoreElement(currentScore){
@@ -129,7 +129,7 @@ function solved ($element){
 		updateScore()
 		publishHistory();
 		solveCounter();
-		init();
+		newPuzzle();
 	}, 300);
 }
 
@@ -137,9 +137,14 @@ function incorrect($element){
 	$element.addClass('incorrect');
 }
 
+function newPuzzle(){
+	init()
+	setTiles();
+}	
+
 function skipPuzzle(){
 	skipCounter();
-	init();
+	newPuzzle();
 }
 
 function getScore(){
@@ -163,12 +168,18 @@ var setTiles = function () {
 	
 	currentPuzzleMoves = [];
 	
-	for(var i=0; i < 4; i++) {
-		var $newNumberTile = createNumberTile(parseInt(currentPuzzle[i]));
-		$numContainer.append($newNumberTile);
+	if(currentPuzzleNumbers){
+        for(var i=0; i < 4; i++) {
+			var $newNumberTile = createNumberTile(parseInt(currentPuzzleNumbers[i]));
+			$numContainer.append($newNumberTile);
+		}
+		viewCounter();
+    }
+    else{
+        setTimeout(function(){
+            setTiles();
+        },5);
 	}
-	
-	viewCounter();
 };
 
 var moveOperation = null;
@@ -186,8 +197,9 @@ var OperationTiles = {
 };
 
 $(window).load(function(){
+	currentScore = 0;
 	var currentScoreContainer = $('.current-score');
-	currentScoreContainer.append(createCurrentScoreElement(0));
+	currentScoreContainer.append(createCurrentScoreElement(currentScore));
 	
 	var $operationContainer = $('.operations-container');
 	$operationContainer.empty();
@@ -198,7 +210,8 @@ $(window).load(function(){
 	
 	ref.child('solutions').on("value", function(snapshot){
 		allSolutions = snapshot.val();
+		init();
 	});
 	
-	init();
+	setTiles();
 });
