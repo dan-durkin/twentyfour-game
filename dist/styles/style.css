@@ -162,9 +162,52 @@ Operations
 	font-size: 2.5rem;
 }
 
+/***
+Utilities
+***/
+.utilities-container{
+	
+}
+
+.undo-container,
+.skip-container{
+	width: 50%;
+}
+
+.undo,
+.skip{
+	font-size: 5rem;
+}
 
 .undo{
-	font-size: 5rem;
+	float: left;
+	margin-left: 2rem;
+}
+
+.skip{
+	float: right;
+	margin-right: 2rem;
+}
+
+/***
+History
+***/
+.history-container{
+	width:95%;
+}
+
+.history-item{
+	width: 100%;
+	text-align: center;
+	font-size: 1rem;
+}
+
+.current-puzzle-history-container{
+	width: 50%;
+}
+
+.round-solves-container{
+	width: 50%;
 }
 
 /***
@@ -173,6 +216,18 @@ Visual
 .selected{
 	border: 2px black solid;
 }
+
+.correct {
+	border: 6px green solid;
+}
+
+.incorrect{
+	border: 6px red solid;
+}
+
+/***
+Visual
+***/
 
 @media (max-width:40em){
 	.number-tile,

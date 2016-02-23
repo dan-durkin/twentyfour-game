@@ -3,8 +3,8 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>twentyfour</title>
-    <link rel="stylesheet" href="/styles/style.css">
 	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+	<link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
 	<div class="nav-container">
@@ -24,13 +24,20 @@
 		</div>
 		<div class="flex-parent operations-container">
 		</div>
-		<div class="undo">
-			<span class="ion-ios-undo undo" onclick="undoMove()"></span>
+		<div class="flex-parent utilities-container">
+			<div class="undo-container"><span class="ion-ios-undo undo" onclick="undoMove()"></span></div>
+			<div class="skip-container"><span class="ion-ios-skipforward skip" onclick="skipPuzzle()"></span></div>
+		</div>
+		<div class="flex-parent puzzle-history">
+			<div class="current-puzzle-history-container"></div>
+			<div class="round-solves-container"></div>
 		</div>
 	</div>
 </body>
 	<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+	<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
 	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+	<script src="/scripts/solutions.js"></script>
+	<script src="/scripts/data.js"></script>
 	<script src="/scripts/main.js"></script>
-	<!--script src="/datas/solutions.js"></script-->
 </html>

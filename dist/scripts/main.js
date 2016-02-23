@@ -6,6 +6,14 @@ function createOperationTile (op) {
 	return $("<div class='flex-child operation-tile tile' data-value='" + op + "'><div class='operation-content content'><div><span class='number'>" + op + "</span></div></div></div>");
 }
 
+function createHistoryElement (history) {
+	return $("<div class='history-item'><p>Last Move: " + history + "</p></div>");
+}
+
+function createCurrentScoreElement(currentScore){
+	return $("<div class='current-score'><p>Current Score: " + currentScore + "</p></div>");
+}
+
 function clickHandler() {	
 	var element = $(this);
 	
@@ -40,15 +48,15 @@ function preMove (value, $element){
 	}
 }
 
-
-
 function performMove () {
-	result = OperationTiles[moveOperation](moveNumberTiles[0].value, moveNumberTiles[1].value);
-
+	var result = OperationTiles[moveOperation](moveNumberTiles[0].value, moveNumberTiles[1].value);
+	
 	var $numContainer = $('.numbers-container');
 	var $newNumberTile = createNumberTile(result);
 	$numContainer.prepend($newNumberTile);
-
+	
+	var historyString = moveNumberTiles[0].value.toString() + ' ' + moveOperation + ' ' + moveNumberTiles[1].value.toString() + ' = ' + result.toString();
+	
 	var moveStore = {
 		firstNumber: moveNumberTiles[0].value,
 		secondNumber: moveNumberTiles[1].value,
@@ -56,25 +64,91 @@ function performMove () {
 		firstNumberElement: moveNumberTiles[0].element,
 		secondNumberElement: moveNumberTiles[1].element,
 		newElement: $newNumberTile,
+		historyString: historyString,
+		historyElement: createHistoryElement(historyString)
 	};
 	
 	currentPuzzleMoves.push(moveStore);
-
+	
+	var $historyContainer = $('.current-puzzle-history-container');
+	$historyContainer.prepend(moveStore.historyElement);
+	
 	var selectedTiles = $('.selected.number-tile');
 	selectedTiles.remove();
 	reset();
+	
+	if($('.number-tile').length === 1){
+		checkSolution($newNumberTile);
+	}
 }
 
 function undoMove () {	
 	if(currentPuzzleMoves.length > 0){
 		var lastMove = currentPuzzleMoves.pop();
 		lastMove.newElement.remove();
+		lastMove.historyElement.remove();
 		var $numContainer = $('.numbers-container');
 		$numContainer.prepend(lastMove.secondNumberElement);
-		$numContainer.prepend(lastMove.firstNumberElement);
+		$numContainer.prepend(lastMove.firstNumberElement);	
 	}
 	
 	reset();
+}
+
+function checkSolution($element){
+	if($element.data("value") === 24){
+		solved($element);
+	}
+	else{
+		incorrect($element);
+	}
+}
+
+function publishHistory(){
+	var history = "";
+	var $roundSolves = $('.round-solves-container');
+	
+	for(var i=0, len=currentPuzzleMoves.length;i<len;i++){
+		history += " (" + currentPuzzleMoves[i].historyString + ") ";
+	}
+	
+	$roundSolves.prepend(createHistoryElement(history));
+	currentPuzzleMoves=[];
+}
+
+function updateScore(){
+	currentScore++;
+	$('.current-score').empty();
+	$('.current-score').append(createCurrentScoreElement(currentScore));
+}
+
+function solved ($element){
+	$element.addClass('correct');
+	
+	setTimeout(function(){
+		updateScore()
+		publishHistory();
+		solveCounter();
+		newPuzzle();
+	}, 300);
+}
+
+function incorrect($element){
+	$element.addClass('incorrect');
+}
+
+function newPuzzle(){
+	init()
+	setTiles();
+}	
+
+function skipPuzzle(){
+	skipCounter();
+	newPuzzle();
+}
+
+function getScore(){
+	return currentScore;
 }
 
 function reset () {
@@ -84,38 +158,60 @@ function reset () {
 	moveNumberTiles = [];
 }
 
-var setTiles = function (num) {
+var setTiles = function () {
+	reset();
 	var $numContainer = $('.numbers-container');
-	var $operationContainer = $('.operations-container');
-	$numContainer.empty();
-	$operationContainer.empty();
+	var $currentPuzzleHistoryContainer = $('.current-puzzle-history-container');
 	
-	var temp = [2,7,3,2];
-	for(var i=0; i < num; i++) {
-		var $newNumberTile = createNumberTile(temp[i]);
-		$numContainer.append($newNumberTile);
-	}
-	for(var op in OperationTiles){
-		var $newOpTile = createOperationTile(op);
-		$operationContainer.append($newOpTile);
+	$numContainer.empty();
+	$currentPuzzleHistoryContainer.empty();
+	
+	currentPuzzleMoves = [];
+	
+	if(currentPuzzleNumbers){
+        for(var i=0; i < 4; i++) {
+			var $newNumberTile = createNumberTile(parseInt(currentPuzzleNumbers[i]));
+			$numContainer.append($newNumberTile);
+		}
+		viewCounter();
+    }
+    else{
+        setTimeout(function(){
+            setTiles();
+        },5);
 	}
 };
 
 var moveOperation = null;
 var moveNumberTiles = [];
+
 var currentPuzzleMoves = [];
 var currentRoundSolves = [];
-
-var ref = new Firebase("https://twentyfour-game.firebaseio.com/");
-//var SolutionDatabase = $firebaseArray(ref);
+var currentScore = 0;
 
 var OperationTiles = {
 	'+':function(a,b){return a+b},
-	'-':function(a,b){return Math.abs(a-b)},
+	'-':function(a,b){return a-b},
 	'x':function(a,b){return a*b},
 	'/':function(a,b){return a/b}
 };
 
 $(window).load(function(){
-	setTiles(4);
+	currentScore = 0;
+	var currentScoreContainer = $('.current-score');
+	currentScoreContainer.append(createCurrentScoreElement(currentScore));
+	
+	var $operationContainer = $('.operations-container');
+	$operationContainer.empty();
+	for(var op in OperationTiles){
+		var $newOpTile = createOperationTile(op);
+		$operationContainer.append($newOpTile);
+	}
+	
+	ref.child('solutions').on("value", function(snapshot){
+		allSolutions = snapshot.val();
+		init();
+	});
+	
+	setTiles();
 });
