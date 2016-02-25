@@ -169,16 +169,16 @@ var setTiles = function () {
 	currentPuzzleMoves = [];
 	
 	if(currentPuzzleNumbers){
-        for(var i=0; i < 4; i++) {
+		for(var i=0; i < 4; i++) {
 			var $newNumberTile = createNumberTile(parseInt(currentPuzzleNumbers[i]));
 			$numContainer.append($newNumberTile);
 		}
 		viewCounter();
-    }
-    else{
-        setTimeout(function(){
-            setTiles();
-        },5);
+	}
+	else{
+		setTimeout(function(){
+			setTiles();
+		},5);
 	}
 };
 
