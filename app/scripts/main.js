@@ -31,9 +31,6 @@ function clickHandler() {
 	preMove(element.data("value"), element);
 }
 
-$(".numbers-container").on("click", ".number-tile", clickHandler);
-$(".operations-container").on("click", ".operation-tile", clickHandler);
-
 function preMove (value, $element){
 	if(isNaN(value)){
 		moveOperation = value;
@@ -106,7 +103,6 @@ function checkSolution($element){
 	}
 }
 
-
 function solved ($element){
 	$element.addClass('correct');
 	$element.children('color', '#EEE4DA');
@@ -150,11 +146,6 @@ function newPuzzle(){
 	setTileNumbers();
 }
 
-function newGame(){
-	setNewGame();
-	setTileNumbers();
-}
-
 function reset () {
 	var selected =$('.selected');
 	selected.removeClass('selected');
@@ -169,9 +160,18 @@ function setNewGame(){
 }
 
 function startNewGame () {
+	$(".numbers-container").on("click", ".number-tile", clickHandler);
+	$(".operations-container").on("click", ".operation-tile", clickHandler);
+	
 	clearRoundHistory();
 	setNewGame();
 	setTileNumbers();
+	startTimer();
+}
+
+function lostGame () {
+	$(".numbers-container").off("click", ".number-tile", clickHandler);
+	$(".operations-container").off("click", ".operation-tile", clickHandler);
 }
 
 function clearRoundHistory (){
