@@ -1,3 +1,7 @@
+/*
+https://coolors.co/app/1abc9c-776e65-eee4da-e0e1e2-faf8ef
+*/
+
 *, *:before, *:after {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
@@ -9,29 +13,36 @@ html {
 }
 
 body{
-	margin: 0rem auto;;
+	margin: 0 auto;
 	font-family: sans-serif;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
 	user-select: none; 
+	font-family: 'Open Sans', sans-serif;
+	background-color: rgb(250, 248, 239);
+	color: rgb(119, 110, 101);
+}
+
+/**
+Main Container, Game Title
+**/
+
+.main-container{
+	width: 75%;
+	margin: 1rem auto;
 }
 
 .nav-container{
 	width: 100%;
-	background-color: darkgray;
-	height: 5rem;
-	margin: 0rem;
-	padding: 1rem;
+	color: #1ABC9C;
+	height: 3.5rem;
+	margin: 0 auto;
+	padding: 0;
 }
 
 .nav-container h1{
-	margin: 0rem;
-}
-
-.main-container{
-	width: 75%;
-	margin: 0rem auto;
+	margin: 0px auto;
 }
 
 /***
@@ -53,20 +64,17 @@ Flex definitions
 Tiles & Content
 ***/
 
-.timer,
 .tile{
 	position: relative;
 	overflow: hidden;
 }
 
-.timer:before,
 .tile:before{
 	content: "";
 	display: block;
 	padding-top: 100%;
 }
 
-.timer-content,
 .content {
 	position:  absolute;
 	top: 0;
@@ -76,14 +84,12 @@ Tiles & Content
 	color: black;
 }
 
-.timer-content div,
 .content div{
 	display: table;
 	width: 100%;
 	height: 100%;
 }
 
-.timer-content span,
 .content span{
 	display: table-cell;
 	text-align: center;
@@ -91,102 +97,163 @@ Tiles & Content
 }
 
 /***
-Timer
+Score & Timer
 ***/
 
-.timer{
-	height: 3rem;
-	margin: 0.5rem auto;
+.game-info-container{
+	width: 100%;
+	min-height: 8rem;
 }
 
-.timer-content{
-	background-color: lightblue;
-	padding: 0.5rem;
+.instructions{
+	width: 60%;
 }
 
-.timer-content span{
-	font-size: 1rem;
+.timer-score-container{
+	width: 40%;
 }
 
-/***
-Score 
-***/
-
-.score-container{
-	
-}
-
-.current-score{
-	
-}
-
+.time-left,
+.current-score,
 .best-score{
-	
+	position: relative;
+	display: inline-block;
+	background: #bbada0;
+	padding: 15px 25px;
+	font-size: 25px;
+	height: 25px;
+	line-height: 47px;
+	font-weight: bold;
+	border-radius: 3px;
+	color: white;
+	margin-top: 8px;
+	text-align: center;
+	height: 3.5rem;
+	width: 4.5rem;
+	margin-left: 0.5rem;
+	float: right;
+}
+
+.time-left::after,
+.current-score::after,
+.best-score::after{
+	position: absolute;
+	width: 100%;
+	top: 10px;
+	left: 0;
+	text-transform: uppercase;
+	font-size: 13px;
+	line-height: 13px;
+	text-align: center;
+	color: #eee4da;
+}
+
+.current-score::after{
+	content: "Score";
+}
+
+.best-score:after{
+	content: "Best";
+}
+
+.time-left::after{
+	content: "Time Left";
+}
+
+.cta-container{
+	width: 100%;
+	margin: 0 auto;
+}
+
+.new-game-cta{
+	width: 14.5rem;
+	height: 85%;
+	display: inline-block;
+	float: right;
+	border: none;
+	border-radius: 3px;
+	outline: none;
+	background-color:#64B6AC;
+	color: #FAF8EF;
+	text-transform: capitalize;
+	text-align: center;
+    text-decoration: none;
+    line-height: 42px;
+    cursor: pointer;
+    padding: 0 20px;
+	margin-top: 0.5rem;
 }
 
 /***
-Numbers
+Game
+***/
+
+.game-container{
+	background-color: rgb(187, 173, 160);
+}
+
+/***
+Numbers & Operations
 ***/
 
 .numbers-container{
-	min-height: 6rem;
+	width: 100%;
+}
+
+.operations-container{
+	margin: 0 auto;
+	width: 50%;
+}
+
+.undo-container,
+.skip-container{
+	width: 25%;
+	text-align: center;
+}
+
+.number-tile,
+.operation-tile,
+.undo,
+.skip{
+	margin: 0.5rem;
+	background-color: #EEE4DA;
+	border-radius: 3px;
 }
 
 .number-tile{
-	background-color: lightgrey;
-	height: 6rem;
-	max-width: 25%;
-	margin: 0.5rem;
+	height: 7rem;
+	width: 7rem;
+}
+
+.operation-tile,
+.undo
+.skip {
+	height: 3.5rem;
+	width: 3.5rem;
+}
+
+.undo,
+.skip{
+	padding: 0 3.5rem 0 3.5rem;
+	
+}
+
+.number-content span,
+.operation-content span,
+.undo-container span,
+.skip-container span{
+	color: #776E65;
+	font-weight: bold;
 }
 
 .number-content span{
 	font-size: 4rem;
 }
 
-/***
-Operations
-***/
-.operations-container{
-	margin: 0.5rem auto;
-	height: 5rem;
-}
-
-.operation-tile{
-	background-color: lightgrey;
-	height: 4rem;
-	max-width: 25%;
-	margin: 0.25rem;
-}
-
-.operation-content span{
-	font-size: 2.5rem;
-}
-
-/***
-Utilities
-***/
-.utilities-container{
-	
-}
-
-.undo-container,
-.skip-container{
-	width: 50%;
-}
-
-.undo,
-.skip{
-	font-size: 5rem;
-}
-
-.undo{
-	float: left;
-	margin-left: 2rem;
-}
-
-.skip{
-	float: right;
-	margin-right: 2rem;
+.operation-content span,
+.undo-container span,
+.skip-container span{
+	font-size: 2rem;
 }
 
 /***
@@ -214,15 +281,16 @@ History
 Visual
 ***/
 .selected{
-	border: 2px black solid;
+	border: 5px #776E65 solid;
 }
 
 .correct {
-	border: 6px green solid;
+	background-color:#64B6AC;
 }
 
 .incorrect{
-	border: 6px red solid;
+	background-color:#EEE4DA;
+	color: #776E65;
 }
 
 /***
