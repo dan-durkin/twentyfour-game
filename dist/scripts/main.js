@@ -106,22 +106,6 @@ function checkSolution($element){
 	}
 }
 
-function publishHistory(){
-	var history = "";
-	var $roundSolves = $('.round-solves-container');
-	
-	for(var i=0, len=currentPuzzleMoves.length;i<len;i++){
-		history += " (" + currentPuzzleMoves[i].historyString + ") ";
-	}
-	
-	$roundSolves.prepend(createHistoryElement(history));
-	currentPuzzleMoves=[];
-}
-
-function updateScore(){
-	currentScore++;
-	createCurrentScoreElement(currentScore);
-}
 
 function solved ($element){
 	$element.addClass('correct');
@@ -139,18 +123,36 @@ function incorrect($element){
 	$element.addClass('incorrect');
 }
 
-function newPuzzle(){
-	init()
-	setTiles();
-}	
+function publishHistory(){
+	var history = "";
+	var $roundSolves = $('.round-solves-container');
+	
+	for(var i=0, len=currentPuzzleMoves.length;i<len;i++){
+		history += " (" + currentPuzzleMoves[i].historyString + ") ";
+	}
+	
+	$roundSolves.prepend(createHistoryElement(history));
+	currentPuzzleMoves=[];
+}
+
+function updateScore(){
+	currentScore++;
+	createCurrentScoreElement(currentScore);
+}
 
 function skipPuzzle(){
 	skipCounter();
 	newPuzzle();
 }
 
-function getScore(){
-	return currentScore;
+function newPuzzle(){
+	init()
+	setTileNumbers();
+}
+
+function newGame(){
+	setNewGame();
+	setTileNumbers();
 }
 
 function reset () {
@@ -160,31 +162,36 @@ function reset () {
 	moveNumberTiles = [];
 }
 
-var setTiles = function () {
-	reset();
-	var $numContainer = $('.numbers-container');
-	var $currentPuzzleHistoryContainer = $('.current-puzzle-history-container');
-	
-	$numContainer.empty();
-	$currentPuzzleHistoryContainer.empty();
-	
-	currentPuzzleMoves = [];
-	
+function setNewGame(){
+	setTimer();
+	setScores();
+	setOperations();
+}
+
+function startNewGame () {
+	clearRoundHistory();
+	setNewGame();
+	setTileNumbers();
+}
+
+function clearRoundHistory (){
+	var $roundSolves = $('.round-solves-container');
+	$roundSolves.empty();
+}
+
+function setTileNumbers () {	
 	if(currentPuzzleNumbers){
-		for(var i=0; i < 4; i++) {
-			var $newNumberTile = createNumberTile(parseInt(currentPuzzleNumbers[i]));
-			$numContainer.append($newNumberTile);
-		}
+		setTiles(currentPuzzleNumbers);
 		viewCounter();
 	}
 	else{
 		setTimeout(function(){
-			setTiles();
+			setTileNumbers();
 		},5);
 	}
 };
 
-function setUpScores (){
+function setScores (){
 	var currentScore = 0;
 	var bestScore = 0;
 	
@@ -193,6 +200,36 @@ function setUpScores (){
 	
 	currentScoreContainer.text(currentScore);
 	bestScoreContainer.text(bestScore);
+}
+
+function emptyBeforeNewPuzzle(){
+	reset();
+	var $numContainer = $('.numbers-container');
+	var $currentPuzzleHistoryContainer = $('.current-puzzle-history-container');
+	
+	$numContainer.empty();
+	$currentPuzzleHistoryContainer.empty();
+	
+	currentPuzzleMoves = [];
+}
+
+function setTiles (array) {
+	emptyBeforeNewPuzzle();
+	var $numContainer = $('.numbers-container');
+	
+	for(var i=0; i < array.length; i++) {
+		var $newNumberTile = createNumberTile(array[i]);
+		$numContainer.append($newNumberTile);
+	}
+}
+
+function setOperations () {
+	var $operationContainer = $('.operations-container');
+	$operationContainer.empty();
+	for(var op in OperationTiles){
+		var $newOpTile = createOperationTile(op);
+		$operationContainer.append($newOpTile);
+	}
 }
 
 var moveOperation = null;
@@ -212,20 +249,11 @@ var OperationTiles = {
 };
 
 $(window).load(function(){
-	setTimer();
-	setUpScores();
-	
-	var $operationContainer = $('.operations-container');
-	$operationContainer.empty();
-	for(var op in OperationTiles){
-		var $newOpTile = createOperationTile(op);
-		$operationContainer.append($newOpTile);
-	}
+	setTiles([""]);
+	setNewGame();
 	
 	ref.child('solutions').on("value", function(snapshot){
 		allSolutions = snapshot.val();
 		init();
 	});
-	
-	setTiles();
 });
