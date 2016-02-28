@@ -1,9 +1,9 @@
 function createNumberTile (data){
-	return $("<div class='flex-child number-tile tile' data-value='" + data + "'><div class='number-content content'><div><span class='number'>" + data + "</span></div></div></div>");
+	return $("<div class='flex-child number-tile tile' data-value='" + data + "'><div class='number-content content'><div><span class='tile-data'>" + data + "</span></div></div></div>");
 }
 	
 function createOperationTile (op) {
-	return $("<div class='flex-child operation-tile tile' data-value='" + op + "'><div class='operation-content content'><div><span class='number'>" + op + "</span></div></div></div>");
+	return $("<div class='flex-child operation-tile tile' data-value='" + op + "'><div class='operation-content content'><div><span class='tile-data'>" + op + "</span></div></div></div>");
 }
 
 function createHistoryElement (history) {
@@ -11,7 +11,9 @@ function createHistoryElement (history) {
 }
 
 function createCurrentScoreElement(currentScore){
-	return $("<div class='current-score'><p>Current Score: " + currentScore + "</p></div>");
+	var currentScoreContainer = $('.current-score');
+	currentScoreContainer.empty();
+	currentScoreContainer.text(currentScore);
 }
 
 function clickHandler() {	
@@ -118,12 +120,12 @@ function publishHistory(){
 
 function updateScore(){
 	currentScore++;
-	$('.current-score').empty();
-	$('.current-score').append(createCurrentScoreElement(currentScore));
+	createCurrentScoreElement(currentScore);
 }
 
 function solved ($element){
 	$element.addClass('correct');
+	$element.children('color', '#EEE4DA');
 	
 	setTimeout(function(){
 		updateScore()
@@ -169,25 +171,38 @@ var setTiles = function () {
 	currentPuzzleMoves = [];
 	
 	if(currentPuzzleNumbers){
-        for(var i=0; i < 4; i++) {
+		for(var i=0; i < 4; i++) {
 			var $newNumberTile = createNumberTile(parseInt(currentPuzzleNumbers[i]));
 			$numContainer.append($newNumberTile);
 		}
 		viewCounter();
-    }
-    else{
-        setTimeout(function(){
-            setTiles();
-        },5);
+	}
+	else{
+		setTimeout(function(){
+			setTiles();
+		},5);
 	}
 };
+
+function setUpScores (){
+	var currentScore = 0;
+	var bestScore = 0;
+	
+	var currentScoreContainer = $('.current-score');
+	var bestScoreContainer = $('.best-score');
+	
+	currentScoreContainer.text(currentScore);
+	bestScoreContainer.text(bestScore);
+}
 
 var moveOperation = null;
 var moveNumberTiles = [];
 
 var currentPuzzleMoves = [];
 var currentRoundSolves = [];
+
 var currentScore = 0;
+var bestScore = 0;
 
 var OperationTiles = {
 	'+':function(a,b){return a+b},
@@ -197,9 +212,8 @@ var OperationTiles = {
 };
 
 $(window).load(function(){
-	currentScore = 0;
-	var currentScoreContainer = $('.current-score');
-	currentScoreContainer.append(createCurrentScoreElement(currentScore));
+	setTimer();
+	setUpScores();
 	
 	var $operationContainer = $('.operations-container');
 	$operationContainer.empty();
