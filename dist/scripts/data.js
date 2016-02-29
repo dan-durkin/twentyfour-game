@@ -15,18 +15,18 @@ function init() {
 
 var solveCounter = function (){
 	var refSolutions = ref.child("solutions");
-	var res = parseInt(currentPuzzleData.solves) + 1;
+	var res = parseInt(currentPuzzleData.solves, 10) + 1;
 	refSolutions.child(thisPuzzleID).update({"solves": res});
 }
 
 var skipCounter = function (){
 	var refSolutions = ref.child("solutions");
-	var res = parseInt(currentPuzzleData.skips) + 1;
+	var res = parseInt(currentPuzzleData.skips, 10) + 1;
 	refSolutions.child(thisPuzzleID).update({"skips": res});
 }
 
 var viewCounter = function (){
 	var refSolutions = ref.child("solutions");
-	var res = parseInt(currentPuzzleData.views) + 1;
+	var res = parseInt(currentPuzzleData.views, 10) + 1;
 	refSolutions.child(thisPuzzleID).update({"views": res});
 }
