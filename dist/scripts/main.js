@@ -57,7 +57,7 @@ function setNumberHotKeys(){
 	$('.hot-key.number-tile').empty();
 	
 	$('.number-tile').each(function (num, element){
-		$(this).children('.hot-key').text(num +1);
+		$(this).children('.hot-key').text(num + 1);
 	});
 }
 
@@ -92,36 +92,39 @@ function keyHandler (event){
 	}
 }
 
-function clickHandler() {
+function clickHandler() {	
+	function storeMove(value, $element){
+		if(isNaN(value)){
+			moveOperation = value;
+		}
+		else{
+			moveNumberTiles.push({
+				value: value,
+				element: $element
+			});
+		}
+	}
+	
+	function readyToMove(){
+		return moveOperation && moveNumberTiles.length === 2;
+	}
+	
 	var element = $(this);
-
+	
+	if(element.hasClass("selected") && element.hasClass('number-tile')){
+		reset();
+	}
 	if(moveOperation && element.hasClass('operation-tile')){
 		reset();	
 	}
 	if(moveNumberTiles.length === 2 && element.hasClass('number-tile')){
 		reset();
 	}
-	if($('.number-tile').length === 1 && element.hasClass('number-tile')){
-		reset();
-	}
-	
-	element.toggleClass("selected");
-	
-	preMove(element.data("value"), element);
-}
 
-function preMove (value, $element){
-	if(isNaN(value)){
-		moveOperation = value;
-	}
-	else{
-		moveNumberTiles.push({
-			value: value,
-			element: $element
-		});
-	}
+	element.toggleClass("selected");
+	storeMove(element.data("value"), element);
 	
-	if(moveOperation && moveNumberTiles.length === 2){
+	if (readyToMove()){
 		performMove();
 	}
 }

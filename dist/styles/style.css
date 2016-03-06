@@ -45,14 +45,6 @@ Main Container, Game Title
 	margin: 0px auto;
 }
 
-.hint{
-	display: none;
-}
-
-.hint.show{
-	display: inherit;
-}
-
 /***
 Flex definitions
 ***/
