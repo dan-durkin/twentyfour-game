@@ -45,6 +45,14 @@ Main Container, Game Title
 	margin: 0px auto;
 }
 
+.hint{
+	display: none;
+}
+
+.hint.show{
+	display: inherit;
+}
+
 /***
 Flex definitions
 ***/
@@ -210,6 +218,10 @@ Numbers & Operations
 	width: 50%;
 }
 
+.utilities-container{
+	width: 100%;
+}
+
 .undo-container,
 .skip-container{
 	width: 25%;
@@ -240,7 +252,8 @@ Numbers & Operations
 .undo,
 .skip{
 	padding: 0 3.5rem 0 3.5rem;
-	
+	position: relative;
+	top:0;
 }
 
 .number-content span,
@@ -293,9 +306,48 @@ Visual
 	background-color:#64B6AC;
 }
 
+.correct .number-content .tile-data{
+	color: #FFF;
+}
+
 .incorrect{
 	background-color:#EEE4DA;
 	color: #776E65;
+}
+
+/***
+Hot Keys
+***/
+
+.hot-key{
+    position: absolute;
+    bottom: 0;
+    width: 25%;
+    padding: 2.5%;
+    height: 50%;
+    background-color: #EEE4DA;
+	border: 2px solid #776E65;
+	border-radius: 3px;
+	display: none;
+}
+
+.hot-key.ion-arrow-left-c,
+.hot-key.ion-arrow-right-c{
+	position: relative;
+    bottom: 10px;
+    left: 46px;
+    width: 20%;
+	height: 50%;
+	margin-top: -10px;
+}
+
+.undo.hot,
+.skip.hot{
+	top:14px
+}
+
+.hot-key.show{
+	display: inherit;
 }
 
 /***

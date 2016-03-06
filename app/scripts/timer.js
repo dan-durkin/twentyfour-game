@@ -1,5 +1,6 @@
 var timeLeft = 60000;
 var interval = 1000;
+var timer;
 
 function setTimer(){
 	timeLeft = 60000;
@@ -20,14 +21,13 @@ function formatTimeLeft() {
 
 function startTimer(){
 	var timeLeftNode = document.querySelector(".time-left");
+	clearInterval(timer);
 	
 	function tick() {
 		timeLeft -= interval;
 
 		// update the display
 		timeLeftNode.textContent = formatTimeLeft();
-		
-		console.log(timeLeft);
 		
 		// check to see if time is up
 		if (timeLeft <= 0) {
@@ -41,5 +41,5 @@ function startTimer(){
 		}
 	}
 	
-	var timer = setInterval(tick, interval);
+	timer = setInterval(tick, interval);
 }
