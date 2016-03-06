@@ -1,9 +1,9 @@
 function createNumberTile (data){
-	return $("<div class='flex-child number-tile tile' data-value='" + data + "'><div class='number-content content'><div><span class='tile-data'>" + data + "</span></div></div></div>");
+	return $("<div class='flex-child number-tile tile' data-value='" + data + "'><div class='number-content content'><div><span class='tile-data'>" + data + "</span></div></div><div class='hot-key'>"+"</div></div>");
 }
 	
 function createOperationTile (op) {
-	return $("<div class='flex-child operation-tile tile' data-value='" + op + "'><div class='operation-content content'><div><span class='tile-data'>" + op + "</span></div></div></div>");
+	return $("<div class='flex-child operation-tile tile' data-value='"+op+"' data-operation='" + getHotKey(op).keycode + "'><div class='operation-content content'><div><span class='tile-data'>" + op + "</span></div></div><div class='hot-key'>"+ getHotKey(op).shortcut.toUpperCase() +"</div></div>");
 }
 
 function createHistoryElement (history) {
@@ -16,13 +16,92 @@ function createCurrentScoreElement(currentScore){
 	currentScoreContainer.text(currentScore);
 }
 
-function clickHandler() {	
-	var element = $(this);
+function getHotKey (key){
+	var hotKeys = {
+		'+':{keycode: 81, shortcut: 'q'}, 
+		'-':{keycode: 87, shortcut: 'w'}, 
+		'x':{keycode: 69, shortcut: 'e'},
+		'/':{keycode: 82, shortcut: 'r'},
+		'49':{keycode:49, index: 0},
+		'50':{keycode:50, index: 1},
+		'51':{keycode:51, index: 2},
+		'52':{keycode:52, index: 3},
+	}
 	
+	return hotKeys[key];
+}
+
+function toggleHotKeys (){
+	$('.hot-key').toggleClass('show');
+	$('.undo').toggleClass('hot');
+	$('.skip').toggleClass('hot');
+}
+
+function hotKeysOff (){
+	$('.hot-key').removeClass('show');
+	$('.undo').removeClass('hot');
+	$('.skip').removeClass('hot');
+}
+
+function hotKeysOn (){
+	$('.hot-key').addClass('show');
+	$('.undo').addClass('hot');
+	$('.skip').addClass('hot');
+}
+
+function checkHotKeys (){
+	return $('.hot-key').hasClass('show');
+}
+
+function setNumberHotKeys(){
+	$('.hot-key.number-tile').empty();
+	
+	$('.number-tile').each(function (num, element){
+		$(this).children('.hot-key').text(num +1);
+	});
+}
+
+function keyHandler (event){	
+	//event.preventDefault();
+	
+	switch(event.which){
+		case 32:
+			toggleHotKeys();
+			break;
+		// Purposely fallling through
+		case 81:
+		case 87:
+		case 69:
+		case 82:
+			clickHandler.call(document.querySelector('[data-operation="' + event.which + '"]'));
+			break;
+		case 49:
+		case 50:
+		case 51:
+		case 52:
+			clickHandler.call(document.querySelectorAll(".number-tile")[getHotKey(event.which).index]);
+			break;
+		case 37:
+			undoMove();
+			break;
+		case 39:
+			skipPuzzle();
+			break;
+		default:
+			break;
+	}
+}
+
+function clickHandler() {
+	var element = $(this);
+
 	if(moveOperation && element.hasClass('operation-tile')){
 		reset();	
 	}
 	if(moveNumberTiles.length === 2 && element.hasClass('number-tile')){
+		reset();
+	}
+	if($('.number-tile').length === 1 && element.hasClass('number-tile')){
 		reset();
 	}
 	
@@ -30,9 +109,6 @@ function clickHandler() {
 	
 	preMove(element.data("value"), element);
 }
-
-$(".numbers-container").on("click", ".number-tile", clickHandler);
-$(".operations-container").on("click", ".operation-tile", clickHandler);
 
 function preMove (value, $element){
 	if(isNaN(value)){
@@ -55,7 +131,12 @@ function performMove () {
 	
 	var $numContainer = $('.numbers-container');
 	var $newNumberTile = createNumberTile(result);
+	
 	$numContainer.prepend($newNumberTile);
+	
+	if(checkHotKeys()){
+		$('.hot-key').addClass('show')
+	}
 	
 	var historyString = moveNumberTiles[0].value.toString() + ' ' + moveOperation + ' ' + moveNumberTiles[1].value.toString() + ' = ' + result.toString();
 	
@@ -78,6 +159,7 @@ function performMove () {
 	var selectedTiles = $('.selected.number-tile');
 	selectedTiles.remove();
 	reset();
+	setNumberHotKeys();
 	
 	if($('.number-tile').length === 1){
 		checkSolution($newNumberTile);
@@ -91,7 +173,8 @@ function undoMove () {
 		lastMove.historyElement.remove();
 		var $numContainer = $('.numbers-container');
 		$numContainer.prepend(lastMove.secondNumberElement);
-		$numContainer.prepend(lastMove.firstNumberElement);	
+		$numContainer.prepend(lastMove.firstNumberElement);
+		setNumberHotKeys();
 	}
 	
 	reset();
@@ -106,10 +189,8 @@ function checkSolution($element){
 	}
 }
 
-
 function solved ($element){
 	$element.addClass('correct');
-	$element.children('color', '#EEE4DA');
 	
 	setTimeout(function(){
 		updateScore()
@@ -150,11 +231,6 @@ function newPuzzle(){
 	setTileNumbers();
 }
 
-function newGame(){
-	setNewGame();
-	setTileNumbers();
-}
-
 function reset () {
 	var selected =$('.selected');
 	selected.removeClass('selected');
@@ -169,9 +245,25 @@ function setNewGame(){
 }
 
 function startNewGame () {
+	lostGame();
+	$(".numbers-container").on("click", ".number-tile", clickHandler);
+	$(".operations-container").on("click", ".operation-tile", clickHandler);
+	$(window).keydown(keyHandler);
+	$('.hint').addClass('show');
+	
 	clearRoundHistory();
 	setNewGame();
 	setTileNumbers();
+	startTimer();
+}
+
+function lostGame () {
+	reset();
+	$(".numbers-container").off("click", ".number-tile", clickHandler);
+	$(".operations-container").off("click", ".operation-tile", clickHandler);
+	$(window).off("keydown", keyHandler);
+	$('.hint').removeClass('show');
+	hotKeysOff();
 }
 
 function clearRoundHistory (){
@@ -220,6 +312,14 @@ function setTiles (array) {
 	for(var i=0; i < array.length; i++) {
 		var $newNumberTile = createNumberTile(array[i]);
 		$numContainer.append($newNumberTile);
+	}
+	setNumberHotKeys();
+	
+	if(checkHotKeys()){
+		hotKeysOn();
+	}
+	else{
+		hotKeysOff();
 	}
 }
 

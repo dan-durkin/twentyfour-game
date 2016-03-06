@@ -45,6 +45,14 @@ Main Container, Game Title
 	margin: 0px auto;
 }
 
+.hint{
+	display: none;
+}
+
+.hint.show{
+	display: inherit;
+}
+
 /***
 Flex definitions
 ***/
@@ -134,6 +142,10 @@ Score & Timer
 	float: right;
 }
 
+.time-left{
+	padding-left: 15px;
+}
+
 .time-left::after,
 .current-score::after,
 .best-score::after{
@@ -152,7 +164,7 @@ Score & Timer
 	content: "Score";
 }
 
-.best-score:after{
+.best-score::after{
 	content: "Best";
 }
 
@@ -174,7 +186,7 @@ Score & Timer
 	border-radius: 3px;
 	outline: none;
 	background-color:#64B6AC;
-	color: #FAF8EF;
+	color: #FFF;
 	text-transform: capitalize;
 	text-align: center;
     text-decoration: none;
@@ -190,6 +202,7 @@ Game
 
 .game-container{
 	background-color: rgb(187, 173, 160);
+	margin-top: 0.5rem;
 }
 
 /***
@@ -203,6 +216,10 @@ Numbers & Operations
 .operations-container{
 	margin: 0 auto;
 	width: 50%;
+}
+
+.utilities-container{
+	width: 100%;
 }
 
 .undo-container,
@@ -235,7 +252,8 @@ Numbers & Operations
 .undo,
 .skip{
 	padding: 0 3.5rem 0 3.5rem;
-	
+	position: relative;
+	top:0;
 }
 
 .number-content span,
@@ -288,25 +306,62 @@ Visual
 	background-color:#64B6AC;
 }
 
+.correct .number-content .tile-data{
+	color: #FFF;
+}
+
 .incorrect{
 	background-color:#EEE4DA;
 	color: #776E65;
 }
 
 /***
-Visual
+Hot Keys
 ***/
 
-@media (max-width:40em){
-	.number-tile,
-	.operation-tile{
-		min-width: 15%;
-		margin: 0.25rem;
+.hot-key{
+    position: absolute;
+    bottom: 0;
+    width: 25%;
+    padding: 2.5%;
+    height: 50%;
+    background-color: #EEE4DA;
+	border: 2px solid #776E65;
+	border-radius: 3px;
+	display: none;
+}
+
+.hot-key.ion-arrow-left-c,
+.hot-key.ion-arrow-right-c{
+	position: relative;
+    bottom: 10px;
+    left: 46px;
+    width: 20%;
+	height: 50%;
+	margin-top: -10px;
+}
+
+.undo.hot,
+.skip.hot{
+	top:14px
+}
+
+.hot-key.show{
+	display: inherit;
+}
+
+/***
+Tablet
+***/
+
+@media (max-width:64em){
+	.nav-container{
+		height: 2em;	
 	}
 	
-	.numbers-container,
-	.operations-container{
-		min-height: 0rem;
+	.instructions,
+	.timer-score-container{
+		width: 50%;
 	}
 	
 	.number-content span,
@@ -314,13 +369,24 @@ Visual
 		font-size: 2rem;
 	}
 	
-	.main-container{
-		width: 95%;
-	}
 }
 
-@media (max-width:64em){
-	body{
-		font-size: 110%;
+/***
+Mobile
+***/
+
+@media (max-width:40em){	
+	.instructions,
+	.timer-score-container{
+		width: 100%;
+	}
+	
+	.info-container{
+		float: none;
+	}
+	
+	
+	.main-container{
+		width: 95%;
 	}
 }
