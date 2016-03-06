@@ -93,6 +93,18 @@ function keyHandler (event){
 }
 
 function clickHandler() {	
+	function validMove(element){
+		if(element.hasClass("selected") && element.hasClass('number-tile')){
+			reset();
+		}
+		if(moveOperation && element.hasClass('operation-tile')){
+			reset();	
+		}
+		if(moveNumberTiles.length === 2 && element.hasClass('number-tile')){
+			reset();
+		}
+	}
+	
 	function storeMove(value, $element){
 		if(isNaN(value)){
 			moveOperation = value;
@@ -110,16 +122,7 @@ function clickHandler() {
 	}
 	
 	var element = $(this);
-	
-	if(element.hasClass("selected") && element.hasClass('number-tile')){
-		reset();
-	}
-	if(moveOperation && element.hasClass('operation-tile')){
-		reset();	
-	}
-	if(moveNumberTiles.length === 2 && element.hasClass('number-tile')){
-		reset();
-	}
+	validMove(element);
 
 	element.toggleClass("selected");
 	storeMove(element.data("value"), element);
