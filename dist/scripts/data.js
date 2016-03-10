@@ -3,7 +3,6 @@ TwentyFour.data = (function(){
 	var refSolutions = ref.child("solutions");
 	
 	var allSolutions = null;
-	
 	var thisPuzzleID = null;
 	var currentPuzzleData = null;
 	var currentPuzzleNumbers = null;
@@ -22,6 +21,10 @@ TwentyFour.data = (function(){
 		thisPuzzleID = ids[Math.ceil(Math.random() * ids.length)];
 		currentPuzzleData = allSolutions[thisPuzzleID];
 		currentPuzzleNumbers = currentPuzzleData.solution;
+	}
+	
+	function getNumbersData (){
+		return currentPuzzleNumbers;
 	}
 
 	var solveCounter = function (){
@@ -45,6 +48,7 @@ TwentyFour.data = (function(){
 		init: init,
 		solveCounter:solveCounter,
 		skipCounter:skipCounter,
-		viewCounter:viewCounter
+		viewCounter:viewCounter,
+		getNumbersData:getNumbersData
 	};
 })();

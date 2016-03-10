@@ -76,8 +76,8 @@ TwentyFour.hotkeys = (function () {
 		keyHandler: keyHandler,
 		getHotKey: getHotKey,
 		toggleHotKeys: toggleHotKeys,
-		hotKetsOff: hotKeysOff,
-		hotKetsOn: hotKeysOn,
+		hotKeysOff: hotKeysOff,
+		hotKeysOn: hotKeysOn,
 		checkHotKeys: checkHotKeys,
 		setNumberHotKeys:setNumberHotKeys
 	};

@@ -5,6 +5,17 @@ TwentyFour.play = (function () {
 	var currentPuzzleMoves = [];
 	var currentRoundSolves = [];
 	
+	function startNewGame () {
+		TwentyFour.display.lostGame();
+		$(".numbers-container").on("click", ".number-tile", clickHandler);
+		$(".operations-container").on("click", ".operation-tile", clickHandler);
+		$(window).keydown(TwentyFour.hotkeys.keyHandler);
+
+		TwentyFour.history.clearRoundHistory();
+		TwentyFour.display.setNewGame();
+		TwentyFour.timer.startTimer();
+	}
+	
 	function getOperations(){
 		var OperationTiles = {
 			'+':function(a,b){return a+b},
@@ -24,13 +35,13 @@ TwentyFour.play = (function () {
 	function clickHandler() {	
 		function validMove(element){
 			if(element.hasClass("selected") && element.hasClass('number-tile')){
-				reset();
+				TwentyFour.display.reset();
 			}
 			if(moveOperation && element.hasClass('operation-tile')){
-				reset();	
+				TwentyFour.display.reset();	
 			}
 			if(moveNumberTiles.length === 2 && element.hasClass('number-tile')){
-				reset();
+				TwentyFour.display.reset();
 			}
 		}
 
@@ -65,12 +76,12 @@ TwentyFour.play = (function () {
 		var result = operate(moveOperation)(moveNumberTiles[0].value, moveNumberTiles[1].value);
 
 		var $numContainer = $('.numbers-container');
-		var $newNumberTile = createNumberTile(result);
+		var $newNumberTile = TwentyFour.display.createNumberTile(result);
 
 		$numContainer.prepend($newNumberTile);
 
-		if(checkHotKeys()){
-			hotKeysOn();
+		if(TwentyFour.hotkeys.checkHotKeys()){
+			TwentyFour.hotkeys.hotKeysOn();
 		}
 
 		var historyString = moveNumberTiles[0].value.toString() + ' ' + moveOperation + ' ' + moveNumberTiles[1].value.toString() + ' = ' + result.toString();
@@ -83,7 +94,7 @@ TwentyFour.play = (function () {
 			secondNumberElement: moveNumberTiles[1].element,
 			newElement: $newNumberTile,
 			historyString: historyString,
-			historyElement: createHistoryElement(historyString)
+			historyElement: TwentyFour.display.createHistoryElement(historyString)
 		};
 
 		currentPuzzleMoves.push(moveStore);
@@ -93,8 +104,8 @@ TwentyFour.play = (function () {
 
 		var selectedTiles = $('.selected.number-tile');
 		selectedTiles.remove();
-		reset();
-		setNumberHotKeys();
+		TwentyFour.display.reset();
+		TwentyFour.hotkeys.setNumberHotKeys();
 
 		if($('.number-tile').length === 1){
 			checkSolution($newNumberTile);
@@ -109,10 +120,10 @@ TwentyFour.play = (function () {
 			var $numContainer = $('.numbers-container');
 			$numContainer.prepend(lastMove.secondNumberElement);
 			$numContainer.prepend(lastMove.firstNumberElement);
-			setNumberHotKeys();
+			TwentyFour.hotkeys.setNumberHotKeys();
 		}
 
-		reset();
+		TwentyFour.display.reset();
 	}
 
 	function checkSolution($element){
@@ -128,10 +139,10 @@ TwentyFour.play = (function () {
 		$element.addClass('correct');
 
 		setTimeout(function(){
-			updateCurrentScore()
-			publishHistory();
-			solveCounter();
-			newPuzzle();
+			TwentyFour.score.updateCurrentScore()
+			TwentyFour.history.publishHistory();
+			TwentyFour.data.solveCounter();
+			TwentyFour.display.newPuzzle();
 		}, 300);
 	}
 
@@ -140,8 +151,15 @@ TwentyFour.play = (function () {
 	}
 	
 	function skipPuzzle(){
-		skipCounter();
-		newPuzzle();
+		TwentyFour.data.skipCounter();
+		TwentyFour.display.newPuzzle();
+	}
+	
+	return {
+		getOperations:getOperations,
+		startNewGame:startNewGame,
+		undoMove:undoMove,
+		skipPuzzle:skipPuzzle
 	}
 })();
 

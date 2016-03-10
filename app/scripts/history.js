@@ -11,7 +11,13 @@ TwentyFour.history = (function () {
 		currentPuzzleMoves=[];
 	}
 	
+	function clearRoundHistory (){
+		var $roundSolves = $('.round-solves-container');
+		$roundSolves.empty();
+	}
+	
 	return {
-		publishHistory:publishHistory
+		publishHistory:publishHistory,
+		clearRoundHistory:clearRoundHistory
 	}
 })();
