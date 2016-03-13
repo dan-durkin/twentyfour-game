@@ -1,0 +1,13 @@
+TwentyFour.setup = (function(){
+	$(window).load(function(){
+		TwentyFour.display.setupBoard();
+		
+		ref = TwentyFour.data.getRef();
+		ref.child('solutions').on("value", function(snapshot){
+			TwentyFour.data.setSolutions(snapshot.val()); 
+			TwentyFour.data.init();
+		});
+		
+		TwentyFour.display.ready();
+	});
+})();
