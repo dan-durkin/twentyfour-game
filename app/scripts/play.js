@@ -77,12 +77,6 @@ TwentyFour.play = (function () {
 		reset();
 		
 		TwentyFour.hotkeys.setNumberHotKeys();
-		if(TwentyFour.hotkeys.checkHotKeys()){
-			TwentyFour.hotkeys.hotKeysOn();
-		}
-		else{
-			TwentyFour.hotkeys.hotKeysOff();
-		}
 
 		if($('.number-tile').length === 1){
 			checkSolution($newNumberTile);
@@ -95,6 +89,11 @@ TwentyFour.play = (function () {
 	
 	function startNewGame () {
 		reset();
+		endOfRound();
+		$(".numbers-container").on("click",".number-tile", TwentyFour.play.selectTile);
+		$(".operations-container").on("click",".operation-tile", TwentyFour.play.selectTile);
+		$(window).on("keydown",TwentyFour.hotkeys.keyHandler);
+		
 		TwentyFour.history.emptyCurrentHistory();
 		TwentyFour.history.clearRoundHistory();
 		TwentyFour.display.setupBoard();
@@ -103,7 +102,6 @@ TwentyFour.play = (function () {
 	}
 	
 	function selectTile() {	
-		
 		function validMove(element){
 			if(element.hasClass("selected") && element.hasClass('number-tile')){
 				reset();
@@ -162,10 +160,20 @@ TwentyFour.play = (function () {
 		TwentyFour.display.newPuzzle();
 	}
 	
+	function endOfRound () {
+		reset();
+		$(".numbers-container").off("click", ".number-tile", TwentyFour.play.clickHandler);
+		$(".operations-container").off("click", ".operation-tile", TwentyFour.play.clickHandler);
+		$(window).off("keydown", TwentyFour.hotkeys.keyHandler);
+		TwentyFour.display.endOfRound();
+		TwentyFour.hotkeys.endOfRound();
+	}
+	
 	return {
 		startNewGame:startNewGame,
 		selectTile:selectTile,
 		undoMove:undoMove,
-		skipPuzzle:skipPuzzle
+		skipPuzzle:skipPuzzle,
+		endOfRound:endOfRound
 	}
 })();

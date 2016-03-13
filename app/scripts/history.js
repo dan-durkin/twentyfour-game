@@ -1,6 +1,14 @@
 TwentyFour.history = (function () {
+	/***
+	Private Variables
+	***/
+	
 	var currentPuzzleMoves = [];
 	var currentRoundSolves = [];
+	
+	/***
+	Public Methods
+	***/
 	
 	function publishHistory(){
 		var history = "";

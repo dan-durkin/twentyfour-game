@@ -1,4 +1,8 @@
 TwentyFour.score = (function () {
+	/***
+	Public Methods
+	***/
+	
 	function updateCurrentScore(){
 		var currentScoreContainer = $('.current-score');
 		var currentScore = parseInt(currentScoreContainer.text());

@@ -1,4 +1,34 @@
 TwentyFour.hotkeys = (function () {
+	/***
+	Private Methods
+	***/
+	
+	function toggleHotKeys (){
+		$('.hot-key').toggleClass('show');
+		$('.undo').toggleClass('hot');
+		$('.skip').toggleClass('hot');
+	}
+	
+	function hotKeysOff (){
+		$('.hot-key').removeClass('show');
+		$('.undo').removeClass('hot');
+		$('.skip').removeClass('hot');
+	}
+
+	function hotKeysOn (){
+		$('.hot-key').addClass('show');
+		$('.undo').addClass('hot');
+		$('.skip').addClass('hot');
+	}
+
+	function checkHotKeys (){
+		return $('.hot-key').hasClass('show');
+	}
+	
+	/***
+	Public Methods
+	***/
+	
 	function keyHandler (event){
 		switch(event.which){
 			case 32:
@@ -9,13 +39,13 @@ TwentyFour.hotkeys = (function () {
 			case 87:
 			case 69:
 			case 82:
-				TwentyFour.play.clickHandler.call(document.querySelector('[data-operation="' + event.which + '"]'));
+				TwentyFour.play.selectTile.call(document.querySelector('[data-operation="' + event.which + '"]'));
 				break;
 			case 49:
 			case 50:
 			case 51:
 			case 52:
-				TwentyFour.play.clickHandler.call(document.querySelectorAll(".number-tile")[getHotKey(event.which).index]);
+				TwentyFour.play.selectTile.call(document.querySelectorAll(".number-tile")[getHotKey(event.which).index]);
 				break;
 			case 37:
 				TwentyFour.play.undoMove();
@@ -42,43 +72,29 @@ TwentyFour.hotkeys = (function () {
 
 		return hotKeys[key];
 	}
-	
-	function toggleHotKeys (){
-		$('.hot-key').toggleClass('show');
-		$('.undo').toggleClass('hot');
-		$('.skip').toggleClass('hot');
-	}
-	
-	function hotKeysOff (){
-		$('.hot-key').removeClass('show');
-		$('.undo').removeClass('hot');
-		$('.skip').removeClass('hot');
-	}
 
-	function hotKeysOn (){
-		$('.hot-key').addClass('show');
-		$('.undo').addClass('hot');
-		$('.skip').addClass('hot');
-	}
-
-	function checkHotKeys (){
-		return $('.hot-key').hasClass('show');
-	}
-	
 	function setNumberHotKeys(){
 		$('.hot-key.number-tile').empty();
 		$('.number-tile').each(function (num, element){
 			$(this).children('.hot-key').text(num + 1);
 		});
+		
+		if(checkHotKeys()){
+			hotKeysOn();
+		}
+		else{
+			hotKeysOff();
+		}
+	}
+	
+	function endOfRound(){
+		hotKeysOff();
 	}
 	
 	return {
 		keyHandler: keyHandler,
 		getHotKey: getHotKey,
-		toggleHotKeys: toggleHotKeys,
-		checkHotKeys:checkHotKeys,
-		hotKeysOn: hotKeysOn,
-		hotKeysOff:hotKeysOff,
-		setNumberHotKeys:setNumberHotKeys
+		setNumberHotKeys:setNumberHotKeys,
+		endOfRound:endOfRound
 	};
 })();

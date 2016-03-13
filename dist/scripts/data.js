@@ -1,4 +1,8 @@
 TwentyFour.data = (function(){
+	/***
+	Private variables
+	***/
+	
 	var ref = new Firebase("https://twentyfour-game.firebaseio.com/");
 	var refSolutions = ref.child("solutions");
 	
@@ -7,6 +11,10 @@ TwentyFour.data = (function(){
 	var currentPuzzleData = null;
 	var currentPuzzleNumbers = null;
 
+	/***
+	Public Methods
+	***/
+	
 	function getRef(){
 		return ref;
 	}

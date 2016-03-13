@@ -1,14 +1,15 @@
 TwentyFour.timer = (function () {
+	/***
+	Private Variables
+	***/
+	
 	var timeLeft = 60000;
 	var interval = 1000;
 	var timer;
-	
-	function setTimer(){
-		timeLeft = 60000;
-		interval = 1000;
-		var timeLeftNode = document.querySelector(".time-left");
-		timeLeftNode.textContent = formatTimeLeft();
-	}
+
+	/***
+	Private Methods
+	***/
 	
 	function formatTimeLeft() {
 		var seconds = timeLeft / 1000;
@@ -18,6 +19,17 @@ TwentyFour.timer = (function () {
 		}else{
 			return timeLeft % 1000 === 0 && timeLeft !== 0 ? seconds + ".0" : seconds;
 		}
+	}
+	
+	/***
+	Public Methods
+	***/
+	
+	function setTimer(){
+		timeLeft = 60000;
+		interval = 1000;
+		var timeLeftNode = document.querySelector(".time-left");
+		timeLeftNode.textContent = formatTimeLeft();
 	}
 
 	function startTimer(){
@@ -34,6 +46,7 @@ TwentyFour.timer = (function () {
 			if (timeLeft <= 0) {
 				alert("you lose");
 				clearInterval(timer);
+				TwentyFour.play.endOfRound();
 			} else if (timeLeft <= 10000 && interval > 100) {
 				clearInterval(timer);
 				interval = 100;

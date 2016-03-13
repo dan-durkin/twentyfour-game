@@ -24,17 +24,29 @@ TwentyFour.display = (function () {
 			$operationContainer.append($newOpTile);
 		}
 	}
+	
+	function shuffle(array) {
+	  var m = array.length, t, i;
 
+	  // While there remain elements to shuffle…
+	  while (m) {
+
+		// Pick a remaining element…
+		i = Math.floor(Math.random() * m--);
+
+		// And swap it with the current element.
+		t = array[m];
+		array[m] = array[i];
+		array[i] = t;
+	  }
+
+	  return array;
+	}
+	
 	function setTileNumbers () {
-		if(TwentyFour.data.getNumbersData()){
-			setTiles(TwentyFour.data.getNumbersData());
-			TwentyFour.data.viewCounter();
-		}
-		else{
-			setTimeout(function(){
-				setTileNumbers();
-			},5);
-		}
+		var puzzle = shuffle(TwentyFour.data.getNumbersData());
+		setTiles(puzzle);
+		TwentyFour.data.viewCounter();
 	}
 	
 	function setTiles (array) {
@@ -55,12 +67,6 @@ TwentyFour.display = (function () {
 		}
 
 		TwentyFour.hotkeys.setNumberHotKeys();
-		if(TwentyFour.hotkeys.checkHotKeys()){
-			TwentyFour.hotkeys.hotKeysOn();
-		}
-		else{
-			TwentyFour.hotkeys.hotKeysOff();
-		}
 	}
 	
 	/***
@@ -108,6 +114,10 @@ TwentyFour.display = (function () {
 			},20);
 		}
 	}
+	
+	function endOfRound (){
+		setTiles(["","","",""]);
+	}
 
 	return {
 		createNumberTile:createNumberTile,
@@ -116,15 +126,7 @@ TwentyFour.display = (function () {
 		createCurrentScoreElement:createCurrentScoreElement,
 		setupBoard:setupBoard,
 		newPuzzle:newPuzzle,
-		ready:ready
+		ready:ready,
+		endOfRound:endOfRound
 	};
 })();
-
-/*
-function lostGame () {
-	reset();
-	$(".numbers-container").off("click", ".number-tile", TwentyFour.play.clickHandler);
-	$(".operations-container").off("click", ".operation-tile", TwentyFour.play.clickHandler);
-	$(window).off("keydown", TwentyFour.hotkeys.keyHandler);
-}
-*/
