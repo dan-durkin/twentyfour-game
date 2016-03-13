@@ -34,7 +34,6 @@ TwentyFour.timer = (function () {
 			if (timeLeft <= 0) {
 				alert("you lose");
 				clearInterval(timer);
-				TwentyFour.display.lostGame();
 			} else if (timeLeft <= 10000 && interval > 100) {
 				clearInterval(timer);
 				interval = 100;

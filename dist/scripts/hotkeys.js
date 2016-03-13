@@ -9,19 +9,19 @@ TwentyFour.hotkeys = (function () {
 			case 87:
 			case 69:
 			case 82:
-				clickHandler.call(document.querySelector('[data-operation="' + event.which + '"]'));
+				TwentyFour.play.clickHandler.call(document.querySelector('[data-operation="' + event.which + '"]'));
 				break;
 			case 49:
 			case 50:
 			case 51:
 			case 52:
-				clickHandler.call(document.querySelectorAll(".number-tile")[getHotKey(event.which).index]);
+				TwentyFour.play.clickHandler.call(document.querySelectorAll(".number-tile")[getHotKey(event.which).index]);
 				break;
 			case 37:
-				undoMove();
+				TwentyFour.play.undoMove();
 				break;
 			case 39:
-				skipPuzzle();
+				TwentyFour.play.skipPuzzle();
 				break;
 			default:
 				break;
@@ -42,13 +42,13 @@ TwentyFour.hotkeys = (function () {
 
 		return hotKeys[key];
 	}
-
+	
 	function toggleHotKeys (){
 		$('.hot-key').toggleClass('show');
 		$('.undo').toggleClass('hot');
 		$('.skip').toggleClass('hot');
 	}
-
+	
 	function hotKeysOff (){
 		$('.hot-key').removeClass('show');
 		$('.undo').removeClass('hot');
@@ -64,7 +64,7 @@ TwentyFour.hotkeys = (function () {
 	function checkHotKeys (){
 		return $('.hot-key').hasClass('show');
 	}
-
+	
 	function setNumberHotKeys(){
 		$('.hot-key.number-tile').empty();
 		$('.number-tile').each(function (num, element){
@@ -76,9 +76,9 @@ TwentyFour.hotkeys = (function () {
 		keyHandler: keyHandler,
 		getHotKey: getHotKey,
 		toggleHotKeys: toggleHotKeys,
-		hotKeysOff: hotKeysOff,
+		checkHotKeys:checkHotKeys,
 		hotKeysOn: hotKeysOn,
-		checkHotKeys: checkHotKeys,
+		hotKeysOff:hotKeysOff,
 		setNumberHotKeys:setNumberHotKeys
 	};
 })();

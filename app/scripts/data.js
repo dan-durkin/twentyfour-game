@@ -22,10 +22,6 @@ TwentyFour.data = (function(){
 		currentPuzzleData = allSolutions[thisPuzzleID];
 		currentPuzzleNumbers = currentPuzzleData.solution;
 	}
-	
-	function getNumbersData (){
-		return currentPuzzleNumbers;
-	}
 
 	var solveCounter = function (){
 		var res = parseInt(currentPuzzleData.solves) + 1;
@@ -42,6 +38,21 @@ TwentyFour.data = (function(){
 		refSolutions.child(thisPuzzleID).update({"views": res});
 	}
 	
+	function getNumbersData (){
+		return currentPuzzleNumbers;
+	}
+	
+	function getOperations(){
+		var OperationTiles = {
+			'+':function(a,b){return a+b},
+			'-':function(a,b){return a-b},
+			'x':function(a,b){return a*b},
+			'/':function(a,b){return a/b}
+		};
+
+		return OperationTiles;
+	}
+	
 	return {
 		getRef: getRef,
 		setSolutions: setSolutions,
@@ -49,6 +60,7 @@ TwentyFour.data = (function(){
 		solveCounter:solveCounter,
 		skipCounter:skipCounter,
 		viewCounter:viewCounter,
-		getNumbersData:getNumbersData
+		getNumbersData:getNumbersData,
+		getOperations:getOperations
 	};
 })();

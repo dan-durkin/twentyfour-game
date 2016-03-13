@@ -177,15 +177,19 @@ Score & Timer
 	border: none;
 	border-radius: 3px;
 	outline: none;
-	background-color:#64B6AC;
 	color: #FFF;
 	text-transform: capitalize;
 	text-align: center;
     text-decoration: none;
     line-height: 42px;
-    cursor: pointer;
     padding: 0 20px;
 	margin-top: 0.5rem;
+	background-color:#E0E1E2;
+}
+
+.new-game-cta.active{
+	background-color:#64B6AC;
+	cursor: pointer;
 }
 
 /***

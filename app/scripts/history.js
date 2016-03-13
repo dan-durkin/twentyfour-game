@@ -1,4 +1,7 @@
 TwentyFour.history = (function () {
+	var currentPuzzleMoves = [];
+	var currentRoundSolves = [];
+	
 	function publishHistory(){
 		var history = "";
 		var $roundSolves = $('.round-solves-container');
@@ -7,17 +10,33 @@ TwentyFour.history = (function () {
 			history += " (" + currentPuzzleMoves[i].historyString + ") ";
 		}
 
-		$roundSolves.prepend(createHistoryElement(history));
-		currentPuzzleMoves=[];
+		$roundSolves.prepend(TwentyFour.display.createHistoryElement(history));
+		emptyCurrentHistory();
 	}
 	
 	function clearRoundHistory (){
 		var $roundSolves = $('.round-solves-container');
 		$roundSolves.empty();
+		currentRoundSolves = [];
+	}
+	
+	function updateCurrentHistory (data){
+		currentPuzzleMoves.push(data);
+	}
+	
+	function emptyCurrentHistory(){
+		currentPuzzleMoves = [];
+	}
+	
+	function getCurrentHistory(){
+		return currentPuzzleMoves;
 	}
 	
 	return {
 		publishHistory:publishHistory,
-		clearRoundHistory:clearRoundHistory
+		clearRoundHistory:clearRoundHistory,
+		emptyCurrentHistory:emptyCurrentHistory,
+		getCurrentHistory:getCurrentHistory,
+		updateCurrentHistory:updateCurrentHistory
 	}
 })();
