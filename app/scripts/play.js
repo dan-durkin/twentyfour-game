@@ -160,6 +160,28 @@ TwentyFour.play = (function () {
 		TwentyFour.display.newPuzzle();
 	}
 	
+	function addAll(){
+		var allTiles = $('.number-tile');
+		while(allTiles.length > 1){
+			selectTile.apply(document.querySelectorAll('[data-value="+"]'));
+			selectTile.apply(document.querySelectorAll(".number-tile")[0]);
+			selectTile.apply(document.querySelectorAll(".number-tile")[1]);
+			allTiles = $('.number-tile');
+			reset();
+		}
+	}
+	
+	function multiplyAll(){
+		var allTiles = $('.number-tile');
+		while(allTiles.length > 1){
+			selectTile.apply(document.querySelectorAll('[data-value="x"]'));
+			selectTile.apply(document.querySelectorAll(".number-tile")[0]);
+			selectTile.apply(document.querySelectorAll(".number-tile")[1]);
+			allTiles = $('.number-tile');
+			reset();
+		}
+	}
+	
 	function endOfRound () {
 		reset();
 		$(".numbers-container").off("click", ".number-tile", TwentyFour.play.clickHandler);
@@ -174,6 +196,8 @@ TwentyFour.play = (function () {
 		selectTile:selectTile,
 		undoMove:undoMove,
 		skipPuzzle:skipPuzzle,
+		addAll:addAll,
+		multiplyAll:multiplyAll,
 		endOfRound:endOfRound
 	}
 })();

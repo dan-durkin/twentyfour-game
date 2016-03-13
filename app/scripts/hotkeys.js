@@ -7,18 +7,21 @@ TwentyFour.hotkeys = (function () {
 		$('.hot-key').toggleClass('show');
 		$('.undo').toggleClass('hot');
 		$('.skip').toggleClass('hot');
+		$('.helper-hot-key').toggleClass('show');	
 	}
 	
 	function hotKeysOff (){
 		$('.hot-key').removeClass('show');
 		$('.undo').removeClass('hot');
 		$('.skip').removeClass('hot');
+		$('.helper-hot-key').removeClass('show');
 	}
 
 	function hotKeysOn (){
 		$('.hot-key').addClass('show');
 		$('.undo').addClass('hot');
 		$('.skip').addClass('hot');
+		$('.helper-hot-key').addClass('show');	
 	}
 
 	function checkHotKeys (){
@@ -52,6 +55,12 @@ TwentyFour.hotkeys = (function () {
 				break;
 			case 39:
 				TwentyFour.play.skipPuzzle();
+				break;
+			case 65:
+				TwentyFour.play.addAll();
+				break;
+			case 83:
+				TwentyFour.play.multiplyAll();
 				break;
 			default:
 				break;

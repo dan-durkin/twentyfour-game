@@ -25,25 +25,25 @@ TwentyFour.display = (function () {
 		}
 	}
 	
-	function shuffle(array) {
-	  var m = array.length, t, i;
-
-	  // While there remain elements to shuffle…
-	  while (m) {
-
-		// Pick a remaining element…
-		i = Math.floor(Math.random() * m--);
-
-		// And swap it with the current element.
-		t = array[m];
-		array[m] = array[i];
-		array[i] = t;
-	  }
-
-	  return array;
-	}
-	
 	function setTileNumbers () {
+		function shuffle(array) {
+		  var m = array.length, t, i;
+
+		  // While there remain elements to shuffle…
+		  while (m) {
+
+			// Pick a remaining element…
+			i = Math.floor(Math.random() * m--);
+
+			// And swap it with the current element.
+			t = array[m];
+			array[m] = array[i];
+			array[i] = t;
+		  }
+
+		  return array;
+		}
+		
 		var puzzle = shuffle(TwentyFour.data.getNumbersData());
 		setTiles(puzzle);
 		TwentyFour.data.viewCounter();
@@ -98,11 +98,6 @@ TwentyFour.display = (function () {
 		setTiles(["Loading..."]);
 	}	
 	
-	function newPuzzle(){
-		TwentyFour.data.init()
-		setTileNumbers();
-	}
-	
 	function ready (){		
 		if(TwentyFour.data.getNumbersData()){
 			setTiles(["","","",""]);
@@ -115,6 +110,11 @@ TwentyFour.display = (function () {
 		}
 	}
 	
+	function newPuzzle(){
+		TwentyFour.data.init()
+		setTileNumbers();
+	}
+	
 	function endOfRound (){
 		setTiles(["","","",""]);
 	}
@@ -125,8 +125,8 @@ TwentyFour.display = (function () {
 		createHistoryElement:createHistoryElement,
 		createCurrentScoreElement:createCurrentScoreElement,
 		setupBoard:setupBoard,
-		newPuzzle:newPuzzle,
 		ready:ready,
+		newPuzzle:newPuzzle,
 		endOfRound:endOfRound
 	};
 })();

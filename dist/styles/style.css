@@ -346,6 +346,31 @@ Hot Keys
 	display: inherit;
 }
 
+.helper-hot-key-container{
+	width: 100%;
+}
+
+.helper-hot-key{
+	display: none;
+	position: relative;
+	left: 5px;
+	width: 40%;
+	float: left;
+}
+
+.helper-hot-key .hot-key{
+	width: 25%;
+	height: 85%;
+}
+
+.helper-hot-key p{
+	padding-left: 100px;
+}
+
+.helper-hot-key.show{
+	display: inherit;
+}
+
 /***
 Tablet
 ***/
