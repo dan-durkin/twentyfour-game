@@ -42,7 +42,25 @@ Main Container, Game Title
 }
 
 .nav-container h1{
-	margin: 0px auto;
+
+}
+
+.nav-container a{
+	cursor: pointer;
+}
+
+.fb-login-button{
+	width: 50%;
+	height: auto;
+}
+
+.logout-link{
+	padding: 0.5rem;
+}
+
+.logout-link:hover{
+	background-color: #1ABC9C;
+	color:#FAF8EF
 }
 
 /***
