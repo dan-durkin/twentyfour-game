@@ -18,15 +18,15 @@ TwentyFour.login = (function (){
 	
 	ref.onAuth(function (data) {
 		if (data) {
+			logged_in = true;
 			authData = data;
 			populateData();
 			console.log("User " + authData.uid + " is logged in with " + authData.provider);
 		} else {
 			if (logged_in) {
-				// however you want to handle a log out
+				logged_in = false;
+				populateData();
 			}
-			
-			logged_in = false;
 		}
 	});
 	
@@ -42,14 +42,21 @@ TwentyFour.login = (function (){
 	}
 	
 	function populateData(){
-		var username = authData.facebook.displayName;
-		var profPicUrl = authData.facebook.profileImageURL;
-		
 		var welcomeContainer = $('.welcome');
 		welcomeContainer.empty();
 		
-		var welcomeElement = $("<p>Welcome back, " + username + "!</p>");
-		welcomeContainer.append(welcomeElement);
+		if(logged_in){
+			var username = authData.facebook.displayName;
+			var profPicUrl = authData.facebook.profileImageURL;
+			
+			var welcomeElement = $("<p>Welcome back, " + username + "!</p>");
+			welcomeContainer.append(welcomeElement);
+			TwentyFour.display.loginDisplay(logged_in);
+		} else {
+			var welcomeElement = $("<p>Please log in</p>");
+			welcomeContainer.append(welcomeElement);
+			TwentyFour.display.loginDisplay(logged_in);
+		}
 	}
 	
 	/***
@@ -87,6 +94,11 @@ TwentyFour.login = (function (){
 				}
 			}
 		}
+		else{
+			logged_in = false;
+		}
+		
+		populateData();
 	}
 
 	return {

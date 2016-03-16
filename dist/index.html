@@ -9,14 +9,14 @@
 </head>
 <body>
 	<div class="main-container">
-		<div class="nav-container flex-parent">
-			<h1>twentyfour</h1>
-			<div>
-				<a onclick="TwentyFour.login.facebookLogin()"><img class="fb-login-button" src="/assets/fblogin.png"></a>
-				<a onclick="TwentyFour.login.logout()" class="logout-link">Logout</a>
+		<div class="nav-container">
+			<div class="site-title"><h1>twentyfour</h1></div>
+			<div class="welcome"></div>
+			<div class="login-logout">
+				<div class="login-btn"><a class="fb-login-link" onclick="TwentyFour.login.facebookLogin()" ><img class="fb-login-button" src="/assets/fblogin.png"></a></div>
+				<div class="logout-btn flex-parent"><a onclick="TwentyFour.login.logout()" class="logout-link">Logout</a></div>
 			</div>
 		</div>
-		<div class="welcome">Please Log in</div>
 		<div class="flex-parent game-info-container">
 			<div class="instructions"><p>Transform 4 numbers into 24. You can add, multiply, subtract, or divide. You must use all 4 numbers <strong>exactly once</strong>. Press 'New Game' to begin.</p>
 				<p><strong>Hint:</strong> Press space bar to see keyboard shortcuts!</p>

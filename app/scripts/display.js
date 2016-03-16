@@ -91,6 +91,17 @@ TwentyFour.display = (function () {
 		currentScoreContainer.text(currentScore);
 	}
 	
+	function loginDisplay (logged_in){
+		if(logged_in){
+			$('.fb-login-link').removeClass('show');
+			$('.logout-link').addClass('show');
+		}
+		else{
+			$('.fb-login-link').addClass('show');
+			$('.logout-link').removeClass('show');
+		}
+	}
+	
 	function setupBoard(){
 		TwentyFour.timer.setTimer();
 		setScores();
@@ -124,6 +135,7 @@ TwentyFour.display = (function () {
 		createOperationTile:createOperationTile,
 		createHistoryElement:createHistoryElement,
 		createCurrentScoreElement:createCurrentScoreElement,
+		loginDisplay:loginDisplay,
 		setupBoard:setupBoard,
 		ready:ready,
 		newPuzzle:newPuzzle,
