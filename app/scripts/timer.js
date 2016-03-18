@@ -2,32 +2,27 @@ TwentyFour.timer = (function () {
 	/***
 	Private Variables
 	***/
-	
-	var timeLeft = 60000;
-	var interval = 1000;
+
+	var timeLeft = 90000;
+	var interval = 100;
 	var timer;
 
 	/***
 	Private Methods
 	***/
-	
+
 	function formatTimeLeft() {
 		var seconds = timeLeft / 1000;
-
-		if (timeLeft > 10000) {
-			return seconds;
-		}else{
-			return timeLeft % 1000 === 0 && timeLeft !== 0 ? seconds + ".0" : seconds;
-		}
+		return timeLeft % 1000 === 0 && timeLeft !== 0 ? seconds + ".0" : seconds;
 	}
-	
+
 	/***
 	Public Methods
 	***/
-	
+
 	function setTimer(){
-		timeLeft = 60000;
-		interval = 1000;
+		timeLeft = 90000;
+		interval = 100;
 		var timeLeftNode = document.querySelector(".time-left");
 		timeLeftNode.textContent = formatTimeLeft();
 	}
