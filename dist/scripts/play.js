@@ -173,9 +173,9 @@ TwentyFour.play = (function () {
 	function addAll(){
 		var allTiles = $('.number-tile');
 		while(allTiles.length > 1){
-			selectTile.apply(document.querySelectorAll('[data-value="+"]'));
-			selectTile.apply(document.querySelectorAll(".number-tile")[0]);
-			selectTile.apply(document.querySelectorAll(".number-tile")[1]);
+			selectTile.call(document.querySelectorAll('[data-value="+"]'));
+			selectTile.call(document.querySelectorAll(".number-tile")[0]);
+			selectTile.call(document.querySelectorAll(".number-tile")[1]);
 			allTiles = $('.number-tile');
 			reset();
 		}
@@ -184,9 +184,9 @@ TwentyFour.play = (function () {
 	function multiplyAll(){
 		var allTiles = $('.number-tile');
 		while(allTiles.length > 1){
-			selectTile.apply(document.querySelectorAll('[data-value="x"]'));
-			selectTile.apply(document.querySelectorAll(".number-tile")[0]);
-			selectTile.apply(document.querySelectorAll(".number-tile")[1]);
+			selectTile.call(document.querySelectorAll('[data-value="x"]'));
+			selectTile.call(document.querySelectorAll(".number-tile")[0]);
+			selectTile.call(document.querySelectorAll(".number-tile")[1]);
 			allTiles = $('.number-tile');
 			reset();
 		}
