@@ -26,7 +26,7 @@ TwentyFour.data = (function(){
 
 	function init() {	
 		var ids = Object.keys(allSolutions);
-		thisPuzzleID = ids[Math.ceil(Math.random() * ids.length)];
+		thisPuzzleID = ids[Math.floor(Math.random() * ids.length)];
 		currentPuzzleData = allSolutions[thisPuzzleID];
 		currentPuzzleNumbers = currentPuzzleData.solution;
 	}
@@ -51,14 +51,12 @@ TwentyFour.data = (function(){
 	}
 	
 	function getOperations(){
-		var OperationTiles = {
+		return {
 			'+':function(a,b){return a+b},
 			'-':function(a,b){return a-b},
 			'x':function(a,b){return a*b},
 			'/':function(a,b){return a/b}
 		};
-
-		return OperationTiles;
 	}
 	
 	return {

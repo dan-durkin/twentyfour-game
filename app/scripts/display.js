@@ -12,7 +12,7 @@ TwentyFour.display = (function () {
 		currentScoreContainer.text(currentScore);
 		bestScoreContainer.text(bestScore);
 	}
-	
+
 	function setOperations () {
 		OperationTiles = TwentyFour.data.getOperations();
 
@@ -24,7 +24,7 @@ TwentyFour.display = (function () {
 			$operationContainer.append($newOpTile);
 		}
 	}
-	
+
 	function setTileNumbers () {
 		function shuffle(array) {
 		  var m = array.length, t, i;
@@ -43,12 +43,13 @@ TwentyFour.display = (function () {
 
 		  return array;
 		}
-		
+
 		var puzzle = shuffle(TwentyFour.data.getNumbersData());
 		setTiles(puzzle);
 		TwentyFour.data.viewCounter();
+		return puzzle;
 	}
-	
+
 	function setTiles (array) {
 		function emptyBeforeNewPuzzle(){
 			$('.selected').removeClass('selected');
@@ -58,7 +59,7 @@ TwentyFour.display = (function () {
 		}
 
 		emptyBeforeNewPuzzle();
-		
+
 		var $numContainer = $('.numbers-container');
 
 		for(var i=0; i < array.length; i++) {
@@ -68,11 +69,11 @@ TwentyFour.display = (function () {
 
 		TwentyFour.hotkeys.setNumberHotKeys();
 	}
-	
+
 	/***
 	Public Methods
 	***/
-	
+
 	function createNumberTile (data){
 		return $("<div class='flex-child number-tile tile' data-value='" + data + "'><div class='number-content content'><div><span class='tile-data'>" + data + "</span></div></div><div class='hot-key'>"+"</div></div>");
 	}
@@ -84,21 +85,32 @@ TwentyFour.display = (function () {
 	function createHistoryElement (history) {
 		return $("<div class='history-item'><p>Last Move: " + history + "</p></div>");
 	}
-	
+
 	function createCurrentScoreElement(currentScore){
 		var currentScoreContainer = $('.current-score');
 		currentScoreContainer.empty();
 		currentScoreContainer.text(currentScore);
 	}
-	
+
+	function loginDisplay (logged_in){
+		if(logged_in){
+			$('.fb-login-link').removeClass('show');
+			$('.logout-link').addClass('show');
+		}
+		else{
+			$('.fb-login-link').addClass('show');
+			$('.logout-link').removeClass('show');
+		}
+	}
+
 	function setupBoard(){
 		TwentyFour.timer.setTimer();
 		setScores();
 		setOperations();
 		setTiles(["Loading..."]);
-	}	
-	
-	function ready (){		
+	}
+
+	function ready (){
 		if(TwentyFour.data.getNumbersData()){
 			setTiles(["","","",""]);
 			$('.new-game-cta').addClass('active');
@@ -109,12 +121,12 @@ TwentyFour.display = (function () {
 			},20);
 		}
 	}
-	
+
 	function newPuzzle(){
 		TwentyFour.data.init()
 		setTileNumbers();
 	}
-	
+
 	function endOfRound (){
 		setTiles(["","","",""]);
 	}
@@ -124,6 +136,7 @@ TwentyFour.display = (function () {
 		createOperationTile:createOperationTile,
 		createHistoryElement:createHistoryElement,
 		createCurrentScoreElement:createCurrentScoreElement,
+		loginDisplay:loginDisplay,
 		setupBoard:setupBoard,
 		ready:ready,
 		newPuzzle:newPuzzle,

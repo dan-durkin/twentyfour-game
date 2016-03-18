@@ -1,5 +1,6 @@
-TwentyFour.setup = (function(){
+(function(){
 	$(window).load(function(){
+		TwentyFour.login.config();
 		TwentyFour.display.setupBoard();
 		
 		ref = TwentyFour.data.getRef();

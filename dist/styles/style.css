@@ -35,14 +35,65 @@ Main Container, Game Title
 
 .nav-container{
 	width: 100%;
-	color: #1ABC9C;
-	height: 3.5rem;
 	margin: 0 auto;
-	padding: 0;
 }
 
 .nav-container h1{
-	margin: 0px auto;
+	color: #1ABC9C;
+	margin: 0;
+}
+
+.nav-container a{
+	cursor: pointer;
+}
+
+.site-title{
+	width: 40%;
+	float: left;
+}
+
+.welcome{
+	width: 40%;
+	float: left;
+}
+
+.login-logout{
+	width: 20%;
+	float: left;
+}
+
+.login-btn,
+.logout-btn{
+	width: 100%;
+}
+
+.fb-login-link{
+	display: none;
+}
+
+.fb-login-link.show{
+	display: inline-block;
+}
+
+.fb-login-button{
+	width: 100%;
+	height: auto;
+}
+
+.logout-link{
+	width: 100%;
+	margin: 0 auto;
+	padding: 0.5rem;
+	display: none;
+}
+
+.logout-link.show{
+	display: inline-block;
+}
+
+.logout-link:hover{
+	background-color: #1ABC9C;
+	color:#FAF8EF
 }
 
 /***

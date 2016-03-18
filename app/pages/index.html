@@ -5,12 +5,18 @@
     <title>twentyfour</title>
 	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/styles/animate.css">
 	<link rel="stylesheet" href="/styles/style.css">
 </head>
 <body>
 	<div class="main-container">
 		<div class="nav-container">
-			<h1>twentyfour</h1>
+			<div class="site-title"><h1>twentyfour</h1></div>
+			<div class="welcome"></div>
+			<div class="login-logout">
+				<div class="login-btn"><a class="fb-login-link" onclick="TwentyFour.login.facebookLogin()" ><img class="fb-login-button" src="/assets/fblogin.png"></a></div>
+				<div class="logout-btn flex-parent"><a onclick="TwentyFour.login.logout()" class="logout-link">Logout</a></div>
+			</div>
 		</div>
 		<div class="flex-parent game-info-container">
 			<div class="instructions"><p>Transform 4 numbers into 24. You can add, multiply, subtract, or divide. You must use all 4 numbers <strong>exactly once</strong>. Press 'New Game' to begin.</p>
@@ -58,8 +64,10 @@
 	<script src="/scripts/display.js"></script>
 	<script src="/scripts/timer.js"></script>
 	<script src="/scripts/play.js"></script>
+	<script src="/scripts/animate.js"></script>
 	<script src="/scripts/hotkeys.js"></script>
 	<script src="/scripts/score.js"></script>
 	<script src="/scripts/history.js"></script>
+	<script src="/scripts/login.js"></script>
 	<script src="/scripts/setup.js"></script>
 </html>
