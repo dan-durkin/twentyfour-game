@@ -28,8 +28,11 @@ TwentyFour.history = (function () {
 		currentRoundSolves = [];
 	}
 	
-	function updateCurrentHistory (data){
-		currentPuzzleMoves.push(data);
+	function updateCurrentHistory (moveStore){
+		currentPuzzleMoves.push(moveStore);
+		
+		var $historyContainer = $('.current-puzzle-history-container');
+		$historyContainer.prepend(moveStore.historyElement)
 	}
 	
 	function emptyCurrentHistory(){

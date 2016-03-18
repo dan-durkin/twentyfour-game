@@ -6,12 +6,6 @@ TwentyFour.login = (function (){
 	var logged_in = false;
 	var authData;
 	
-	/*
-	var uid = data.uid;
-	var username = data.facebook.displayName;
-	var profPicUrl = data.facebook.profileImageURL;
-	*/
-	
 	/***
 	Private Methods
 	***/
@@ -75,7 +69,8 @@ TwentyFour.login = (function (){
 	}
 	
 	function logout () {
-		ref.unauth();
+		ref.unauth();	
+		location.reload();
 	}
 	
 	function config (){
