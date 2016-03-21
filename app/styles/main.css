@@ -1,0 +1,302 @@
+/*
+https://coolors.co/app/d34c01-fe9700-ffc901-fef2b9-fef3df
+*/
+
+*, *:before, *:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body{
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	font-family: 'Droid Sans', sans-serif;
+	background-color: #fef3df;
+	color: #776E65
+}
+
+/**
+Main Nav
+**/
+.main-container{
+	width: 100%;
+}
+
+.nav-container{
+	height: 75px;
+	background-color: #d34c01;
+	position: relative;
+	width: 100%;
+}
+
+h1.site-title,
+p.welcome-message{
+	line-height: 75px;
+	margin-top: 0;
+	margin-bottom: 0;
+	margin-right: 15px;
+	height: 100%;
+	vertical-align: middle;
+	display: block;
+	height: 100%;
+	color: #FEF3DF;
+}
+
+h1.site-title {
+	float: left;
+	padding-left: 1rem;
+	width: 10%;
+	font-size: 3rem;
+}
+
+p.welcome-message{
+	height: 100%;
+	float: right;
+	right: 5px;
+	width: 60%;
+	padding-right: 60px;
+	text-align: right;
+}
+
+.login{
+	display: none;
+}
+
+.logout{
+	display: none;
+}
+
+/***
+Start Game
+***/
+
+.game-container{
+	position: relative;
+	width: 90%;
+	margin: 0 auto;
+}
+
+.instructions-container{
+	height: 60px;
+}
+.hint-container{
+	height: 25px;
+}
+
+.instructions-container,
+.hint-container{
+	margin-top: 5px;
+	width: 100%;
+	position: relative;
+	overflow: auto;
+}
+
+p.instructions,
+p.hint{
+	height: 100%;
+	margin: 0 auto;
+	padding-left: 5px;
+	position: absolute;
+	height: 100%;
+	vertical-align: middle;
+}
+
+/***
+Score & Timer
+***/
+
+.timer-score-container{
+	position: relative;
+	width: 100%;
+	height: 75px;
+}
+
+.time-left-container,
+.current-score-container,
+.best-score-container{
+	display: block;
+	height: 100%;
+	padding: 5px;
+}
+
+.time-left-container{
+	width: 50%;
+	float: left;
+}
+
+.current-score-container,
+.best-score-container{
+	width: 25%;
+	float: right;
+}
+
+.time-left,
+.current-score,
+.best-score{
+	border-radius: 5px;
+	background-color:#FFBF00;
+	height: 95%;
+	margin: 0 auto;
+}
+
+/***
+Numbers & Operations & Utilities
+***/
+
+
+
+.numbers-container{
+	height: 200px;
+}
+
+.utilities-container{
+		height: 100px;
+		position: relative;
+}
+
+.operations-container{
+		height: 100%;
+		width: 60%;
+		position: relative;
+		float: left;
+}
+
+.undo-container,
+.skip-container{
+	height: 100%;
+	width: 20%;
+	position: relative;
+	float: left;
+}
+
+.number-tile-container,
+.operation-tile-container{
+	width: 50%;
+	height: 50%;
+	float: left;
+}
+
+.operation-tile,
+.number-tile{
+	border-radius: 5px;
+	background-color: #F1E0C5;
+	height: 95%;
+	width: 95%;
+	margin: 0 auto;
+	position: relative;
+	color: #776E65;
+}
+
+
+.number-tile::after,
+.operation-tile::after{
+	content: attr(data-value);
+	display: block;
+	text-align: center;
+}
+
+.number-tile::after{
+	font-size: 4rem;
+}
+
+.operation-tile::after{
+	font-size: 2rem;
+}
+
+.number-tile .hot-key,
+.operation-tile .hot-key,
+.utility-hot-key{
+	position: absolute;
+	bottom:0;
+	border-radius: 5px;
+	width: 30px;
+	height: 30px;
+	padding: 5px;
+	text-align: center;
+	background-color: #776E65;
+	color: #F1E0C5;
+}
+
+.undo-tile,
+.skip-tile{
+	width: 85%;
+	height: 50px;
+	margin: 0 auto;
+	margin-top: 25px;
+	background-color: #F1E0C5;
+	text-align: center;
+	border-radius: 5px;
+	position: relative;
+}
+
+.undo,
+.skip{
+	font-size: 2em;
+	line-height: 50px;
+}
+
+.utility-hot-key{
+	bottom:-25px;
+	width: 80%;
+	margin: auto;
+	z-index: -1;
+}
+/***
+Helper Hot Keys
+***/
+
+.helper-hot-keys{
+	margin-top: 10px;
+	width: 100%;
+	height: 75px;
+}
+.helper-hot-key-container{
+	width: 50%;
+	float: left;
+	position: relative;
+}
+
+.helper-hot-key{
+	position: absolute;
+	border-radius: 5px;
+	width: 75px;
+	height: 100%;
+	padding: 15px;
+	text-align: center;
+	background-color: #776E65;
+	color: #F1E0C5;
+}
+
+.helper-hot-key-container p{
+	padding-left: 85px;
+
+}
+
+/***
+TBD
+***/
+
+.new-game-cta{
+	cursor: pointer;
+	background-color: #FFF;
+}
+
+
+
+/***
+Tablet
+***/
+@media (min-width: 768px) {
+
+}
+
+/***
+Desktop
+***/
+
+@@media (min-width: 1200px) {
+
+}
