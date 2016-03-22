@@ -2,36 +2,36 @@ TwentyFour.hotkeys = (function () {
 	/***
 	Private Methods
 	***/
-	
+
 	function toggleHotKeys (){
 		$('.hot-key').toggleClass('show');
-		$('.undo').toggleClass('hot');
-		$('.skip').toggleClass('hot');
-		$('.helper-hot-key').toggleClass('show');	
+		$('.undo').toggleClass('show');
+		$('.skip').toggleClass('show');
+		$('.utility-hot-key').toggleClass('show');
 	}
-	
+
 	function hotKeysOff (){
 		$('.hot-key').removeClass('show');
-		$('.undo').removeClass('hot');
-		$('.skip').removeClass('hot');
-		$('.helper-hot-key').removeClass('show');
+		$('.undo').removeClass('show');
+		$('.skip').removeClass('show');
+		$('.utility-hot-key').removeClass('show');
 	}
 
 	function hotKeysOn (){
 		$('.hot-key').addClass('show');
-		$('.undo').addClass('hot');
-		$('.skip').addClass('hot');
-		$('.helper-hot-key').addClass('show');	
+		$('.undo').addClass('show');
+		$('.skip').addClass('show');
+		$('.utility-hot-key').addClass('show');
 	}
 
 	function checkHotKeys (){
 		return $('.hot-key').hasClass('show');
 	}
-	
+
 	/***
 	Public Methods
 	***/
-	
+
 	function keyHandler (event){
 		switch(event.which){
 			case 32:
@@ -66,11 +66,11 @@ TwentyFour.hotkeys = (function () {
 				break;
 		}
 	}
-	
+
 	function getHotKey (key){
 		var hotKeys = {
-			'+':{keycode: 81, shortcut: 'q'}, 
-			'-':{keycode: 87, shortcut: 'w'}, 
+			'+':{keycode: 81, shortcut: 'q'},
+			'-':{keycode: 87, shortcut: 'w'},
 			'x':{keycode: 69, shortcut: 'e'},
 			'/':{keycode: 82, shortcut: 'r'},
 			'49':{keycode:49, index: 0},
@@ -87,7 +87,7 @@ TwentyFour.hotkeys = (function () {
 		$('.number-tile').each(function (num, element){
 			$(this).children('.hot-key').text(num + 1);
 		});
-		
+
 		if(checkHotKeys()){
 			hotKeysOn();
 		}
@@ -95,11 +95,11 @@ TwentyFour.hotkeys = (function () {
 			hotKeysOff();
 		}
 	}
-	
+
 	function endOfRound(){
 		hotKeysOff();
 	}
-	
+
 	return {
 		keyHandler: keyHandler,
 		getHotKey: getHotKey,

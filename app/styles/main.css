@@ -1,5 +1,5 @@
 /*
-https://coolors.co/app/d34c01-fe9700-ffc901-fef2b9-fef3df
+https://coolors.co/app/d34c01-ff6500-f1e0c5-ffffe9-776e65
 */
 
 *, *:before, *:after {
@@ -39,9 +39,7 @@ p.welcome-message{
 	margin-bottom: 0;
 	margin-right: 15px;
 	height: 100%;
-	vertical-align: middle;
 	display: block;
-	height: 100%;
 	color: #FEF3DF;
 }
 
@@ -53,7 +51,6 @@ h1.site-title {
 }
 
 p.welcome-message{
-	height: 100%;
 	float: right;
 	right: 5px;
 	width: 60%;
@@ -85,23 +82,27 @@ Start Game
 .hint-container{
 	height: 25px;
 }
-
 .instructions-container,
 .hint-container{
 	margin-top: 5px;
 	width: 100%;
 	position: relative;
-	overflow: auto;
 }
 
 p.instructions,
 p.hint{
-	height: 100%;
 	margin: 0 auto;
 	padding-left: 5px;
 	position: absolute;
 	height: 100%;
-	vertical-align: middle;
+}
+
+p.instructions{
+	line-height: 20px;
+}
+
+p.hint{
+	line-height: 25px;
 }
 
 /***
@@ -120,48 +121,80 @@ Score & Timer
 	display: block;
 	height: 100%;
 	padding: 5px;
+	float: left;
 }
 
 .time-left-container{
 	width: 50%;
-	float: left;
 }
 
 .current-score-container,
 .best-score-container{
 	width: 25%;
-	float: right;
+}
+
+.time-left-box,
+.current-score-box,
+.best-score-box{
+	border-radius: 5px;
+	background-color:#FF6500;
+	height: 95%;
+	margin: 0 auto;
+	position: relative;
+	color: #FFFFE9;
+}
+
+.time-left-box::before{
+	content: "Time left";
+}
+.current-score-box::before{
+	content: "Score";
+}
+.best-score-box::before{
+	content:"Best";
+}
+
+.time-left-box::before,
+.current-score-box::before,
+.best-score-box::before{
+	text-transform: uppercase;
+	font-weight: bold;
+	text-align: center;
+	position: absolute;
+	top: 2.5px;
+	display: block;
+	width: 100%;
 }
 
 .time-left,
 .current-score,
 .best-score{
-	border-radius: 5px;
-	background-color:#FFBF00;
-	height: 95%;
-	margin: 0 auto;
+	line-height:70px;
+	font-size: 1.75rem;
+	text-align: center;
+	display: block;
+	padding: 5px;
 }
 
 /***
 Numbers & Operations & Utilities
 ***/
 
-
-
 .numbers-container{
 	height: 200px;
+	width: 100%
 }
 
 .utilities-container{
-		height: 100px;
-		position: relative;
+	height: 100px;
+	width: 100%
 }
 
 .operations-container{
-		height: 100%;
-		width: 60%;
-		position: relative;
-		float: left;
+	height: 100%;
+	width: 60%;
+	position: relative;
+	float: left;
 }
 
 .undo-container,
@@ -181,15 +214,15 @@ Numbers & Operations & Utilities
 
 .operation-tile,
 .number-tile{
-	border-radius: 5px;
-	background-color: #F1E0C5;
 	height: 95%;
 	width: 95%;
 	margin: 0 auto;
 	position: relative;
 	color: #776E65;
+	background-color: #F1E0C5;
+	border: 2px solid #776E65;
+	border-radius: 5px;
 }
-
 
 .number-tile::after,
 .operation-tile::after{
@@ -199,25 +232,27 @@ Numbers & Operations & Utilities
 }
 
 .number-tile::after{
-	font-size: 4rem;
+	font-size: 5rem;
 }
 
 .operation-tile::after{
-	font-size: 2rem;
+	font-size: 2.5rem;
 }
 
 .number-tile .hot-key,
 .operation-tile .hot-key,
 .utility-hot-key{
-	position: absolute;
-	bottom:0;
-	border-radius: 5px;
 	width: 30px;
 	height: 30px;
 	padding: 5px;
+	position: absolute;
+	bottom:-2px;
+	left: -2px;
 	text-align: center;
-	background-color: #776E65;
-	color: #F1E0C5;
+	background-color: #FEF3DF;
+	border: 2px solid #776E65;
+	border-radius: 5px;
+	display: none;
 }
 
 .undo-tile,
@@ -226,10 +261,11 @@ Numbers & Operations & Utilities
 	height: 50px;
 	margin: 0 auto;
 	margin-top: 25px;
-	background-color: #F1E0C5;
-	text-align: center;
-	border-radius: 5px;
 	position: relative;
+	text-align: center;
+	background-color: #F1E0C5;
+	border: 2px solid #776E65;
+	border-radius: 5px;
 }
 
 .undo,
@@ -243,7 +279,10 @@ Numbers & Operations & Utilities
 	width: 80%;
 	margin: auto;
 	z-index: -1;
+	left: -2px;
+	display: none;
 }
+
 /***
 Helper Hot Keys
 ***/
@@ -252,6 +291,7 @@ Helper Hot Keys
 	margin-top: 10px;
 	width: 100%;
 	height: 75px;
+	display: none;
 }
 .helper-hot-key-container{
 	width: 50%;
@@ -266,31 +306,51 @@ Helper Hot Keys
 	height: 100%;
 	padding: 15px;
 	text-align: center;
-	background-color: #776E65;
-	color: #F1E0C5;
+	background-color: #FEF3DF;
+	border: 2px solid #776E65;
 }
 
 .helper-hot-key-container p{
 	padding-left: 85px;
-
 }
 
 /***
-TBD
+Visual
 ***/
 
+.selected{
+	background-color: #D34C01;
+	border: 2px solid #D34C01;
+	color: #F1E0C5;
+}
+
+.hot-key.show,
+.utility-hot-key.show,
+.helper-hot-keys.show{
+	display: block;
+}
+
+/***
+CTA
+***/
+.cta-container{
+	height: 100px;
+	margin-top: 25px;
+}
+
 .new-game-cta{
+	padding: 20px;
 	cursor: pointer;
 	background-color: #FFF;
 }
-
-
 
 /***
 Tablet
 ***/
 @media (min-width: 768px) {
-
+	.instructions-container{
+		height: 40px;
+	}
 }
 
 /***
@@ -298,5 +358,8 @@ Desktop
 ***/
 
 @@media (min-width: 1200px) {
+	.instructions-container{
+		height: 20px;
+	}
 
 }

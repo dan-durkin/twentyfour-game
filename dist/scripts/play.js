@@ -11,8 +11,8 @@ TwentyFour.play = (function () {
 	***/
 
 	function reset () {
-		var selected =$('.selected');
-		selected.removeClass('selected');
+		var $selectedTiles =$('.selected');
+		$selectedTiles.removeClass('selected');
 		moveOperation = null;
 		moveNumberTiles = [];
 	}
@@ -24,15 +24,15 @@ TwentyFour.play = (function () {
 
 	function checkSolution($element){
 		if($element.data("value") === 24){
-			solved($element);
+			solved.call($element);
 		}
 		else{
 			incorrect($element);
 		}
 	}
 
-	function solved ($element){
-		$element.addClass('correct');
+	function solved (){
+		this.addClass('correct');
 		TwentyFour.animate.animateRight();
 
 		setTimeout(function(){
@@ -68,10 +68,10 @@ TwentyFour.play = (function () {
 			historyElement: TwentyFour.display.createHistoryElement(historyString)
 		};
 
-		reset();
-		$selectedTiles.remove();
-		$numContainer.prepend($newNumberTile);
 
+		$selectedTiles.remove();
+		reset();
+		$numContainer.prepend($newNumberTile);
 
 		TwentyFour.history.updateCurrentHistory(moveStore);
 		TwentyFour.hotkeys.setNumberHotKeys();

@@ -75,11 +75,11 @@ TwentyFour.display = (function () {
 	***/
 
 	function createNumberTile (data){
-		return $("<div class='flex-child number-tile tile' data-value='" + data + "'><div class='number-content content'><div><span class='tile-data'>" + data + "</span></div></div><div class='hot-key'>"+"</div></div>");
+		return $("<div class='number-tile-container'><div class='number-tile' data-value='"+ data + "'><div class='hot-key'></div></div>");
 	}
 
 	function createOperationTile (op) {
-		return $("<div class='flex-child operation-tile tile' data-value='"+op+"' data-operation='" + TwentyFour.hotkeys.getHotKey(op).keycode + "'><div class='operation-content content'><div><span class='tile-data'>" + op + "</span></div></div><div class='hot-key'>"+ TwentyFour.hotkeys.getHotKey(op).shortcut.toUpperCase() +"</div></div>");
+		return $("<div class='operation-tile-container'><div class='operation-tile' data-value='"+ op + "' data-operation='" + TwentyFour.hotkeys.getHotKey(op).keycode + "''><div class='hot-key'>" + TwentyFour.hotkeys.getHotKey(op).shortcut.toUpperCase() + "</div></div></div>");
 	}
 
 	function createHistoryElement (history) {
@@ -107,12 +107,12 @@ TwentyFour.display = (function () {
 		TwentyFour.timer.setTimer();
 		setScores();
 		setOperations();
-		setTiles(["Loading..."]);
+		setTiles(["","","",""]);
 	}
 
 	function ready (){
 		if(TwentyFour.data.getNumbersData()){
-			setTiles(["","","",""]);
+			setTiles(["ys","","",""]);
 			$('.new-game-cta').addClass('active');
 		}
 		else{
