@@ -9,6 +9,36 @@ TwentyFour.play = (function () {
 	/***
 	Private Methods
 	***/
+	function eventListenerManager (active_game){
+		number_tiles = document.querySelectorAll('.number-tile');
+		operation_tiles = document.querySelectorAll('.number-tile');
+
+		if(active_game){
+			for(var i, len = number_tiles.length; i<len; i++){
+				number_tiles[i].addEventListener("click", TwentyFour.play.selectTile);
+			}
+			for(var i, len = number_tiles.length; i<len; i++){
+				operation_tiles[i].addEventListener("click", TwentyFour.play.selectTile);
+			}
+			document.querySelector('.login-btn').addEventListener("click", TwentyFour.login.facebookLogin);
+			document.querySelector('.logout-btn').addEventListener("click", TwentyFour.login.logout);
+			document.querySelector('.undo-tile').addEventListener("click", TwentyFour.play.undoMove);
+			document.querySelector('.skip-tile').addEventListener("click", TwentyFour.play.skipPuzzle);
+			document.addEventListener("keydown", TwentyFour.hotkeys.keyHandler);
+		}else{
+			for(var i, len = number_tiles.length; i<len; i++){
+				number_tiles[i].removeEventListener("click", TwentyFour.play.selectTile);
+			}
+			for(var i, len = number_tiles.length; i<len; i++){
+				operation_tiles[i].removeEventListener("click", TwentyFour.play.selectTile);
+			}
+			document.querySelector('.login-btn').removeEventListener("click", TwentyFour.login.facebookLogin);
+			document.querySelector('.logout-btn').removeEventListener("click", TwentyFour.login.logout);
+			document.querySelector('.undo-tile').removeEventListener("click", TwentyFour.play.undoMove);
+			document.querySelector('.skip-tile').removeEventListener("click", TwentyFour.play.skipPuzzle);
+			document.removeEventListener("keydown", TwentyFour.hotkeys.keyHandler);
+		}
+	}
 
 	function reset () {
 		var $selectedTiles =$('.selected');
@@ -17,6 +47,7 @@ TwentyFour.play = (function () {
 		moveNumberTiles = [];
 	}
 
+
 	function operate(moveOperation){
 		OperationTiles = TwentyFour.data.getOperations();
 		return OperationTiles[moveOperation];
@@ -24,7 +55,7 @@ TwentyFour.play = (function () {
 
 	function checkSolution($element){
 		if($element.data("value") === 24){
-			solved.call($element);
+			solved($element);
 		}
 		else{
 			incorrect($element);
@@ -32,7 +63,7 @@ TwentyFour.play = (function () {
 	}
 
 	function solved (){
-		this.addClass('correct');
+		addClass('correct');
 		TwentyFour.animate.animateRight();
 
 		setTimeout(function(){
@@ -52,7 +83,7 @@ TwentyFour.play = (function () {
 		var result = operate(moveOperation)(moveNumberTiles[0].value, moveNumberTiles[1].value);
 
 		var $numContainer = $('.numbers-container');
-		var $selectedTiles = $('.selected.number-tile');
+		var $selectedTiles = $('.selected.number-tile-container');
 		var $newNumberTile = TwentyFour.display.createNumberTile(result);
 
 		var historyString = moveNumberTiles[0].value.toString() + ' ' + moveOperation + ' ' + moveNumberTiles[1].value.toString() + ' = ' + result.toString();
@@ -67,7 +98,6 @@ TwentyFour.play = (function () {
 			historyString: historyString,
 			historyElement: TwentyFour.display.createHistoryElement(historyString)
 		};
-
 
 		$selectedTiles.remove();
 		reset();
@@ -89,18 +119,16 @@ TwentyFour.play = (function () {
 	***/
 
 	function startNewGame () {
-		reset();
 		endOfRound();
-		$(".numbers-container").on("click",".number-tile", TwentyFour.play.selectTile);
-		$(".operations-container").on("click",".operation-tile", TwentyFour.play.selectTile);
-		$(window).on("keydown",TwentyFour.hotkeys.keyHandler);
 
 		TwentyFour.history.emptyCurrentHistory();
 		TwentyFour.history.clearRoundHistory();
 		TwentyFour.display.setupBoard();
 		TwentyFour.display.newPuzzle();
 		TwentyFour.animate.animateNewGame();
-		TwentyFour.timer.startTimer();
+		//TwentyFour.timer.startTimer();
+
+		eventListenerManager(true);
 	}
 
 	function selectTile() {
@@ -145,7 +173,7 @@ TwentyFour.play = (function () {
 
 	function undoMove () {
 		if(TwentyFour.history.getCurrentHistory().length > 0){
-			var $numContainer = $('.numbers-container');
+			var numContainer = document.querySelector('.numbers-container');
 			var lastMove = TwentyFour.history.getCurrentHistory().pop();
 
 			lastMove.historyElement.remove();
@@ -155,8 +183,8 @@ TwentyFour.play = (function () {
 
 			setTimeout(function(){
 				lastMove.newElement.remove();
-				$numContainer.prepend(lastMove.secondNumberElement);
-				$numContainer.prepend(lastMove.firstNumberElement);
+				numContainer.innerHTML += lastMove.secondNumberElement;
+				numContainer.innerHTML += lastMove.firstNumberElement;
 				TwentyFour.hotkeys.setNumberHotKeys();
 			}, 250);
 		}
@@ -171,32 +199,31 @@ TwentyFour.play = (function () {
 	}
 
 	function addAll(){
-		var allTiles = $('.number-tile');
+		var allTiles = document.querySelectorAll('.number-tile');
 		while(allTiles.length > 1){
 			selectTile.call(document.querySelectorAll('[data-value="+"]'));
 			selectTile.call(document.querySelectorAll(".number-tile")[0]);
 			selectTile.call(document.querySelectorAll(".number-tile")[1]);
-			allTiles = $('.number-tile');
+			allTiles = document.querySelectorAll('.number-tile');
 			reset();
 		}
 	}
 
 	function multiplyAll(){
-		var allTiles = $('.number-tile');
+		var allTiles = document.querySelectorAll('.number-tile');
 		while(allTiles.length > 1){
 			selectTile.call(document.querySelectorAll('[data-value="x"]'));
 			selectTile.call(document.querySelectorAll(".number-tile")[0]);
 			selectTile.call(document.querySelectorAll(".number-tile")[1]);
-			allTiles = $('.number-tile');
+			allTiles = document.querySelectorAll('.number-tile');
 			reset();
 		}
 	}
 
 	function endOfRound () {
 		reset();
-		$(".numbers-container").off("click", ".number-tile", TwentyFour.play.clickHandler);
-		$(".operations-container").off("click", ".operation-tile", TwentyFour.play.clickHandler);
-		$(window).off("keydown", TwentyFour.hotkeys.keyHandler);
+		eventListenerManager(false);
+
 		TwentyFour.display.endOfRound();
 		TwentyFour.hotkeys.endOfRound();
 	}

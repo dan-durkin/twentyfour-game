@@ -344,6 +344,11 @@ CTA
 	background-color: #FFF;
 }
 
+.new-game-cta.active{
+	background-color: #d34c01;
+	color: #FEF3DF;
+}
+
 /***
 Tablet
 ***/

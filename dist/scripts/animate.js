@@ -3,39 +3,58 @@ TwentyFour.animate = (function (){
 	Private Methods
 	***/
 	function animateTile (animationName) {
+		function newClassString () {
+			var str = ""
+			for(var i = 0, len = this.classList.length; i<len; i++){
+				str += ' ' + this.classList[i] + ' ';
+			}
+			return str + ' animated ' + animationName;
+		}
+
 		var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-		$(this).addClass('animated ' + animationName).one(animationEnd, function() {
-			$(this).removeClass('animated ' + animationName);
-		});
+
+		this.setAttribute('class', newClassString.call(this));
+
+		/***
+		THIS ISN'T WORKING
+		***/
+
+		setTimeout(function(){
+			this.classList.remove(["animated", animationName]);
+		}, 100);
 	}
 
 	/***
 	Public Methods
 	***/
 	function animateNewGame (){
-		var puzzleTiles = $('.number-tile');
-		animateTile.call(puzzleTiles, ['zoomIn']);
+		var puzzleTiles = document.querySelectorAll('.number-tile-container');
+		for(var i =0, len = puzzleTiles.length; i<len;i++){
+			animateTile.call(puzzleTiles.item(i), ['zoomIn']);
+		}
 	}
 
-	function animateNewElement ($newElement){
-		animateTile.call($newElement, ['flipInX']);
+	function animateNewElement (newElement){
+		animateTile.call(newElement, ['flipInX']);
 	}
 
-	function animateOut ($oldElement){
-		animateTile.call($oldElement, ['flipOutX']);
+	function animateOut (oldElement){
+		animateTile.call(oldElement, ['flipOutX']);
 	}
 
 	function animateNewPuzzle(){
-		var puzzleTiles = $('.number-tile');
-		animateTile.call(puzzleTiles, ['bounceIn']);
+		var puzzleTiles = document.querySelectorAll('.number-tile-container');
+		for(var i =0, len = puzzleTiles.length; i<len;i++){
+			animateTile.call(puzzleTiles.item(i), ['bounceIn']);
+		}
 	}
 
 	function animateRight(){
-		var correct = $('.number-tile.correct');
+		var correct = document.querySelector('.number-tile-container.correct');
 		animateTile.call(correct, ['bounceOutRight']);
 	}
 	function animateWrong(){
-		var wrong = $('.number-tile.incorrect');
+		var wrong = document.querySelector('.number-tile-container.correct');
 		animateTile.call(wrong, ['shake']);
 	}
 
