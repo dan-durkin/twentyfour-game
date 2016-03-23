@@ -315,30 +315,6 @@ Helper Hot Keys
 }
 
 /***
-Visual
-***/
-
-.selected{
-	background-color: #D34C01;
-	border: 2px solid #D34C01;
-	color: #F1E0C5;
-}
-
-.hot-key.show,
-.utility-hot-key.show,
-.helper-hot-keys.show{
-	display: block;
-}
-
-.correct{
-	background-color: green;
-}
-
-.incorrect{
-	background-color: purple;
-}
-
-/***
 CTA
 ***/
 .cta-container{
@@ -355,6 +331,31 @@ CTA
 .new-game-cta.active{
 	background-color: #d34c01;
 	color: #FEF3DF;
+}
+
+/***
+Visual
+***/
+
+.selected{
+	background-color: #D34C01;
+	border: 2px solid #D34C01;
+	color: #F1E0C5;
+}
+
+.hot-key.show,
+.utility-hot-key.show,
+.helper-hot-keys.show{
+	display: block;
+	color: #776E65;
+}
+
+.correct{
+	background-color: green;
+}
+
+.incorrect{
+	background-color: purple;
 }
 
 /***

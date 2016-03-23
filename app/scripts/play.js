@@ -4,7 +4,7 @@ TwentyFour.play = (function () {
 	***/
 
 	var moveObject = {
-		move_operation:null,
+		move_operation:{},
 		numbers_selected: [],
 		reset:function(){
 			this.move_operation = {},
@@ -26,40 +26,10 @@ TwentyFour.play = (function () {
 			return this.readyOperations() && this.readyNumbersSelected();
 		}
 	};
-	
+
 	/***
 	Private Methods
 	***/
-	function eventListenerManager (active_game){
-		number_tiles = document.querySelectorAll('.number-tile');
-		operation_tiles = document.querySelectorAll('.operation-tile');
-
-		if(active_game){
-			for(var i = 0, len = number_tiles.length; i<len; i++){
-				number_tiles[i].addEventListener("click", TwentyFour.play.selectTile);
-			}
-			for(var i = 0, len = operation_tiles.length; i<len; i++){
-				operation_tiles[i].addEventListener("click", TwentyFour.play.selectTile);
-			}
-			document.querySelector('.login-btn').addEventListener("click", TwentyFour.login.facebookLogin);
-			document.querySelector('.logout-btn').addEventListener("click", TwentyFour.login.logout);
-			document.querySelector('.undo-tile').addEventListener("click", TwentyFour.play.undoMove);
-			document.querySelector('.skip-tile').addEventListener("click", TwentyFour.play.skipPuzzle);
-			document.addEventListener("keydown", TwentyFour.hotkeys.keyHandler);
-		}else{
-			for(var i =0 , len = number_tiles.length; i<len; i++){
-				number_tiles[i].removeEventListener("click", TwentyFour.play.selectTile);
-			}
-			for(var i =0, len = operation_tiles.length; i<len; i++){
-				operation_tiles[i].removeEventListener("click", TwentyFour.play.selectTile);
-			}
-			document.querySelector('.login-btn').removeEventListener("click", TwentyFour.login.facebookLogin);
-			document.querySelector('.logout-btn').removeEventListener("click", TwentyFour.login.logout);
-			document.querySelector('.undo-tile').removeEventListener("click", TwentyFour.play.undoMove);
-			document.querySelector('.skip-tile').removeEventListener("click", TwentyFour.play.skipPuzzle);
-			document.removeEventListener("keydown", TwentyFour.hotkeys.keyHandler);
-		}
-	}
 
 	function reset () {
 		var selected = document.querySelectorAll('.selected');
@@ -100,7 +70,7 @@ TwentyFour.play = (function () {
 	}
 
 	function performMove () {
-		debugger;
+		//debugger;
 		var result = operate(moveObject.move_operation.value)(parseInt(moveObject.numbers_selected[0].value), parseInt(moveObject.numbers_selected[1].value));
 
 		var numContainer = document.querySelector('.numbers-container');
@@ -118,7 +88,7 @@ TwentyFour.play = (function () {
 			historyString: historyString,
 			historyElement: TwentyFour.display.createHistoryElement(historyString)
 		};
-
+		debugger;
 		numContainer.removeChild(moveObject.numbers_selected[0].element);
 		numContainer.removeChild(moveObject.numbers_selected[1].element);
 		numContainer.innerHTML += newNumberTile;
@@ -150,8 +120,6 @@ TwentyFour.play = (function () {
 		TwentyFour.display.newPuzzle();
 		TwentyFour.animate.animateNewGame();
 		//TwentyFour.timer.startTimer();
-
-		eventListenerManager(true);
 	}
 
 	function selectTile() {
@@ -171,13 +139,13 @@ TwentyFour.play = (function () {
 				if(moveObject.readyOperations()){
 					moveObject.resetMoveOperation();
 				}
-				moveObject.move_operation = {value: this.dataset.value, element: this}
+				moveObject.move_operation = {value: this.dataset.value, element: this.parentElement}
 			}
 			else if (this.classList.contains("number-tile")) {
 				if(moveObject.readyNumbersSelected()){
 					moveObject.resetNumberSelection();
 				}
-				moveObject.numbers_selected.push({value: this.dataset.value, element: this});
+				moveObject.numbers_selected.push({value: this.dataset.value, element: this.parentElement});
 			}
 		}
 
@@ -220,9 +188,11 @@ TwentyFour.play = (function () {
 	}
 
 	function skipPuzzle(){
-		TwentyFour.data.skipCounter();
-		TwentyFour.display.newPuzzle();
-		TwentyFour.animate.animateNewPuzzle();
+		if (isActive) {
+			TwentyFour.data.skipCounter();
+			TwentyFour.display.newPuzzle();
+			TwentyFour.animate.animateNewPuzzle();
+		}
 	}
 
 	function addAll(){
@@ -249,7 +219,6 @@ TwentyFour.play = (function () {
 
 	function endOfRound () {
 		reset();
-		eventListenerManager(false);
 
 		TwentyFour.display.endOfRound();
 		TwentyFour.hotkeys.endOfRound();
