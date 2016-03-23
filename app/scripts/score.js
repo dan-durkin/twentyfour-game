@@ -2,15 +2,15 @@ TwentyFour.score = (function () {
 	/***
 	Public Methods
 	***/
-	
+
 	function updateCurrentScore(){
-		var currentScoreContainer = $('.current-score');
-		var currentScore = parseInt(currentScoreContainer.text());
+		var currentScoreContainer = document.querySelector('.current-score');
+		var currentScore = parseInt(currentScoreContainer.textContent);
 		var newScore = currentScore + 1;
-		currentScoreContainer.text(newScore);
+		currentScoreContainer.textContent = newScore;
 	}
-	
+
 	return {
-		updateCurrentScore:updateCurrentScore	
+		updateCurrentScore:updateCurrentScore
 	};
 })();

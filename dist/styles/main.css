@@ -330,6 +330,14 @@ Visual
 	display: block;
 }
 
+.correct{
+	background-color: green;
+}
+
+.incorrect{
+	background-color: purple;
+}
+
 /***
 CTA
 ***/

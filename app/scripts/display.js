@@ -40,7 +40,7 @@ TwentyFour.display = (function () {
 
 		  return array;
 		}
-		
+
 		var puzzle = shuffle(TwentyFour.data.getNumbersData());
 
 		setTiles(puzzle);
@@ -113,8 +113,9 @@ TwentyFour.display = (function () {
 
 	function ready (){
 		if(TwentyFour.data.getNumbersData()){
-			setTiles(["ys","","",""]);
+			setTiles(["y","","",""]);
 			document.querySelector('.new-game-cta').classList.add('active');
+			document.querySelector('.new-game-cta').addEventListener('click', TwentyFour.play.startNewGame())
 		}
 		else{
 			setTimeout(function(){
