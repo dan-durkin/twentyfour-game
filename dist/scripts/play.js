@@ -66,7 +66,7 @@ TwentyFour.play = (function () {
 
 	function solved (){
 		this.classList.add('correct');
-		TwentyFour.animate.animateRight();
+		TwentyFour.animate.animateRight.call(this);
 
 		setTimeout(function(){
 			TwentyFour.score.updateCurrentScore()
@@ -78,14 +78,16 @@ TwentyFour.play = (function () {
 
 	function incorrect(){
 		this.classList.add('incorrect');
-		TwentyFour.animate.animateWrong();
+		TwentyFour.animate.animateWrong.call(this);
 	}
 
 	function performMove () {
 		var result = operate(moveObject.move_operation.value)(parseInt(moveObject.numbers_selected[0].value), parseInt(moveObject.numbers_selected[1].value));
 
 		var numContainer = document.querySelector('.numbers-container');
-		var newNumberTileIndex = document.querySelectorAll('.number-tile').length;
+
+		TwentyFour.display.numberTileIDManager.increment_id();
+		var newNumberTileIndex = TwentyFour.display.numberTileIDManager.get_id();
 		var newNumberTile = TwentyFour.display.createNumberTile(result, newNumberTileIndex);
 
 		unselectAll();
@@ -103,6 +105,7 @@ TwentyFour.play = (function () {
 			firstNumberElement: moveObject.numbers_selected[0].element,
 			secondNumberElement: moveObject.numbers_selected[1].element,
 			newElement: newNumberElement,
+			newElementIndex: newNumberTileIndex,
 			historyString: historyString,
 			historyElement: TwentyFour.display.createHistoryElement(historyString, TwentyFour.history.getCurrentHistory().length)
 		};
@@ -126,6 +129,7 @@ TwentyFour.play = (function () {
 
 	function startNewGame () {
 		endOfRound();
+		TwentyFour.display.numberTileIDManager.reset_id();
 		is_active = true;
 		TwentyFour.history.emptyCurrentHistory();
 		TwentyFour.history.clearRoundHistory();
@@ -192,24 +196,32 @@ TwentyFour.play = (function () {
 	function undoMove () {
 		if(TwentyFour.history.getCurrentHistory().length > 0 && is_active){
 			var lastMove = TwentyFour.history.getCurrentHistory().pop();
-			debugger;
+
 			var historyContainer = document.querySelector('.current-puzzle-history-container');
-			var oldHistoryIndex = document.querySelectorAll('.history-item').length;
+			var oldHistoryIndex = document.querySelectorAll('.history-item').length - 1;
 			var oldHistoryElement = document.querySelector('[data-historyindex="' + oldHistoryIndex + '"]');
 			historyContainer.removeChild(oldHistoryElement);
 
 			var numContainer = document.querySelector('.numbers-container');
-			var lastMoveIndex = document.querySelectorAll('.number-tile').length - 1;
-			var lastMoveElement = document.querySelector('[data-historyindex="' + lastMoveIndex + '"]');
-			
+			var lastMoveIndex = lastMove.newElementIndex;
+			var lastMoveElement = document.querySelector('[data-numberindex="' + lastMoveIndex + '"]');
+
+			var newElement1Index = TwentyFour.display.numberTileIDManager.increment_id();
+			var newElement1_temp = TwentyFour.display.createNumberTile(lastMove.firstNumber, newElement1Index);
+
+			var newElement2Index = TwentyFour.display.numberTileIDManager.increment_id();
+			var newElement2_temp = TwentyFour.display.createNumberTile(lastMove.secondNumber, newElement2Index);
+
 			TwentyFour.animate.animateOut.call(lastMoveElement);
-			TwentyFour.animate.animateNewElement.call(lastMove.secondNumberElement);
-			TwentyFour.animate.animateNewElement.call(lastMove.firstNumberElement);
 
 			setTimeout(function(){
-				numContainer.removeChild(lastMoveElement)
-				numContainer.innerHTML += lastMove.secondNumberElement;
-				numContainer.innerHTML += lastMove.firstNumberElement;
+				numContainer.removeChild(lastMoveElement.parentElement)
+				numContainer.innerHTML += newElement1_temp;
+				numContainer.innerHTML += newElement2_temp;
+				var newElement1 = document.querySelector('[data-numberindex="' + newElement1Index + '"]');
+				var newElement2 = document.querySelector('[data-numberindex="' + newElement2Index + '"]');
+				TwentyFour.animate.animateNewElement.call(newElement1);
+				TwentyFour.animate.animateNewElement.call(newElement2);
 				TwentyFour.hotkeys.setNumberHotKeys();
 			}, 250);
 		}
@@ -229,7 +241,7 @@ TwentyFour.play = (function () {
 		var allTiles = document.querySelectorAll('.number-tile');
 		while(allTiles.length > 1){
 			unselectAll();
-			lastMove.newElementselectTile.call(document.querySelectorAll('[data-value="+"]'));
+			selectTile.call(document.querySelector('[data-value="+"]'));
 			selectTile.call(document.querySelectorAll(".number-tile")[0]);
 			selectTile.call(document.querySelectorAll(".number-tile")[1]);
 			allTiles = document.querySelectorAll('.number-tile');

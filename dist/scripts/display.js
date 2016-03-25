@@ -65,7 +65,8 @@ TwentyFour.display = (function () {
 		var numContainer = document.querySelector('.numbers-container');
 
 		for(var i=0; i < array.length; i++) {
-			var newNumberTile = createNumberTile(array[i], i);
+			numberTileIDManager.increment_id();
+			var newNumberTile = createNumberTile(array[i], numberTileIDManager.get_id());
 			numContainer.innerHTML += newNumberTile;
 		}
 
@@ -125,13 +126,27 @@ TwentyFour.display = (function () {
 	}
 
 	function newPuzzle(){
-		TwentyFour.data.init()
+		numberTileIDManager.reset_id();
+		TwentyFour.data.init();
 		setTileNumbers();
 	}
 
 	function endOfRound (){
 		setTiles(["","","",""]);
 	}
+
+	var numberTileIDManager = {
+		current_id: 0,
+		get_id:function(){
+			return this.current_id;
+		},
+		increment_id: function(){
+			this.current_id += 1;
+		},
+		reset_id: function(){
+			this.current_id = 0;
+		}
+	};
 
 	return {
 		createNumberTile:createNumberTile,
@@ -142,6 +157,7 @@ TwentyFour.display = (function () {
 		setupBoard:setupBoard,
 		ready:ready,
 		newPuzzle:newPuzzle,
-		endOfRound:endOfRound
+		endOfRound:endOfRound,
+		numberTileIDManager:numberTileIDManager
 	};
 })();

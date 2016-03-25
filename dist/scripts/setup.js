@@ -13,10 +13,10 @@
 			else if (event.target.classList.contains("logout-btn")){
 				TwentyFour.login.logout.call(event.target);
 			}
-			else if (event.target.classList.contains("undo-tile")){
+			else if (event.target.classList.contains("undo-tile") || event.target.classList.contains("undo")){
 				TwentyFour.play.undoMove.call(event.target);
 			}
-			else if (event.target.classList.contains("skip-tile")){
+			else if (event.target.classList.contains("skip-tile") || event.target.classList.contains("skip")){
 				TwentyFour.play.skipPuzzle.call(event.target);
 			}
 		});
