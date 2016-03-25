@@ -4,10 +4,12 @@ TwentyFour.hotkeys = (function () {
 	***/
 
 	function toggleHotKeys (){
-		$('.hot-key').toggleClass('show');
-		$('.undo').toggleClass('show');
-		$('.skip').toggleClass('show');
-		$('.utility-hot-key').toggleClass('show');
+		if(checkHotKeys()){
+			hotKeysOn();
+		}
+		else{
+			hotKeysOff();
+		}
 	}
 
 	function hotKeysOff (){
