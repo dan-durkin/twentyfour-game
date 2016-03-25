@@ -3,6 +3,8 @@ TwentyFour.play = (function () {
 	Private Variables
 	***/
 
+	var is_active = false;
+
 	var moveObject = {
 		move_operation:{},
 		numbers_selected: [],
@@ -13,8 +15,11 @@ TwentyFour.play = (function () {
 		resetMoveOperation:function(){
 			this.move_operation = {}
 		},
-		resetNumberSelection:function(index){
-			this.numbers_selected = this.numbers_selected.splice(index,index+1);
+		resetNumberSelection:function(){
+			this.numbers_selected = []
+		},
+		removeNumberSelection:function(index){
+			this.numbers_selected.splice(index,1);
 		},
 		readyOperations:function(){
 			return this.move_operation.hasOwnProperty('value') && this.move_operation.hasOwnProperty('element')
@@ -31,10 +36,17 @@ TwentyFour.play = (function () {
 	Private Methods
 	***/
 
-	function reset () {
+	function unselectAll () {
 		var selected = document.querySelectorAll('.selected');
 		for (var i = 0, len = selected.length; i < len; i++) {
-			selected.classList.remove('selected');
+			selected[i].classList.remove('selected');
+		}
+	}
+
+	function unselectAllNumberTiles () {
+		var selected = document.querySelectorAll('.number-tile.selected');
+		for (var i = 0, len = selected.length; i < len; i++) {
+			selected[i].classList.remove('selected');
 		}
 	}
 
@@ -53,7 +65,7 @@ TwentyFour.play = (function () {
 	}
 
 	function solved (){
-		this.addClass('correct');
+		this.classList.add('correct');
 		TwentyFour.animate.animateRight();
 
 		setTimeout(function(){
@@ -65,16 +77,22 @@ TwentyFour.play = (function () {
 	}
 
 	function incorrect(){
-		this.addClass('incorrect');
+		this.classList.add('incorrect');
 		TwentyFour.animate.animateWrong();
 	}
 
 	function performMove () {
-		//debugger;
 		var result = operate(moveObject.move_operation.value)(parseInt(moveObject.numbers_selected[0].value), parseInt(moveObject.numbers_selected[1].value));
 
 		var numContainer = document.querySelector('.numbers-container');
-		var newNumberTile = TwentyFour.display.createNumberTile(result);
+		var newNumberTileIndex = document.querySelectorAll('.number-tile').length;
+		var newNumberTile = TwentyFour.display.createNumberTile(result, newNumberTileIndex);
+
+		unselectAll();
+		numContainer.removeChild(moveObject.numbers_selected[0].element);
+		numContainer.removeChild(moveObject.numbers_selected[1].element);
+		numContainer.innerHTML += newNumberTile;
+		var newNumberElement = document.querySelector('[data-numberindex="' + newNumberTileIndex + '"]');
 
 		var historyString = moveObject.numbers_selected[0].value.toString() + ' ' + moveObject.move_operation.value + ' ' + moveObject.numbers_selected[1].value.toString() + ' = ' + result.toString();
 
@@ -84,26 +102,21 @@ TwentyFour.play = (function () {
 			moveOperation: moveObject.move_operation,
 			firstNumberElement: moveObject.numbers_selected[0].element,
 			secondNumberElement: moveObject.numbers_selected[1].element,
-			newElement: newNumberTile,
+			newElement: newNumberElement,
 			historyString: historyString,
-			historyElement: TwentyFour.display.createHistoryElement(historyString)
+			historyElement: TwentyFour.display.createHistoryElement(historyString, TwentyFour.history.getCurrentHistory().length)
 		};
-		debugger;
-		numContainer.removeChild(moveObject.numbers_selected[0].element);
-		numContainer.removeChild(moveObject.numbers_selected[1].element);
-		numContainer.innerHTML += newNumberTile;
 
 		moveObject.reset();
-		reset();
 
 		TwentyFour.history.updateCurrentHistory(moveStore);
 		TwentyFour.hotkeys.setNumberHotKeys();
 
 		if(document.querySelectorAll('.number-tile').length === 1){
-			checkSolution.call(newNumberTile);
+			checkSolution.call(newNumberElement);
 		}
 		else {
-			TwentyFour.animate.animateNewElement(moveStore.newElement);
+			TwentyFour.animate.animateNewElement.call(newNumberElement);
 		}
 	}
 
@@ -113,7 +126,7 @@ TwentyFour.play = (function () {
 
 	function startNewGame () {
 		endOfRound();
-
+		is_active = true;
 		TwentyFour.history.emptyCurrentHistory();
 		TwentyFour.history.clearRoundHistory();
 		TwentyFour.display.setupBoard();
@@ -126,23 +139,35 @@ TwentyFour.play = (function () {
 
 		function removeFromMoveObject(){
 			if(this.classList.contains("operation-tile")){
+				this.classList.remove('selected');
 				moveObject.resetMoveOperation();
 			}
 			else if (this.classList.contains("number-tile")) {
-				var i = moveObject.numbers_selected.indexOf({value: this.dataset.value, element: this});
-				moveObject.resetNumberSelection(i);
+				var og_element = this;
+				var i = -1;
+				moveObject.numbers_selected.findIndex(function(el,index){
+					if(og_element === el.element.childNodes[0]){
+						i = index;
+					}
+				});
+
+				if(i>-1){
+					moveObject.removeNumberSelection(i);
+				}
 			}
 		}
 
 		function addToMoveObject(){
 			if(this.classList.contains("operation-tile")){
 				if(moveObject.readyOperations()){
+					this.classList.remove('selected');
 					moveObject.resetMoveOperation();
 				}
 				moveObject.move_operation = {value: this.dataset.value, element: this.parentElement}
 			}
 			else if (this.classList.contains("number-tile")) {
 				if(moveObject.readyNumbersSelected()){
+					unselectAllNumberTiles();
 					moveObject.resetNumberSelection();
 				}
 				moveObject.numbers_selected.push({value: this.dataset.value, element: this.parentElement});
@@ -151,44 +176,49 @@ TwentyFour.play = (function () {
 
 		var element = this;
 
-		if(element.classList.contains("selected")){
-			element.classList.remove("selected");
+		if(is_active && element.classList.contains("selected")){
 			removeFromMoveObject.call(element);
+			element.classList.remove("selected");
 		}else{
-			element.classList.add("selected");
 			addToMoveObject.call(element);
+			element.classList.add("selected");
 		}
 
-		if (moveObject.readyToMove()){
+		if (is_active && moveObject.readyToMove()){
 			performMove();
 		}
 	}
 
 	function undoMove () {
-		if(TwentyFour.history.getCurrentHistory().length > 0){
-			var historyContainer = document.querySelector('current-puzzle-history-container');
-			var numContainer = document.querySelector('.numbers-container');
+		if(TwentyFour.history.getCurrentHistory().length > 0 && is_active){
 			var lastMove = TwentyFour.history.getCurrentHistory().pop();
+			debugger;
+			var historyContainer = document.querySelector('.current-puzzle-history-container');
+			var oldHistoryIndex = document.querySelectorAll('.history-item').length;
+			var oldHistoryElement = document.querySelector('[data-historyindex="' + oldHistoryIndex + '"]');
+			historyContainer.removeChild(oldHistoryElement);
 
-			historyContainer.removeChild(lastMove.historyElement);
-
-			TwentyFour.animate.animateOut(lastMove.newElement);
-			TwentyFour.animate.animateNewElement(lastMove.secondNumberElement);
-			TwentyFour.animate.animateNewElement(lastMove.firstNumberElement);
+			var numContainer = document.querySelector('.numbers-container');
+			var lastMoveIndex = document.querySelectorAll('.number-tile').length - 1;
+			var lastMoveElement = document.querySelector('[data-historyindex="' + lastMoveIndex + '"]');
+			
+			TwentyFour.animate.animateOut.call(lastMoveElement);
+			TwentyFour.animate.animateNewElement.call(lastMove.secondNumberElement);
+			TwentyFour.animate.animateNewElement.call(lastMove.firstNumberElement);
 
 			setTimeout(function(){
-				numContainer.removeChild(lastMove.newElement)
+				numContainer.removeChild(lastMoveElement)
 				numContainer.innerHTML += lastMove.secondNumberElement;
 				numContainer.innerHTML += lastMove.firstNumberElement;
 				TwentyFour.hotkeys.setNumberHotKeys();
 			}, 250);
 		}
 
-		reset();
+		unselectAll();
 	}
 
 	function skipPuzzle(){
-		if (isActive) {
+		if (is_active) {
 			TwentyFour.data.skipCounter();
 			TwentyFour.display.newPuzzle();
 			TwentyFour.animate.animateNewPuzzle();
@@ -198,7 +228,7 @@ TwentyFour.play = (function () {
 	function addAll(){
 		var allTiles = document.querySelectorAll('.number-tile');
 		while(allTiles.length > 1){
-			reset();
+			unselectAll();
 			lastMove.newElementselectTile.call(document.querySelectorAll('[data-value="+"]'));
 			selectTile.call(document.querySelectorAll(".number-tile")[0]);
 			selectTile.call(document.querySelectorAll(".number-tile")[1]);
@@ -209,7 +239,7 @@ TwentyFour.play = (function () {
 	function multiplyAll(){
 		var allTiles = document.querySelectorAll('.number-tile');
 		while(allTiles.length > 1){
-			reset();
+			unselectAll();
 			selectTile.call(document.querySelectorAll('[data-value="x"]'));
 			selectTile.call(document.querySelectorAll(".number-tile")[0]);
 			selectTile.call(document.querySelectorAll(".number-tile")[1]);
@@ -218,8 +248,8 @@ TwentyFour.play = (function () {
 	}
 
 	function endOfRound () {
-		reset();
-
+		unselectAll();
+		is_active = false;
 		TwentyFour.display.endOfRound();
 		TwentyFour.hotkeys.endOfRound();
 	}
@@ -231,6 +261,6 @@ TwentyFour.play = (function () {
 		skipPuzzle:skipPuzzle,
 		addAll:addAll,
 		multiplyAll:multiplyAll,
-		endOfRound:endOfRound
+		endOfRound:endOfRound,
 	}
 })();

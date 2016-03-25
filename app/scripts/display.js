@@ -65,7 +65,7 @@ TwentyFour.display = (function () {
 		var numContainer = document.querySelector('.numbers-container');
 
 		for(var i=0; i < array.length; i++) {
-			var newNumberTile = createNumberTile(array[i]);
+			var newNumberTile = createNumberTile(array[i], i);
 			numContainer.innerHTML += newNumberTile;
 		}
 
@@ -76,16 +76,16 @@ TwentyFour.display = (function () {
 	Public Methods
 	***/
 
-	function createNumberTile (data){
-		return "<div class='number-tile-container'><div class='number-tile' data-value='"+ data + "'><div class='hot-key'></div></div>";
+	function createNumberTile (data, index){
+		return "<div class='number-tile-container'><div class='number-tile' data-value='"+ data + "' data-numberindex='"+index+"'><div class='hot-key'></div></div>";
 	}
 
 	function createOperationTile (op) {
 		return "<div class='operation-tile-container'><div class='operation-tile' data-value='"+ op + "' data-operation='" + TwentyFour.hotkeys.getHotKey(op).keycode + "''><div class='hot-key'>" + TwentyFour.hotkeys.getHotKey(op).shortcut.toUpperCase() + "</div></div></div>";
 	}
 
-	function createHistoryElement (history) {
-		return "<div class='history-item'><p>Last Move: " + history + "</p></div>";
+	function createHistoryElement (history, index) {
+		return "<div class='history-item' data-historyindex='"+index+"'><p>Last Move: " + history + "</p></div>";
 	}
 
 	function createCurrentScoreElement(currentScore){

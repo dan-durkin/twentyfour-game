@@ -2,26 +2,10 @@ TwentyFour.animate = (function (){
 	/***
 	Private Methods
 	***/
+
 	function animateTile (animationName) {
-		function newClassString () {
-			var str = ""
-			for(var i = 0, len = this.classList.length; i<len; i++){
-				str += ' ' + this.classList[i] + ' ';
-			}
-			return str + ' animated ' + animationName;
-		}
-
-		var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-
-		this.setAttribute('class', newClassString.call(this));
-
-		/***
-		THIS ISN'T WORKING
-		***/
-
-		setTimeout(function(){
-			this.classList.remove(["animated", animationName]);
-		}, 100);
+		var element = this;
+		element.classList.add("animated",animationName);
 	}
 
 	/***
@@ -34,12 +18,14 @@ TwentyFour.animate = (function (){
 		}
 	}
 
-	function animateNewElement (newElement){
-		animateTile.call(newElement, ['flipInX']);
+	function animateNewElement (){
+		var element = this;
+		animateTile.call(element, ['flipInX']);
 	}
 
-	function animateOut (oldElement){
-		animateTile.call(oldElement, ['flipOutX']);
+	function animateOut (){
+		var element = this;
+		animateTile.call(element, ['flipOutX']);
 	}
 
 	function animateNewPuzzle(){
@@ -53,9 +39,15 @@ TwentyFour.animate = (function (){
 		var correct = document.querySelector('.number-tile-container.correct');
 		animateTile.call(correct, ['bounceOutRight']);
 	}
+
 	function animateWrong(){
 		var wrong = document.querySelector('.number-tile-container.correct');
 		animateTile.call(wrong, ['shake']);
+	}
+
+	function removeAnimation () {
+		var element = this;
+		element.classList.remove("animated", "zoomIn", "flipInX", "flipOutX", "bounceIn", "bounceOutRight", "shake");
 	}
 
 	return {
@@ -64,6 +56,7 @@ TwentyFour.animate = (function (){
 		animateOut:animateOut,
 		animateNewPuzzle:animateNewPuzzle,
 		animateRight:animateRight,
-		animateWrong:animateWrong
+		animateWrong:animateWrong,
+		removeAnimation:removeAnimation
 	};
 })();

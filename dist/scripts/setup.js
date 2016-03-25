@@ -3,24 +3,37 @@
 		TwentyFour.login.config();
 		TwentyFour.display.setupBoard();
 
-
 		document.querySelector(".game-container").addEventListener("click", function (event) {
-			if (event.target.className === "number-tile" || event.target.className === "hotkey show" || event.target.className === "operation-tile") {
+			if (event.target.classList.contains("number-tile") || event.target.classList.contains("hotkey") || event.target.classList.contains("operation-tile")){
 				TwentyFour.play.selectTile.call(event.target);
 			}
-		});
-/*
-		document.querySelector(".operations-container").addEventListener("click", function (event) {
-			if (event.target.className === "operation-tile" || event.target.className === "hotkey show") {
-				TwentyFour.play.selectTile(event.target);
+			else if (event.target.classList.contains("login-btn")){
+				TwentyFour.login.facebookLogin.call(event.target);
 			}
-		});*/
-
-		document.querySelector('.login-btn').addEventListener("click", TwentyFour.login.facebookLogin);
-		document.querySelector('.logout-btn').addEventListener("click", TwentyFour.login.logout);
-		document.querySelector('.undo-tile').addEventListener("click", TwentyFour.play.undoMove);
-		document.querySelector('.skip-tile').addEventListener("click", TwentyFour.play.skipPuzzle);
+			else if (event.target.classList.contains("logout-btn")){
+				TwentyFour.login.logout.call(event.target);
+			}
+			else if (event.target.classList.contains("undo-tile")){
+				TwentyFour.play.undoMove.call(event.target);
+			}
+			else if (event.target.classList.contains("skip-tile")){
+				TwentyFour.play.skipPuzzle.call(event.target);
+			}
+		});
 		document.addEventListener("keydown", TwentyFour.hotkeys.keyHandler);
+
+		document.addEventListener("animationend", function(event){
+			TwentyFour.animate.removeAnimation.call(event.target);
+		}, false);
+		document.addEventListener("webkitAnimationEnd", function(event){
+			TwentyFour.animate.removeAnimation.call(event.target);
+		}, false);
+		document.addEventListener("mozAnimationEnd", function(event){
+			TwentyFour.animate.removeAnimation.call(event.target);
+		}, false);
+		document.addEventListener("MSAnimationEnd", function(event){
+			TwentyFour.animate.removeAnimation.call(event.target);
+		}, false);
 
 		ref = TwentyFour.data.getRef();
 		ref.child('solutions').on("value", function(snapshot){
