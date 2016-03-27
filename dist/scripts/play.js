@@ -3,18 +3,51 @@ TwentyFour.play = (function () {
 	Private Variables
 	***/
 
-	var moveOperation = null;
-	var moveNumberTiles = [];
+	var is_active = false;
+
+	var moveObject = {
+		move_operation:{},
+		numbers_selected: [],
+		reset:function(){
+			this.move_operation = {},
+			this.numbers_selected = []
+		},
+		resetMoveOperation:function(){
+			this.move_operation = {}
+		},
+		resetNumberSelection:function(){
+			this.numbers_selected = []
+		},
+		removeNumberSelection:function(index){
+			this.numbers_selected.splice(index,1);
+		},
+		readyOperations:function(){
+			return this.move_operation.hasOwnProperty('value') && this.move_operation.hasOwnProperty('element')
+		},
+		readyNumbersSelected:function(){
+			return this.numbers_selected.length == 2 && this.numbers_selected[0].hasOwnProperty('value') && this.numbers_selected[0].hasOwnProperty('element') && this.numbers_selected[1].hasOwnProperty('value') && this.numbers_selected[1].hasOwnProperty('element');
+		},
+		readyToMove:function(){
+			return this.readyOperations() && this.readyNumbersSelected();
+		}
+	};
 
 	/***
 	Private Methods
 	***/
 
-	function reset () {
-		var selected =$('.selected');
-		selected.removeClass('selected');
-		moveOperation = null;
-		moveNumberTiles = [];
+	function unselectAll () {
+		var selected = document.querySelectorAll('.selected');
+		for (var i = 0, len = selected.length; i < len; i++) {
+			selected[i].classList.remove('selected');
+		}
+	}
+
+	function unselectAllNumberTiles () {
+		var selected = document.querySelectorAll('.number-tile.selected');
+		for (var i = 0, len = selected.length; i < len; i++) {
+			selected[i].classList.remove('selected');
+		}
 	}
 
 	function operate(moveOperation){
@@ -22,18 +55,18 @@ TwentyFour.play = (function () {
 		return OperationTiles[moveOperation];
 	}
 
-	function checkSolution($element){
-		if($element.data("value") === 24){
-			solved($element);
+	function checkSolution(){
+		if(parseInt(this.dataset.value) === 24){
+			solved.call(this);
 		}
 		else{
-			incorrect($element);
+			incorrect.call(this);
 		}
 	}
 
-	function solved ($element){
-		$element.addClass('correct');
-		TwentyFour.animate.animateRight();
+	function solved (){
+		this.classList.add('correct');
+		TwentyFour.animate.animateRight.call(this);
 
 		setTimeout(function(){
 			TwentyFour.score.updateCurrentScore()
@@ -43,44 +76,66 @@ TwentyFour.play = (function () {
 		}, 300);
 	}
 
-	function incorrect($element){
-		$element.addClass('incorrect');
-		TwentyFour.animate.animateWrong();
+	function incorrect(){
+		this.classList.add('incorrect');
+		TwentyFour.animate.animateWrong.call(this);
 	}
 
 	function performMove () {
-		var result = operate(moveOperation)(moveNumberTiles[0].value, moveNumberTiles[1].value);
+		//Find the Result
+		var result = operate(moveObject.move_operation.value)(parseInt(moveObject.numbers_selected[0].value), parseInt(moveObject.numbers_selected[1].value));
+		//grab the container
+		var numContainer = document.querySelector('.numbers-container');
 
-		var $numContainer = $('.numbers-container');
-		var $selectedTiles = $('.selected.number-tile');
-		var $newNumberTile = TwentyFour.display.createNumberTile(result);
+		// Create a new element with the Result
+		TwentyFour.display.numberTileIDManager.increment_id();
+		var newNumberTileIndex = TwentyFour.display.numberTileIDManager.get_id();
+		var newNumberTile = TwentyFour.display.createNumberTile(result, newNumberTileIndex);
 
-		var historyString = moveNumberTiles[0].value.toString() + ' ' + moveOperation + ' ' + moveNumberTiles[1].value.toString() + ' = ' + result.toString();
+		//Add it to the Dom and select the element
+		numContainer.innerHTML += newNumberTile;
+		var newNumberElement = document.querySelector('[data-numberindex="' + newNumberTileIndex + '"]');
 
+		//Store the move in a string
+		var historyString = moveObject.numbers_selected[0].value.toString() + ' ' + moveObject.move_operation.value + ' ' + moveObject.numbers_selected[1].value.toString() + ' = ' + result.toString();
+
+		//Store data in an object
 		var moveStore = {
-			firstNumber: moveNumberTiles[0].value,
-			secondNumber: moveNumberTiles[1].value,
-			moveOperation: moveOperation,
-			firstNumberElement: moveNumberTiles[0].element,
-			secondNumberElement: moveNumberTiles[1].element,
-			newElement: $newNumberTile,
+			firstNumber: moveObject.numbers_selected[0].value,
+			secondNumber: moveObject.numbers_selected[1].value,
+			moveOperation: moveObject.move_operation,
+			firstNumberIndex: moveObject.numbers_selected[0].index,
+			firstNumberElement: moveObject.numbers_selected[0].element,
+			secondNumberIndex: moveObject.numbers_selected[1].index,
+			secondNumberElement: moveObject.numbers_selected[1].element,
+			newElement: newNumberElement,
+			newElementIndex: newNumberTileIndex,
 			historyString: historyString,
-			historyElement: TwentyFour.display.createHistoryElement(historyString)
+			historyElement: TwentyFour.display.createHistoryElement(historyString, TwentyFour.history.getCurrentHistory().length)
 		};
 
-		reset();
-		$selectedTiles.remove();
-		$numContainer.prepend($newNumberTile);
+		//Unselect everything
+		unselectAll();
 
+		//Select the old elements, animate them out, and remove them from the DOM
+		var oldEl1 = document.querySelector('[data-numberindex="' + moveStore.firstNumberIndex + '"]').parentElement;
+		var oldEl2 = document.querySelector('[data-numberindex="' + moveStore.secondNumberIndex + '"]').parentElement;
+		TwentyFour.animate.animateOut.call(oldEl1);
+		TwentyFour.animate.animateOut.call(oldEl2);
+		numContainer.removeChild(oldEl1);
+		numContainer.removeChild(oldEl2);
 
+		//Update history, reset the hotkeys, reset the moveObject
 		TwentyFour.history.updateCurrentHistory(moveStore);
 		TwentyFour.hotkeys.setNumberHotKeys();
+		moveObject.reset();
 
-		if($('.number-tile').length === 1){
-			checkSolution($newNumberTile);
+		//Check the solution OR animate the new element
+		if(document.querySelectorAll('.number-tile').length === 1){
+			checkSolution.call(newNumberElement);
 		}
 		else {
-			TwentyFour.animate.animateNewElement(moveStore.newElement);
+			TwentyFour.animate.animateNewElement.call(newNumberElement.parentElement);
 		}
 	}
 
@@ -89,114 +144,139 @@ TwentyFour.play = (function () {
 	***/
 
 	function startNewGame () {
-		reset();
 		endOfRound();
-		$(".numbers-container").on("click",".number-tile", TwentyFour.play.selectTile);
-		$(".operations-container").on("click",".operation-tile", TwentyFour.play.selectTile);
-		$(window).on("keydown",TwentyFour.hotkeys.keyHandler);
-
+		TwentyFour.display.numberTileIDManager.reset_id();
+		is_active = true;
 		TwentyFour.history.emptyCurrentHistory();
 		TwentyFour.history.clearRoundHistory();
 		TwentyFour.display.setupBoard();
 		TwentyFour.display.newPuzzle();
 		TwentyFour.animate.animateNewGame();
-		TwentyFour.timer.startTimer();
+		//TwentyFour.timer.startTimer();
 	}
 
 	function selectTile() {
-		function validMove(element){
-			if(element.hasClass("selected") && element.hasClass('number-tile')){
-				reset();
+		function removeFromMoveObject(){
+			if(this.classList.contains("operation-tile")){
+				this.classList.remove('selected');
+				moveObject.resetMoveOperation();
 			}
-			if(moveOperation && element.hasClass('operation-tile')){
-				reset();
-			}
-			if(moveNumberTiles.length === 2 && element.hasClass('number-tile')){
-				reset();
-			}
-		}
-
-		function storeMove(value, $element){
-			if(isNaN(value)){
-				moveOperation = value;
-			}
-			else{
-				moveNumberTiles.push({
-					value: value,
-					element: $element
+			else if (this.classList.contains("number-tile")) {
+				var og_element = this;
+				var i = -1;
+				moveObject.numbers_selected.findIndex(function(el,index){
+					if(og_element === el.element.childNodes[0]){
+						i = index;
+					}
 				});
+
+				if(i>-1){
+					moveObject.removeNumberSelection(i);
+				}
 			}
 		}
 
-		function readyToMove(){
-			return moveOperation && moveNumberTiles.length === 2;
+		function addToMoveObject(){
+			if(this.classList.contains("operation-tile")){
+				if(moveObject.readyOperations()){
+					document.querySelector('[data-value="' + moveObject.move_operation.value + '"]').classList.remove('selected');
+					moveObject.resetMoveOperation();
+				}
+				moveObject.move_operation = {value: this.dataset.value, element: this.parentElement}
+			}
+			else if (this.classList.contains("number-tile")) {
+				if(moveObject.readyNumbersSelected()){
+					unselectAllNumberTiles();
+					moveObject.resetNumberSelection();
+				}
+				moveObject.numbers_selected.push({value: this.dataset.value, element: this.parentElement, index:this.dataset.numberindex});
+			}
 		}
 
-		var element = $(this);
-		validMove(element);
+		var element = this;
 
-		element.toggleClass("selected");
-		storeMove(element.data("value"), element);
+		if(is_active && element.classList.contains("selected")){
+			removeFromMoveObject.call(element);
+			element.classList.remove("selected");
+		}else{
+			addToMoveObject.call(element);
+			element.classList.add("selected");
+		}
 
-		if (readyToMove()){
+		if (is_active && moveObject.readyToMove()){
 			performMove();
 		}
 	}
 
 	function undoMove () {
-		if(TwentyFour.history.getCurrentHistory().length > 0){
-			var $numContainer = $('.numbers-container');
+		if(TwentyFour.history.getCurrentHistory().length > 0 && is_active){
 			var lastMove = TwentyFour.history.getCurrentHistory().pop();
 
-			lastMove.historyElement.remove();
-			TwentyFour.animate.animateOut(lastMove.newElement);
-			TwentyFour.animate.animateNewElement(lastMove.secondNumberElement);
-			TwentyFour.animate.animateNewElement(lastMove.firstNumberElement);
+			var historyContainer = document.querySelector('.current-puzzle-history-container');
+			var oldHistoryIndex = document.querySelectorAll('.history-item').length - 1;
+			var oldHistoryElement = document.querySelector('[data-historyindex="' + oldHistoryIndex + '"]');
+			historyContainer.removeChild(oldHistoryElement);
+
+			var numContainer = document.querySelector('.numbers-container');
+			var lastMoveIndex = lastMove.newElementIndex;
+			var lastMoveElement = document.querySelector('[data-numberindex="' + lastMoveIndex + '"]');
+
+			var newElement1Index = lastMove.firstNumberIndex;
+			var newElement1_temp = TwentyFour.display.createNumberTile(lastMove.firstNumber, newElement1Index);
+
+			var newElement2Index = lastMove.secondNumberIndex;
+			var newElement2_temp = TwentyFour.display.createNumberTile(lastMove.secondNumber, newElement2Index);
+
+			TwentyFour.animate.animateOut.call(lastMoveElement);
 
 			setTimeout(function(){
-				lastMove.newElement.remove();
-				$numContainer.prepend(lastMove.secondNumberElement);
-				$numContainer.prepend(lastMove.firstNumberElement);
+				numContainer.removeChild(lastMoveElement.parentElement)
+				numContainer.innerHTML += newElement1_temp;
+				numContainer.innerHTML += newElement2_temp;
+				var newElement1 = document.querySelector('[data-numberindex="' + newElement1Index + '"]');
+				var newElement2 = document.querySelector('[data-numberindex="' + newElement2Index + '"]');
+				TwentyFour.animate.animateNewElement.call(newElement1.parentElement);
+				TwentyFour.animate.animateNewElement.call(newElement2.parentElement);
 				TwentyFour.hotkeys.setNumberHotKeys();
 			}, 250);
 		}
 
-		reset();
+		unselectAll();
 	}
 
 	function skipPuzzle(){
-		TwentyFour.data.skipCounter();
-		TwentyFour.display.newPuzzle();
-		TwentyFour.animate.animateNewPuzzle();
+		if (is_active) {
+			TwentyFour.data.skipCounter();
+			TwentyFour.display.newPuzzle();
+			TwentyFour.animate.animateNewPuzzle();
+		}
 	}
 
 	function addAll(){
-		var allTiles = $('.number-tile');
+		var allTiles = document.querySelectorAll('.number-tile');
 		while(allTiles.length > 1){
-			selectTile.call(document.querySelectorAll('[data-value="+"]'));
+			unselectAll();
+			selectTile.call(document.querySelector('[data-value="+"]'));
 			selectTile.call(document.querySelectorAll(".number-tile")[0]);
 			selectTile.call(document.querySelectorAll(".number-tile")[1]);
-			allTiles = $('.number-tile');
-			reset();
+			allTiles = document.querySelectorAll('.number-tile');
 		}
 	}
 
 	function multiplyAll(){
-		var allTiles = $('.number-tile');
+		var allTiles = document.querySelectorAll('.number-tile');
 		while(allTiles.length > 1){
-			selectTile.call(document.querySelectorAll('[data-value="x"]'));
+			unselectAll();
+			selectTile.call(document.querySelector('[data-value="x"]'));
 			selectTile.call(document.querySelectorAll(".number-tile")[0]);
 			selectTile.call(document.querySelectorAll(".number-tile")[1]);
-			allTiles = $('.number-tile');
-			reset();
+			allTiles = document.querySelectorAll('.number-tile');
 		}
 	}
 
 	function endOfRound () {
-		reset();
-		$(".numbers-container").off("click", ".number-tile", TwentyFour.play.clickHandler);
-		$(".operations-container").off("click", ".operation-tile", TwentyFour.play.clickHandler);
-		$(window).off("keydown", TwentyFour.hotkeys.keyHandler);
+		unselectAll();
+		is_active = false;
 		TwentyFour.display.endOfRound();
 		TwentyFour.hotkeys.endOfRound();
 	}
@@ -208,6 +288,6 @@ TwentyFour.play = (function () {
 		skipPuzzle:skipPuzzle,
 		addAll:addAll,
 		multiplyAll:multiplyAll,
-		endOfRound:endOfRound
+		endOfRound:endOfRound,
 	}
 })();

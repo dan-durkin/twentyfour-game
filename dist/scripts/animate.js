@@ -2,41 +2,52 @@ TwentyFour.animate = (function (){
 	/***
 	Private Methods
 	***/
+
 	function animateTile (animationName) {
-		var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-		$(this).addClass('animated ' + animationName).one(animationEnd, function() {
-			$(this).removeClass('animated ' + animationName);
-		});
+		var element = this;
+		element.classList.add("animated",animationName);
 	}
 
 	/***
 	Public Methods
 	***/
 	function animateNewGame (){
-		var puzzleTiles = $('.number-tile');
-		animateTile.call(puzzleTiles, ['zoomIn']);
+		var puzzleTiles = document.querySelectorAll('.number-tile-container');
+		for(var i =0, len = puzzleTiles.length; i<len;i++){
+			animateTile.call(puzzleTiles.item(i), ['zoomIn']);
+		}
 	}
 
-	function animateNewElement ($newElement){
-		animateTile.call($newElement, ['flipInX']);
+	function animateNewElement (){
+		var element = this;
+		animateTile.call(element, ['flipInX']);
 	}
 
-	function animateOut ($oldElement){
-		animateTile.call($oldElement, ['flipOutX']);
+	function animateOut (){
+		var element = this;
+		animateTile.call(element, ['flipOutX']);
 	}
 
 	function animateNewPuzzle(){
-		var puzzleTiles = $('.number-tile');
-		animateTile.call(puzzleTiles, ['bounceIn']);
+		var puzzleTiles = document.querySelectorAll('.number-tile-container');
+		for(var i =0, len = puzzleTiles.length; i<len;i++){
+			animateTile.call(puzzleTiles.item(i), ['bounceIn']);
+		}
 	}
 
 	function animateRight(){
-		var correct = $('.number-tile.correct');
-		animateTile.call(correct, ['bounceOutRight']);
+		var element = this;
+		animateTile.call(element.parentElement, ['bounceOutRight']);
 	}
+
 	function animateWrong(){
-		var wrong = $('.number-tile.incorrect');
-		animateTile.call(wrong, ['shake']);
+		var element = this;
+		animateTile.call(element.parentElement, ['shake']);
+	}
+
+	function removeAnimation () {
+		var element = this;
+		element.classList.remove("animated", "zoomIn", "flipInX", "flipOutX", "bounceIn", "bounceOutRight", "shake");
 	}
 
 	return {
@@ -45,6 +56,7 @@ TwentyFour.animate = (function (){
 		animateOut:animateOut,
 		animateNewPuzzle:animateNewPuzzle,
 		animateRight:animateRight,
-		animateWrong:animateWrong
+		animateWrong:animateWrong,
+		removeAnimation:removeAnimation
 	};
 })();

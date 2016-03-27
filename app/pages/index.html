@@ -1,64 +1,103 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>twentyfour</title>
+  <meta charset="UTF-8">
+  <title>twentyfour</title>
 	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="https://necolas.github.io/normalize.css/3.0.3/normalize.css">
 	<link rel="stylesheet" href="/styles/animate.css">
-	<link rel="stylesheet" href="/styles/style.css">
+	<link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
 	<div class="main-container">
-		<div class="nav-container">
-			<div class="site-title"><h1>twentyfour</h1></div>
-			<div class="welcome"></div>
-			<div class="login-logout">
-				<div class="login-btn"><a class="fb-login-link" onclick="TwentyFour.login.facebookLogin()" ><img class="fb-login-button" src="/assets/fblogin.png"></a></div>
-				<div class="logout-btn flex-parent"><a onclick="TwentyFour.login.logout()" class="logout-link">Logout</a></div>
+    <!--Nav Content-->
+    <div class="nav-container">
+			<h1 class="site-title">24</h1>
+			<div class="login">
+        <p class="login-message"></p>
+        <a class="login-btn"><img class="fb-login-button" src="/assets/fblogin.png"></a>
 			</div>
-		</div>
-		<div class="flex-parent game-info-container">
-			<div class="instructions"><p>Transform 4 numbers into 24. You can add, multiply, subtract, or divide. You must use all 4 numbers <strong>exactly once</strong>. Press 'New Game' to begin.</p>
-				<p><strong>Hint:</strong> Press space bar to see keyboard shortcuts!</p>
-			</div>
-			<div class="timer-score-container">
-				<div class="info-container">
-					<div class='time-left'></div>
-					<div class="current-score"></div>
-					<div class="best-score"></div>
-				</div>
-				<div class="cta-container"><a class="new-game-cta" onclick="TwentyFour.play.startNewGame()">New Game</a></div>
-			</div>
-		</div>
-		<div class="game-container">
-			<div class="flex-parent numbers-container">
-			</div>
-			<div class="flex-parent utilities-container">
+      <div class="logout">
+        <p class="welcome-message"></p>
+        <a class="logout-btn">Logout</a>
+      </div>
+    </div>
+    <!--Game Content-->
+    <div class="game-container">
+      <!--Timer/ Score/ Hint Content-->
+      <div class="instructions-container">
+        <p class="instructions">Transform 4 numbers into 24. You can add, multiply, subtract, or divide. You must use all 4 numbers exactly once.</p>
+        <div class="cta-container">
+          <a class="new-game-cta">New Game</a>
+        </div>
+      </div>
+      <div class="hint-container">
+        <p class="hint"><strong>Hint:</strong> Press space bar to see keyboard shortcuts!</p>
+      </div>
+      <div class="timer-score-container">
+          <div class="time-left-container">
+            <div class="time-left-box"><span class="time-left"></div>
+          </div>
+          <div class="current-score-container">
+            <div class="current-score-box"><span class="current-score"></div>
+          </div>
+          <div class="best-score-container">
+            <div class="best-score-box"><span class="best-score"></div>
+          </div>
+      </div>
+     <!--Numbers Content-->
+     <div class="numbers-container">
+     </div>
+     <!--Utilities/ Operations Content-->
+     <div class="utilities-container">
 				<div class="undo-container">
-					<span class="ion-ios-undo undo" onclick="TwentyFour.play.undoMove()"></span>
-					<div class="hot-key ion-arrow-left-c"></div>
+          <div class="undo-tile">
+            <span class="ion-ios-undo undo"></span>
+            <div class="utility-hot-key ion-arrow-left-c"></div>
+          </div>
 				</div>
-				<div class="flex-parent operations-container">
+				<div class="operations-container">
 				</div>
 				<div class="skip-container">
-					<span class="ion-ios-skipforward skip" onclick="TwentyFour.play.skipPuzzle()"></span>
-					<div class=" hot-key ion-arrow-right-c"></div>
+          <div class="skip-tile">
+            <span class="ion-ios-skipforward skip"></span>
+            <div class="utility-hot-key ion-arrow-right-c"></div>
+          </div>
 				</div>
-			</div>
+    </div>
+		<div class="helper-hot-keys">
+			<div class="helper-hot-key-container">
+        <div class='helper-hot-key'>A</div>
+        <p>Add all</p>
+      </div>
+			<div class="helper-hot-key-container">
+        <div class='helper-hot-key'>S</div>
+        <p>Multiply all</p>
+      </div>
 		</div>
-		<div class="flex-parent helper-hot-key-container">
-			<div class="helper-hot-key"><div class='hot-key'>A</div><p>Add all numbers.</p></div>
-			<div class="helper-hot-key"><div class='hot-key'>S</div><p>Multiply all numbers.</p></div>
-		</div>
-		<div class="flex-parent puzzle-history">
+		<div class="puzzle-history">
 			<div class="current-puzzle-history-container"></div>
 			<div class="round-solves-container"></div>
 		</div>
 	</div>
+</div>
+
+<!--div class="startup">
+  <div class="instructions">
+    <p>Transform 4 numbers into 24. You can add, multiply, subtract, or divide. You must use all 4 numbers <strong>exactly once</strong>. Press 'New Game' to begin.</p>
+  </div>
+  <div class="cta-container">
+    <a class="new-game-cta" onclick="TwentyFour.play.startNewGame()">New Game</a>
+  </div>
+</div>
+
+<div class="end-of-round">
+  <p>You solved X puzzles</p>
+</div-->
+
 </body>
 	<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
-	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
 	<script src="/scripts/app.js"></script>
 	<script src="/scripts/data.js"></script>
 	<script src="/scripts/display.js"></script>

@@ -6,22 +6,19 @@ TwentyFour.display = (function () {
 		var currentScore = 0;
 		var bestScore = 0;
 
-		var currentScoreContainer = $('.current-score');
-		var bestScoreContainer = $('.best-score');
-
-		currentScoreContainer.text(currentScore);
-		bestScoreContainer.text(bestScore);
+		document.querySelector('.current-score').textContent = currentScore;
+		document.querySelector('.best-score').textContent = bestScore;
 	}
 
 	function setOperations () {
 		OperationTiles = TwentyFour.data.getOperations();
 
-		var $operationContainer = $('.operations-container');
-		$operationContainer.empty();
+		var operationContainer = document.querySelector('.operations-container');
+		operationContainer.innerHTML = "";
 
 		for(var op in OperationTiles){
-			var $newOpTile = createOperationTile(op);
-			$operationContainer.append($newOpTile);
+			var newOpTile = createOperationTile(op);
+			operationContainer.innerHTML += newOpTile;
 		}
 	}
 
@@ -45,26 +42,33 @@ TwentyFour.display = (function () {
 		}
 
 		var puzzle = shuffle(TwentyFour.data.getNumbersData());
+
 		setTiles(puzzle);
 		TwentyFour.data.viewCounter();
+
 		return puzzle;
 	}
 
 	function setTiles (array) {
 		function emptyBeforeNewPuzzle(){
-			$('.selected').removeClass('selected');
+			var selected = document.querySelectorAll('.selected');
+			for(var i=0,len=selected.length;i<len;i++){
+				selected[i].classList.remove('selected');
+			}
+			document.querySelector('.numbers-container').innerHTML = "";
+			document.querySelector('.current-puzzle-history-container').innerHTML = ""
 			TwentyFour.history.emptyCurrentHistory();
-			$('.numbers-container').empty();
-			$('.current-puzzle-history-container').empty();
 		}
 
 		emptyBeforeNewPuzzle();
 
-		var $numContainer = $('.numbers-container');
+		var numContainer = document.querySelector('.numbers-container');
+		numberTileIDManager.reset_id();
 
 		for(var i=0; i < array.length; i++) {
-			var $newNumberTile = createNumberTile(array[i]);
-			$numContainer.append($newNumberTile);
+			numberTileIDManager.increment_id();
+			var newNumberTile = createNumberTile(array[i], numberTileIDManager.get_id());
+			numContainer.innerHTML += newNumberTile;
 		}
 
 		TwentyFour.hotkeys.setNumberHotKeys();
@@ -74,32 +78,35 @@ TwentyFour.display = (function () {
 	Public Methods
 	***/
 
-	function createNumberTile (data){
-		return $("<div class='flex-child number-tile tile' data-value='" + data + "'><div class='number-content content'><div><span class='tile-data'>" + data + "</span></div></div><div class='hot-key'>"+"</div></div>");
+	function createNumberTile (data, index){
+		return "<div class='number-tile-container'><div class='number-tile' data-value='"+ data + "' data-numberindex='"+index+"'><div class='number-hot-key'></div></div>";
 	}
 
 	function createOperationTile (op) {
-		return $("<div class='flex-child operation-tile tile' data-value='"+op+"' data-operation='" + TwentyFour.hotkeys.getHotKey(op).keycode + "'><div class='operation-content content'><div><span class='tile-data'>" + op + "</span></div></div><div class='hot-key'>"+ TwentyFour.hotkeys.getHotKey(op).shortcut.toUpperCase() +"</div></div>");
+		return "<div class='operation-tile-container'><div class='operation-tile' data-value='"+ op + "' data-operation='" + TwentyFour.hotkeys.getHotKey(op).keycode + "''><div class='operation-hot-key'>" + TwentyFour.hotkeys.getHotKey(op).shortcut.toUpperCase() + "</div></div></div>";
 	}
 
-	function createHistoryElement (history) {
-		return $("<div class='history-item'><p>Last Move: " + history + "</p></div>");
+	function createHistoryElement (history, index) {
+		return "<div class='history-item' data-historyindex='"+index+"'><p>Last Move: " + history + "</p></div>";
+	}
+
+	function createRoundSolveHistoryElement(history, index){
+		return "<div class='round-history-item' data-roundhistoryindex='"+index+"'><p>Last Move: " + history + "</p></div>";
 	}
 
 	function createCurrentScoreElement(currentScore){
-		var currentScoreContainer = $('.current-score');
-		currentScoreContainer.empty();
-		currentScoreContainer.text(currentScore);
+		document.querySelector('.current-score').innerHTML= "";
+		document.querySelector('.current-score').textContent = currentScore;
 	}
 
 	function loginDisplay (logged_in){
 		if(logged_in){
-			$('.fb-login-link').removeClass('show');
-			$('.logout-link').addClass('show');
+			document.querySelector('.login').classList.remove('show')
+			document.querySelector('.logout').classList.add('show');
 		}
 		else{
-			$('.fb-login-link').addClass('show');
-			$('.logout-link').removeClass('show');
+			document.querySelector('.login').classList.add('show')
+			document.querySelector('.logout').classList.remove('show');
 		}
 	}
 
@@ -107,13 +114,14 @@ TwentyFour.display = (function () {
 		TwentyFour.timer.setTimer();
 		setScores();
 		setOperations();
-		setTiles(["Loading..."]);
+		setTiles(["","","",""]);
 	}
 
 	function ready (){
 		if(TwentyFour.data.getNumbersData()){
-			setTiles(["","","",""]);
-			$('.new-game-cta').addClass('active');
+			setTiles(["y","","",""]);
+			document.querySelector('.new-game-cta').classList.add('active');
+			document.querySelector('.new-game-cta').addEventListener('click', TwentyFour.play.startNewGame())
 		}
 		else{
 			setTimeout(function(){
@@ -123,7 +131,8 @@ TwentyFour.display = (function () {
 	}
 
 	function newPuzzle(){
-		TwentyFour.data.init()
+		numberTileIDManager.reset_id();
+		TwentyFour.data.init();
 		setTileNumbers();
 	}
 
@@ -131,15 +140,32 @@ TwentyFour.display = (function () {
 		setTiles(["","","",""]);
 	}
 
+	var numberTileIDManager = {
+		current_id: 0,
+		get_id:function(){
+			return this.current_id;
+		},
+		increment_id: function(){
+			this.current_id += 1;
+			return this.current_id;
+		},
+		reset_id: function(){
+			this.current_id = 0;
+			return this.current_id;
+		}
+	};
+
 	return {
 		createNumberTile:createNumberTile,
 		createOperationTile:createOperationTile,
 		createHistoryElement:createHistoryElement,
+		createRoundSolveHistoryElement:createRoundSolveHistoryElement,
 		createCurrentScoreElement:createCurrentScoreElement,
 		loginDisplay:loginDisplay,
 		setupBoard:setupBoard,
 		ready:ready,
 		newPuzzle:newPuzzle,
-		endOfRound:endOfRound
+		endOfRound:endOfRound,
+		numberTileIDManager:numberTileIDManager
 	};
 })();

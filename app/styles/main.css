@@ -1,0 +1,452 @@
+/*
+https://coolors.co/app/d34c01-ff6500-f1e0c5-ffffe9-776e65
+*/
+
+*, *:before, *:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+body{
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+	font-family: 'Droid Sans', sans-serif;
+	background-color: #fef3df;
+	color: #776E65
+}
+
+/**
+Main Nav
+**/
+.main-container{
+	width: 100%;
+}
+
+.nav-container{
+	height: 75px;
+	background-color: #d34c01;
+	width: 100%;
+	position: relative;
+}
+
+h1.site-title {
+	left: 15px;
+	width: 15%;
+	font-size: 3rem;
+	line-height: 75px;
+}
+
+h1.site-title,
+p.welcome-message,
+p.login-message{
+	line-height: 75px;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 0;
+	height: 100%;
+	position: absolute;
+	display: inline-block;
+	color: #FEF3DF;
+}
+
+.login,
+.logout{
+	display: none;
+	position: relative;
+	float: right;
+	width: 80%;
+	height: 100%;
+}
+
+p.welcome-message,
+p.login-message{
+	left: 5%;
+	width: 60%;
+	text-align: left;
+}
+
+a.login-btn,
+a.logout-btn{
+	cursor: pointer;
+	display: inline-block;
+	height: 75px;
+	width: 20%;
+}
+
+a.login-btn{
+	text-align: right;
+}
+
+img.fb-login-button,
+a.logout-btn{
+	display: block;
+	margin: 0 auto;
+	position: absolute;
+  top: 50%;
+	right: 5%;
+  transform: translateY(-50%);
+}
+
+img.fb-login-button{
+	height: 50%;
+	width: auto;
+}
+
+a.logout-btn{
+	width: 35%;
+	height: 50px;
+	line-height: 50px;
+	background-color: #F1E0C5;
+	color:#D34C01;
+	border-radius: 5px;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+a.logout-btn:hover{
+	background-color: #FF6500;
+	color:#FFFFE9;
+}
+
+/***
+Start Game
+***/
+
+.game-container{
+	position: relative;
+	width: 90%;
+	margin: 0 auto;
+}
+
+.instructions-container,
+.hint-container{
+	margin-top: 5px;
+	width: 100%;
+	position: relative;
+	display: inline-block;
+}
+
+.instructions-container{
+	width: 100%;
+	height: 85px;
+}
+
+.hint-container{
+	margin-top: 10px;
+	height: 25px;
+}
+
+p.instructions,
+p.hint{
+	margin: 0 auto;
+	padding-left: 5px;
+	position: absolute;
+	height: 100%;
+}
+
+p.instructions{
+	line-height: 20px;
+	display: block;
+	width: 55%
+}
+
+p.hint{
+	line-height: 25px;
+}
+
+/***
+CTA
+***/
+.cta-container{
+	height: 100px;
+	width: 40%;
+	display: inline-block;
+	float: right;
+}
+
+.new-game-cta{
+	padding: 20px;
+	cursor: pointer;
+	background-color: #FFF;
+	display: block;
+	text-align: center;
+}
+
+.new-game-cta.active{
+	background-color: #FF6500;
+	color: #FEF3DF;
+}
+
+/***
+Score & Timer
+***/
+
+.timer-score-container{
+	position: relative;
+	width: 100%;
+	height: 75px;
+}
+
+.time-left-container,
+.current-score-container,
+.best-score-container{
+	display: block;
+	height: 100%;
+	padding: 5px;
+	float: left;
+}
+
+.time-left-container{
+	width: 50%;
+}
+
+.current-score-container,
+.best-score-container{
+	width: 25%;
+}
+
+.time-left-box,
+.current-score-box,
+.best-score-box{
+	border-radius: 5px;
+	background-color:#D34C01;
+	height: 95%;
+	margin: 0 auto;
+	position: relative;
+	color: #FFFFE9;
+}
+
+.time-left-box::before{
+	content: "Time left";
+}
+.current-score-box::before{
+	content: "Score";
+}
+.best-score-box::before{
+	content:"Best";
+}
+
+.time-left-box::before,
+.current-score-box::before,
+.best-score-box::before{
+	text-transform: uppercase;
+	font-weight: bold;
+	text-align: center;
+	position: absolute;
+	top: 2.5px;
+	display: block;
+	width: 100%;
+}
+
+.time-left,
+.current-score,
+.best-score{
+	line-height:70px;
+	font-size: 1.75rem;
+	text-align: center;
+	display: block;
+	padding: 5px;
+}
+
+/***
+Numbers & Operations & Utilities
+***/
+
+.numbers-container{
+	height: 200px;
+	width: 100%
+}
+
+.utilities-container{
+	height: 100px;
+	width: 100%
+}
+
+.operations-container{
+	height: 100%;
+	width: 60%;
+	position: relative;
+	float: left;
+}
+
+.undo-container,
+.skip-container{
+	height: 100%;
+	width: 20%;
+	position: relative;
+	float: left;
+}
+
+.number-tile-container,
+.operation-tile-container{
+	width: 50%;
+	height: 50%;
+	float: left;
+}
+
+.operation-tile,
+.number-tile{
+	height: 95%;
+	width: 95%;
+	margin: 0 auto;
+	position: relative;
+	color: #776E65;
+	background-color: #F1E0C5;
+	border: 2px solid #776E65;
+	border-radius: 5px;
+}
+
+.number-tile::after,
+.operation-tile::after{
+	content: attr(data-value);
+	display: block;
+	text-align: center;
+}
+
+.number-tile::after{
+	font-size: 5rem;
+}
+
+.operation-tile::after{
+	font-size: 2.5rem;
+}
+
+.number-hot-key,
+.operation-hot-key,
+.utility-hot-key{
+	width: 30px;
+	height: 30px;
+	padding: 5px;
+	position: absolute;
+	bottom:-2px;
+	left: -2px;
+	text-align: center;
+	background-color: #FEF3DF;
+	border: 2px solid #776E65;
+	border-radius: 5px;
+	display: none;
+}
+
+.undo-tile,
+.skip-tile{
+	width: 85%;
+	height: 50px;
+	margin: 0 auto;
+	margin-top: 25px;
+	position: relative;
+	text-align: center;
+	background-color: #F1E0C5;
+	border: 2px solid #776E65;
+	border-radius: 5px;
+}
+
+.undo,
+.skip{
+	font-size: 2em;
+	line-height: 50px;
+}
+
+.utility-hot-key{
+	bottom:-25px;
+	width: 80%;
+	margin: auto;
+	z-index: -1;
+	left: -2px;
+	display: none;
+}
+
+/***
+Helper Hot Keys
+***/
+
+.helper-hot-keys{
+	margin-top: 10px;
+	width: 100%;
+	height: 75px;
+	display: none;
+}
+.helper-hot-key-container{
+	width: 50%;
+	float: left;
+	position: relative;
+}
+
+.helper-hot-key{
+	position: absolute;
+	border-radius: 5px;
+	width: 75px;
+	height: 100%;
+	padding: 15px;
+	text-align: center;
+	background-color: #FEF3DF;
+	border: 2px solid #776E65;
+}
+
+.helper-hot-key-container p{
+	padding-left: 85px;
+}
+
+/***
+Visual
+***/
+
+.login.show,
+.logout.show {
+	display: inline-block;
+}
+
+.selected{
+	background-color: #D34C01;
+	border: 2px solid #D34C01;
+	color: #F1E0C5;
+}
+
+.number-hot-key.show,
+.operation-hot-key.show,
+.utility-hot-key.show,
+.helper-hot-keys.show{
+	display: block;
+	color: #776E65;
+}
+
+.correct{
+	background-color: #64B6AC;
+	color: #F1E0C5;
+}
+
+.incorrect{
+	color: #D34C01;
+}
+
+/***
+Tablet
+***/
+@media (min-width: 768px) {
+	.instructions-container{
+		height: 55px;
+	}
+	.hint-container{
+		margin-top: 5px;
+	}
+	p.welcome-message,
+	p.login-message{
+		text-align: right;
+	}
+
+	a.logout-btn{
+		width: 15%;
+}
+
+/***
+Desktop
+***/
+
+@@media (min-width: 1200px) {
+	.instructions-container{
+
+	}
+
+}
