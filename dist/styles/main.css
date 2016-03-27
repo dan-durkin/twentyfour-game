@@ -39,31 +39,48 @@ p.welcome-message{
 	margin-bottom: 0;
 	margin-right: 15px;
 	height: 100%;
+	position: absolute;
 	display: block;
 	color: #FEF3DF;
 }
 
 h1.site-title {
-	float: left;
-	padding-left: 1rem;
-	width: 10%;
+	left: 15px;
+	width: 5%;
 	font-size: 3rem;
 }
 
 p.welcome-message{
-	float: right;
-	right: 5px;
-	width: 60%;
-	padding-right: 60px;
+	left: 100px;
+	width: 30%;
 	text-align: right;
 }
 
-.login{
-	display: none;
-}
-
+.login,
 .logout{
 	display: none;
+	position: absolute;
+	right: 0;
+	width: 60%;
+	height: 100%;
+}
+
+a.login-btn{
+	display: block;
+	height: 100%;
+}
+
+img.fb-login-button{
+	display: inline-block;
+	text-align: right;
+	max-width: 65%;
+	height: auto;
+
+}
+
+a.login-btn,
+a.logout-btn{
+	cursor: pointer;
 }
 
 /***
@@ -336,6 +353,11 @@ CTA
 /***
 Visual
 ***/
+
+.login.show,
+.logout.show {
+	display: table;
+}
 
 .selected{
 	background-color: #D34C01;

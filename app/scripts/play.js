@@ -179,7 +179,7 @@ TwentyFour.play = (function () {
 		function addToMoveObject(){
 			if(this.classList.contains("operation-tile")){
 				if(moveObject.readyOperations()){
-					this.classList.remove('selected');
+					document.querySelector('[data-value="' + moveObject.move_operation.value + '"]').classList.remove('selected');
 					moveObject.resetMoveOperation();
 				}
 				moveObject.move_operation = {value: this.dataset.value, element: this.parentElement}

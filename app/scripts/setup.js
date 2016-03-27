@@ -3,15 +3,15 @@
 		TwentyFour.login.config();
 		TwentyFour.display.setupBoard();
 
-		document.querySelector(".game-container").addEventListener("click", function (event) {
-			if (event.target.classList.contains("number-tile") || event.target.classList.contains("hotkey") || event.target.classList.contains("operation-tile")){
-				TwentyFour.play.selectTile.call(event.target);
-			}
-			else if (event.target.classList.contains("login-btn")){
+		document.querySelector(".main-container").addEventListener("click", function (event) {
+			if (event.target.classList.contains("login-btn") || event.target.classList.contains("fb-login-button")){
 				TwentyFour.login.facebookLogin.call(event.target);
 			}
 			else if (event.target.classList.contains("logout-btn")){
 				TwentyFour.login.logout.call(event.target);
+			}
+			else if (event.target.classList.contains("number-tile") || event.target.classList.contains("hotkey") || event.target.classList.contains("operation-tile")){
+				TwentyFour.play.selectTile.call(event.target);
 			}
 			else if (event.target.classList.contains("undo-tile") || event.target.classList.contains("undo")){
 				TwentyFour.play.undoMove.call(event.target);
