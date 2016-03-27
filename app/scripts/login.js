@@ -36,10 +36,9 @@ TwentyFour.login = (function (){
 	}
 
 	function populateData(){
-		var welcomeContainer = document.querySelector('.welcome-message')
-		welcomeContainer.textContent = "";
-
 		if(logged_in){
+			var welcomeContainer = document.querySelector('.welcome-message')
+			welcomeContainer.textContent = "";
 			var username = authData.facebook.displayName;
 			var profPicUrl = authData.facebook.profileImageURL;
 
@@ -47,8 +46,10 @@ TwentyFour.login = (function (){
 			welcomeContainer.textContent = welcomeElement;
 			TwentyFour.display.loginDisplay(logged_in);
 		} else {
+			var loginContainer = document.querySelector('.login-message');
+			loginContainer.textContent = "";
 			var welcomeElement = "Please log in";
-			welcomeContainer.textContent = welcomeElement;
+			loginContainer.textContent = welcomeElement;
 			TwentyFour.display.loginDisplay(logged_in);
 		}
 	}

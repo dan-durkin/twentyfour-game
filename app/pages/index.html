@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>twentyfour</title>
+  <meta charset="UTF-8">
+  <title>twentyfour</title>
 	<link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://necolas.github.io/normalize.css/3.0.3/normalize.css">
@@ -14,11 +14,12 @@
     <!--Nav Content-->
     <div class="nav-container">
 			<h1 class="site-title">24</h1>
-      <p class="welcome-message"></p>
 			<div class="login">
+        <p class="login-message"></p>
         <a class="login-btn"><img class="fb-login-button" src="/assets/fblogin.png"></a>
 			</div>
       <div class="logout">
+        <p class="welcome-message"></p>
         <a class="logout-btn">Logout</a>
       </div>
     </div>
@@ -27,6 +28,9 @@
       <!--Timer/ Score/ Hint Content-->
       <div class="instructions-container">
         <p class="instructions">Transform 4 numbers into 24. You can add, multiply, subtract, or divide. You must use all 4 numbers exactly once.</p>
+        <div class="cta-container">
+          <a class="new-game-cta">New Game</a>
+        </div>
       </div>
       <div class="hint-container">
         <p class="hint"><strong>Hint:</strong> Press space bar to see keyboard shortcuts!</p>
@@ -91,9 +95,6 @@
 <div class="end-of-round">
   <p>You solved X puzzles</p>
 </div-->
-<div class="cta-container">
-  <a class="new-game-cta">New Game</a>
-</div>
 
 </body>
 	<script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>

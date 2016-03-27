@@ -19,6 +19,10 @@
 			else if (event.target.classList.contains("skip-tile") || event.target.classList.contains("skip")){
 				TwentyFour.play.skipPuzzle.call(event.target);
 			}
+			else if (event.target.classList.contains("new-game-cta")){
+				TwentyFour.play.startNewGame.call(event.target);
+			}
+			event.preventDefault();
 		});
 		document.addEventListener("keydown", TwentyFour.hotkeys.keyHandler);
 
