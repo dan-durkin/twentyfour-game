@@ -235,8 +235,8 @@ TwentyFour.play = (function () {
 				numContainer.innerHTML += newElement2_temp;
 				var newElement1 = document.querySelector('[data-numberindex="' + newElement1Index + '"]');
 				var newElement2 = document.querySelector('[data-numberindex="' + newElement2Index + '"]');
-				TwentyFour.animate.animateNewElement.call(newElement1);
-				TwentyFour.animate.animateNewElement.call(newElement2);
+				TwentyFour.animate.animateNewElement.call(newElement1.parentElement);
+				TwentyFour.animate.animateNewElement.call(newElement2.parentElement);
 				TwentyFour.hotkeys.setNumberHotKeys();
 			}, 250);
 		}
