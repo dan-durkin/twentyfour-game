@@ -56,7 +56,7 @@ TwentyFour.play = (function () {
 	}
 
 	function checkSolution(){
-		if(this.dataset.value === 24){
+		if(parseInt(this.dataset.value) === 24){
 			solved.call(this);
 		}
 		else{
@@ -82,27 +82,31 @@ TwentyFour.play = (function () {
 	}
 
 	function performMove () {
+		//Find the Result
 		var result = operate(moveObject.move_operation.value)(parseInt(moveObject.numbers_selected[0].value), parseInt(moveObject.numbers_selected[1].value));
-
+		//grab the container
 		var numContainer = document.querySelector('.numbers-container');
 
+		// Create a new element with the Result
 		TwentyFour.display.numberTileIDManager.increment_id();
 		var newNumberTileIndex = TwentyFour.display.numberTileIDManager.get_id();
 		var newNumberTile = TwentyFour.display.createNumberTile(result, newNumberTileIndex);
 
-		unselectAll();
-		numContainer.removeChild(moveObject.numbers_selected[0].element);
-		numContainer.removeChild(moveObject.numbers_selected[1].element);
+		//Add it to the Dom and select the element
 		numContainer.innerHTML += newNumberTile;
 		var newNumberElement = document.querySelector('[data-numberindex="' + newNumberTileIndex + '"]');
 
+		//Store the move in a string
 		var historyString = moveObject.numbers_selected[0].value.toString() + ' ' + moveObject.move_operation.value + ' ' + moveObject.numbers_selected[1].value.toString() + ' = ' + result.toString();
 
+		//Store data in an object
 		var moveStore = {
 			firstNumber: moveObject.numbers_selected[0].value,
 			secondNumber: moveObject.numbers_selected[1].value,
 			moveOperation: moveObject.move_operation,
+			firstNumberIndex: moveObject.numbers_selected[0].index,
 			firstNumberElement: moveObject.numbers_selected[0].element,
+			secondNumberIndex: moveObject.numbers_selected[1].index,
 			secondNumberElement: moveObject.numbers_selected[1].element,
 			newElement: newNumberElement,
 			newElementIndex: newNumberTileIndex,
@@ -110,11 +114,23 @@ TwentyFour.play = (function () {
 			historyElement: TwentyFour.display.createHistoryElement(historyString, TwentyFour.history.getCurrentHistory().length)
 		};
 
-		moveObject.reset();
+		//Unselect everything
+		unselectAll();
 
+		//Select the old elements, animate them out, and remove them from the DOM
+		var oldEl1 = document.querySelector('[data-numberindex="' + moveStore.firstNumberIndex + '"]').parentElement;
+		var oldEl2 = document.querySelector('[data-numberindex="' + moveStore.secondNumberIndex + '"]').parentElement;
+		TwentyFour.animate.animateOut.call(oldEl1);
+		TwentyFour.animate.animateOut.call(oldEl2);
+		numContainer.removeChild(oldEl1);
+		numContainer.removeChild(oldEl2);
+
+		//Update history, reset the hotkeys, reset the moveObject
 		TwentyFour.history.updateCurrentHistory(moveStore);
 		TwentyFour.hotkeys.setNumberHotKeys();
+		moveObject.reset();
 
+		//Check the solution OR animate the new element
 		if(document.querySelectorAll('.number-tile').length === 1){
 			checkSolution.call(newNumberElement);
 		}
@@ -140,7 +156,6 @@ TwentyFour.play = (function () {
 	}
 
 	function selectTile() {
-
 		function removeFromMoveObject(){
 			if(this.classList.contains("operation-tile")){
 				this.classList.remove('selected');
@@ -174,7 +189,7 @@ TwentyFour.play = (function () {
 					unselectAllNumberTiles();
 					moveObject.resetNumberSelection();
 				}
-				moveObject.numbers_selected.push({value: this.dataset.value, element: this.parentElement});
+				moveObject.numbers_selected.push({value: this.dataset.value, element: this.parentElement, index:this.dataset.numberindex});
 			}
 		}
 
@@ -206,10 +221,10 @@ TwentyFour.play = (function () {
 			var lastMoveIndex = lastMove.newElementIndex;
 			var lastMoveElement = document.querySelector('[data-numberindex="' + lastMoveIndex + '"]');
 
-			var newElement1Index = TwentyFour.display.numberTileIDManager.increment_id();
+			var newElement1Index = lastMove.firstNumberIndex;
 			var newElement1_temp = TwentyFour.display.createNumberTile(lastMove.firstNumber, newElement1Index);
 
-			var newElement2Index = TwentyFour.display.numberTileIDManager.increment_id();
+			var newElement2Index = lastMove.secondNumberIndex;
 			var newElement2_temp = TwentyFour.display.createNumberTile(lastMove.secondNumber, newElement2Index);
 
 			TwentyFour.animate.animateOut.call(lastMoveElement);
@@ -252,7 +267,7 @@ TwentyFour.play = (function () {
 		var allTiles = document.querySelectorAll('.number-tile');
 		while(allTiles.length > 1){
 			unselectAll();
-			selectTile.call(document.querySelectorAll('[data-value="x"]'));
+			selectTile.call(document.querySelector('[data-value="x"]'));
 			selectTile.call(document.querySelectorAll(".number-tile")[0]);
 			selectTile.call(document.querySelectorAll(".number-tile")[1]);
 			allTiles = document.querySelectorAll('.number-tile');

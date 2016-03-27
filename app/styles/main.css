@@ -352,11 +352,12 @@ Visual
 }
 
 .correct{
-	background-color: green;
+	background-color: #64B6AC;
+	color: #F1E0C5;
 }
 
 .incorrect{
-	background-color: purple;
+	color: #D34C01;
 }
 
 /***

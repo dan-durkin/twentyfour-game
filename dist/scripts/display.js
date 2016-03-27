@@ -63,6 +63,7 @@ TwentyFour.display = (function () {
 		emptyBeforeNewPuzzle();
 
 		var numContainer = document.querySelector('.numbers-container');
+		numberTileIDManager.reset_id();
 
 		for(var i=0; i < array.length; i++) {
 			numberTileIDManager.increment_id();
@@ -142,9 +143,11 @@ TwentyFour.display = (function () {
 		},
 		increment_id: function(){
 			this.current_id += 1;
+			return this.current_id;
 		},
 		reset_id: function(){
 			this.current_id = 0;
+			return this.current_id;
 		}
 	};
 

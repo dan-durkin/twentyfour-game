@@ -43,11 +43,11 @@ TwentyFour.login = (function (){
 			var username = authData.facebook.displayName;
 			var profPicUrl = authData.facebook.profileImageURL;
 
-			var welcomeElement = "Welcome back, " + username + "!</p>";
+			var welcomeElement = "Welcome back, " + username + "!";
 			welcomeContainer.textContent = welcomeElement;
 			TwentyFour.display.loginDisplay(logged_in);
 		} else {
-			var welcomeElement = "<p>Please log in</p>";
+			var welcomeElement = "Please log in";
 			welcomeContainer.textContent = welcomeElement;
 			TwentyFour.display.loginDisplay(logged_in);
 		}

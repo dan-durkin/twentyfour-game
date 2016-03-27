@@ -36,13 +36,13 @@ TwentyFour.animate = (function (){
 	}
 
 	function animateRight(){
-		var correct = document.querySelector('.number-tile-container.correct');
-		animateTile.call(correct, ['bounceOutRight']);
+		var element = this;
+		animateTile.call(element.parentElement, ['bounceOutRight']);
 	}
 
 	function animateWrong(){
-		var wrong = document.querySelector('.number-tile-container.correct');
-		animateTile.call(wrong, ['shake']);
+		var element = this;
+		animateTile.call(element.parentElement, ['shake']);
 	}
 
 	function removeAnimation () {
