@@ -78,11 +78,11 @@ TwentyFour.display = (function () {
 	***/
 
 	function createNumberTile (data, index){
-		return "<div class='number-tile-container'><div class='number-tile' data-value='"+ data + "' data-numberindex='"+index+"'><div class='hot-key'></div></div>";
+		return "<div class='number-tile-container'><div class='number-tile' data-value='"+ data + "' data-numberindex='"+index+"'><div class='number-hot-key'></div></div>";
 	}
 
 	function createOperationTile (op) {
-		return "<div class='operation-tile-container'><div class='operation-tile' data-value='"+ op + "' data-operation='" + TwentyFour.hotkeys.getHotKey(op).keycode + "''><div class='hot-key'>" + TwentyFour.hotkeys.getHotKey(op).shortcut.toUpperCase() + "</div></div></div>";
+		return "<div class='operation-tile-container'><div class='operation-tile' data-value='"+ op + "' data-operation='" + TwentyFour.hotkeys.getHotKey(op).keycode + "''><div class='operation-hot-key'>" + TwentyFour.hotkeys.getHotKey(op).shortcut.toUpperCase() + "</div></div></div>";
 	}
 
 	function createHistoryElement (history, index) {

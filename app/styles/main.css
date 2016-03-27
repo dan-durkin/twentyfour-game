@@ -239,8 +239,8 @@ Numbers & Operations & Utilities
 	font-size: 2.5rem;
 }
 
-.number-tile .hot-key,
-.operation-tile .hot-key,
+.number-hot-key,
+.operation-hot-key,
 .utility-hot-key{
 	width: 30px;
 	height: 30px;
@@ -343,7 +343,8 @@ Visual
 	color: #F1E0C5;
 }
 
-.hot-key.show,
+.number-hot-key.show,
+.operation-hot-key.show,
 .utility-hot-key.show,
 .helper-hot-keys.show{
 	display: block;

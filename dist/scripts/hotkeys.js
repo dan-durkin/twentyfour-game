@@ -4,28 +4,48 @@ TwentyFour.hotkeys = (function () {
 	***/
 
 	function toggleHotKeys (){
-		$('.hot-key').toggleClass('show');
-		$('.undo').toggleClass('show');
-		$('.skip').toggleClass('show');
-		$('.utility-hot-key').toggleClass('show');
+		if(checkHotKeys()){
+			hotKeysOff();
+		}
+		else{
+			hotKeysOn();
+		}
 	}
 
 	function hotKeysOff (){
-		$('.hot-key').removeClass('show');
-		$('.undo').removeClass('show');
-		$('.skip').removeClass('show');
-		$('.utility-hot-key').removeClass('show');
+		var number_hot_keys = document.querySelectorAll('.number-hot-key');
+		for (var i=0,len=number_hot_keys.length;i<len;i++){
+			number_hot_keys[i].classList.remove('show');
+		}
+		var op_hot_keys = document.querySelectorAll('.operation-hot-key');
+		for (var i=0,len=op_hot_keys.length;i<len;i++){
+			op_hot_keys[i].classList.remove('show');
+		}
+		var utility_hot_keys = document.querySelectorAll('.utility-hot-key');
+		for (var i=0,len=utility_hot_keys .length;i<len;i++){
+			utility_hot_keys[i].classList.remove('show');
+		}
+		document.querySelector('.helper-hot-keys').classList.remove('show');
 	}
 
 	function hotKeysOn (){
-		$('.hot-key').addClass('show');
-		$('.undo').addClass('show');
-		$('.skip').addClass('show');
-		$('.utility-hot-key').addClass('show');
+		var number_hot_keys = document.querySelectorAll('.number-hot-key');
+		for (var i=0,len=number_hot_keys.length;i<len;i++){
+			number_hot_keys[i].classList.add('show');
+		}
+		var op_hot_keys = document.querySelectorAll('.operation-hot-key');
+		for (var i=0,len=op_hot_keys.length;i<len;i++){
+			op_hot_keys[i].classList.add('show');
+		}
+		var utility_hot_keys = document.querySelectorAll('.utility-hot-key');
+		for (var i=0,len=utility_hot_keys .length;i<len;i++){
+			utility_hot_keys[i].classList.add('show');
+		}
+		document.querySelector('.helper-hot-keys').classList.add('show');
 	}
 
 	function checkHotKeys (){
-		return $('.hot-key').hasClass('show');
+		return document.querySelector('.number-hot-key').classList.contains('show');
 	}
 
 	/***
@@ -83,10 +103,10 @@ TwentyFour.hotkeys = (function () {
 	}
 
 	function setNumberHotKeys(){
-		$('.hot-key.number-tile').empty();
-		$('.number-tile').each(function (num, element){
-			$(this).children('.hot-key').text(num + 1);
-		});
+		var hot_keys = document.querySelectorAll('.number-hot-key');
+		for (var i=0,len=hot_keys.length;i<len;i++){
+			hot_keys[i].textContent = i + 1;
+		}
 
 		if(checkHotKeys()){
 			hotKeysOn();
