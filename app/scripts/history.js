@@ -13,12 +13,13 @@ TwentyFour.history = (function () {
 	function publishHistory(){
 		var history = "";
 		var roundSolves = document.querySelector('.round-solves-container');
+		var round_solves_index = document.querySelectorAll('.round-history-item').length;
 
 		for(var i=0, len=currentPuzzleMoves.length;i<len;i++){
 			history += " (" + currentPuzzleMoves[i].historyString + ") ";
 		}
 
-		roundSolves.innerHTML += TwentyFour.display.createHistoryElement(history);
+		roundSolves.innerHTML += TwentyFour.display.createRoundSolveHistoryElement(history, round_solves_index);
 		emptyCurrentHistory();
 	}
 

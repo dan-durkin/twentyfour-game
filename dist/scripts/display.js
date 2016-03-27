@@ -90,6 +90,10 @@ TwentyFour.display = (function () {
 		return "<div class='history-item' data-historyindex='"+index+"'><p>Last Move: " + history + "</p></div>";
 	}
 
+	function createRoundSolveHistoryElement(history, index){
+		return "<div class='round-history-item' data-roundhistoryindex='"+index+"'><p>Last Move: " + history + "</p></div>";
+	}
+
 	function createCurrentScoreElement(currentScore){
 		document.querySelector('.current-score').innerHTML= "";
 		document.querySelector('.current-score').textContent = currentScore;
@@ -155,6 +159,7 @@ TwentyFour.display = (function () {
 		createNumberTile:createNumberTile,
 		createOperationTile:createOperationTile,
 		createHistoryElement:createHistoryElement,
+		createRoundSolveHistoryElement:createRoundSolveHistoryElement,
 		createCurrentScoreElement:createCurrentScoreElement,
 		loginDisplay:loginDisplay,
 		setupBoard:setupBoard,

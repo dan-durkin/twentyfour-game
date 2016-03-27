@@ -135,7 +135,7 @@ TwentyFour.play = (function () {
 			checkSolution.call(newNumberElement);
 		}
 		else {
-			TwentyFour.animate.animateNewElement.call(newNumberElement);
+			TwentyFour.animate.animateNewElement.call(newNumberElement.parentElement);
 		}
 	}
 
