@@ -24,6 +24,7 @@ Main Nav
 **/
 .main-container{
 	width: 100%;
+	min-height: 100%;
 }
 
 .nav-container{
@@ -440,6 +441,7 @@ Tablet
 	body{
 		font-size: 1em;
 	}
+}
 
 /***
 Desktop
